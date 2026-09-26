@@ -1,0 +1,22 @@
+﻿# Environment & Virtual Env
+.venv/
+venv/
+.env
+
+# Large Raw Datasets (Do not push to GitHub)
+Plant Disease Dataset/
+dataset/
+*.jpg
+*.jpeg
+*.png
+*.JPG
+*.JPEG
+*.PNG
+
+# Python Cache & IDE
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+.ipynb_checkpoints/
+pip_cache/

@@ -1,0 +1,244 @@
+{
+    "Castor___Alternaria Blight": {
+        "precision": 0.851063829787234,
+        "recall": 0.8,
+        "f1-score": 0.8247422680412371,
+        "support": 50.0
+    },
+    "Castor___Hairy Caterpillar": {
+        "precision": 0.7575757575757576,
+        "recall": 0.7575757575757576,
+        "f1-score": 0.7575757575757576,
+        "support": 33.0
+    },
+    "Castor___Healthy": {
+        "precision": 0.9090909090909091,
+        "recall": 0.9375,
+        "f1-score": 0.9230769230769231,
+        "support": 64.0
+    },
+    "Corn___Common Rust": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 179.0
+    },
+    "Corn___Gray Leaf Spot": {
+        "precision": 0.8809523809523809,
+        "recall": 0.961038961038961,
+        "f1-score": 0.9192546583850931,
+        "support": 77.0
+    },
+    "Corn___Healthy": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 175.0
+    },
+    "Corn___Northern Leaf Blight": {
+        "precision": 0.9787234042553191,
+        "recall": 0.9324324324324325,
+        "f1-score": 0.9550173010380623,
+        "support": 148.0
+    },
+    "Cotton___Bacterial Blight": {
+        "precision": 0.9913793103448276,
+        "recall": 0.9913793103448276,
+        "f1-score": 0.9913793103448276,
+        "support": 116.0
+    },
+    "Cotton___Curl Virus": {
+        "precision": 0.9801324503311258,
+        "recall": 0.9866666666666667,
+        "f1-score": 0.9833887043189369,
+        "support": 150.0
+    },
+    "Cotton___Healthy Leaf": {
+        "precision": 0.9933333333333333,
+        "recall": 0.9933333333333333,
+        "f1-score": 0.9933333333333333,
+        "support": 150.0
+    },
+    "Cotton___Herbicide Growth Damage": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+    },
+    "Cotton___Leaf Hopper Jassids": {
+        "precision": 0.9933774834437086,
+        "recall": 1.0,
+        "f1-score": 0.9966777408637874,
+        "support": 150.0
+    },
+    "Cotton___Leaf Redding": {
+        "precision": 1.0,
+        "recall": 0.9866666666666667,
+        "f1-score": 0.9932885906040269,
+        "support": 150.0
+    },
+    "Cotton___Leaf Variegation": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+    },
+    "Potato___Early blight": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+    },
+    "Potato___Healthy": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 23.0
+    },
+    "Potato___Late blight": {
+        "precision": 0.9933774834437086,
+        "recall": 1.0,
+        "f1-score": 0.9966777408637874,
+        "support": 150.0
+    },
+    "Rice___Brown Spot": {
+        "precision": 0.872093023255814,
+        "recall": 0.8152173913043478,
+        "f1-score": 0.8426966292134831,
+        "support": 92.0
+    },
+    "Rice___Healthy": {
+        "precision": 0.9292035398230089,
+        "recall": 0.9417040358744395,
+        "f1-score": 0.9354120267260579,
+        "support": 223.0
+    },
+    "Rice___Leaf Blast": {
+        "precision": 0.8533333333333334,
+        "recall": 0.8707482993197279,
+        "f1-score": 0.8619528619528619,
+        "support": 147.0
+    },
+    "Rice___Neck Blast": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 150.0
+    },
+    "Sugarcane___Bacterial Blight": {
+        "precision": 0.7647058823529411,
+        "recall": 0.8666666666666667,
+        "f1-score": 0.8125,
+        "support": 15.0
+    },
+    "Sugarcane___Healthy": {
+        "precision": 0.9333333333333333,
+        "recall": 0.9333333333333333,
+        "f1-score": 0.9333333333333333,
+        "support": 15.0
+    },
+    "Sugarcane___Red Rot": {
+        "precision": 0.7857142857142857,
+        "recall": 0.7333333333333333,
+        "f1-score": 0.7586206896551724,
+        "support": 15.0
+    },
+    "Tomato___Bacterial spot": {
+        "precision": 0.8666666666666667,
+        "recall": 0.8125,
+        "f1-score": 0.8387096774193549,
+        "support": 16.0
+    },
+    "Tomato___Early blight": {
+        "precision": 0.6666666666666666,
+        "recall": 0.6363636363636364,
+        "f1-score": 0.6511627906976745,
+        "support": 44.0
+    },
+    "Tomato___Healthy": {
+        "precision": 0.75,
+        "recall": 0.6521739130434783,
+        "f1-score": 0.6976744186046512,
+        "support": 23.0
+    },
+    "Tomato___Late blight": {
+        "precision": 0.8125,
+        "recall": 0.8125,
+        "f1-score": 0.8125,
+        "support": 16.0
+    },
+    "Tomato___Leaf Mold": {
+        "precision": 0.7424242424242424,
+        "recall": 0.8166666666666667,
+        "f1-score": 0.7777777777777778,
+        "support": 60.0
+    },
+    "Tomato___Septoria leaf spot": {
+        "precision": 0.875,
+        "recall": 0.875,
+        "f1-score": 0.875,
+        "support": 16.0
+    },
+    "Tomato___Spider mites Two-spotted spider mite": {
+        "precision": 0.9411764705882353,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.9142857142857143,
+        "support": 18.0
+    },
+    "Tomato___Target Spot": {
+        "precision": 0.8666666666666667,
+        "recall": 0.8666666666666667,
+        "f1-score": 0.8666666666666667,
+        "support": 15.0
+    },
+    "Tomato___Tomato mosaic virus": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 16.0
+    },
+    "Tomato___Tomato Yellow Leaf Curl Virus": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 15.0
+    },
+    "Wheat___Brown Rust": {
+        "precision": 0.9925925925925926,
+        "recall": 0.9852941176470589,
+        "f1-score": 0.988929889298893,
+        "support": 136.0
+    },
+    "Wheat___Healthy": {
+        "precision": 0.9940828402366864,
+        "recall": 1.0,
+        "f1-score": 0.9970326409495549,
+        "support": 168.0
+    },
+    "Wheat___Yellow Rust": {
+        "precision": 0.9928057553956835,
+        "recall": 0.9928057553956835,
+        "f1-score": 0.9928057553956835,
+        "support": 139.0
+    },
+    "accuracy": 0.9568155111633373,
+    "macro avg": {
+        "precision": 0.9180532876110395,
+        "recall": 0.9147690765557452,
+        "f1-score": 0.9159857621735852,
+        "support": 3404.0
+    },
+    "weighted avg": {
+        "precision": 0.9569708901958152,
+        "recall": 0.9568155111633373,
+        "f1-score": 0.9566920571476497,
+        "support": 3404.0
+    },
+    "summary": {
+        "test_loss": 0.14195652602015546,
+        "test_accuracy": 95.68155111633374,
+        "test_macro_f1": 91.59857621735851,
+        "best_val_macro_f1": 94.30535291581114,
+        "best_val_accuracy": 96.35615633264767
+    }
+}
