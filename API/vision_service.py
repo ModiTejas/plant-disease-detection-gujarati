@@ -52,6 +52,13 @@ REQUIRED JSON SCHEMA:
 }
 """
 
+PLANT_CHECK_PROMPT = """
+Look at the image and decide only whether it visibly contains a real plant or part
+of a plant (such as a leaf, stem, fruit, or crop). Do not infer a plant from text,
+packaging, a drawing, or context. If no plant is clearly visible or you are unsure,
+set is_plant to false. Return only JSON: {"is_plant": true} or {"is_plant": false}.
+"""
+
 def image_to_optimized_base64(image_input) -> tuple[str, str]:
     if isinstance(image_input, (str, Path)):
         img = Image.open(image_input)
@@ -88,79 +95,79 @@ def extract_json(text: str) -> dict:
     cleaned = re.sub(r'```$', '', cleaned, flags=re.MULTILINE).strip()
     return json.loads(cleaned)
 
-def analyze_plant_with_vision(image_input) -> dict:
+def _request_gemini(prompt: str, b64_data: str, mime_type: str, api_key: str) -> dict:
+    payload = {
+        "contents": [{"parts": [
+            {"text": prompt},
+            {"inline_data": {"mime_type": mime_type, "data": b64_data}}
+        ]}],
+        "generationConfig": {
+            "response_mime_type": "application/json",
+            "temperature": 0.0
+        }
+    }
+
+    last_error = None
+    for model_name in [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-flash-latest"
+    ]:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        for attempt in range(2):
+            try:
+                response = requests.post(
+                    url,
+                    headers={"Content-Type": "application/json"},
+                    json=payload,
+                    timeout=25
+                )
+                if response.status_code == 200:
+                    candidates = response.json().get("candidates", [])
+                    if not candidates:
+                        raise ValueError("No candidates returned from Gemini.")
+                    raw_text = candidates[0]["content"]["parts"][0]["text"]
+                    return extract_json(raw_text)
+                if response.status_code == 503:
+                    time.sleep(1.0)
+                    continue
+                if response.status_code == 429:
+                    last_error = "Free tier rate limit reached. Please wait 10 seconds before trying again."
+                    break
+                last_error = f"{model_name} HTTP {response.status_code}: {response.text}"
+                break
+            except Exception as exc:
+                last_error = f"{model_name} Exception: {exc}"
+                break
+
+    raise RuntimeError(last_error or "Gemini request failed.")
+
+def is_plant_image(image_input) -> bool:
     load_dotenv(BASE_DIR / ".env", override=True)
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY is not set in .env file.")
 
     b64_data, mime_type = image_to_optimized_base64(image_input)
+    result = _request_gemini(PLANT_CHECK_PROMPT, b64_data, mime_type, api_key)
+    return result.get("is_plant") is True
 
-    # Active model endpoints supported by your key
-    candidate_models = [
-        "gemini-3.8-flash",
-        "gemini-3.7-flash",
-        "gemini-3.5-flash",
-        "gemini-3.5-flash-lite",
-        "gemini-flash-latest"
-    ]
+def analyze_plant_with_vision(image_input) -> dict:
+    load_dotenv(BASE_DIR / ".env", override=True)
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY is not set in .env file.")
 
-    payload = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": SYSTEM_PROMPT},
-                    {
-                        "inline_data": {
-                            "mime_type": mime_type,
-                            "data": b64_data
-                        }
-                    }
-                ]
-            }
-        ],
-        "generationConfig": {
-            "response_mime_type": "application/json",
-            "temperature": 0.2
+    if not is_plant_image(image_input):
+        return {
+            "is_plant": False,
+            "error_gu": "⚠️ આ તસવીરમાં છોડ કે પાન સ્પષ્ટ દેખાતું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
         }
-    }
 
-    last_error = None
-    for model_name in candidate_models:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
-        headers = {"Content-Type": "application/json"}
-
-        for attempt in range(2):
-            try:
-                response = requests.post(url, headers=headers, json=payload, timeout=25)
-                
-                if response.status_code == 200:
-                    res_json = response.json()
-                    candidates = res_json.get("candidates", [])
-                    if not candidates:
-                        raise ValueError("No candidates returned from Gemini.")
-
-                    raw_text = candidates[0]["content"]["parts"][0]["text"]
-                    return extract_json(raw_text)
-
-                elif response.status_code == 503:
-                    # Temporary server busy spike - retry once after 1 second
-                    time.sleep(1.0)
-                    continue
-
-                elif response.status_code == 429:
-                    last_error = "Free tier rate limit reached. Please wait 10 seconds before trying again."
-                    break
-
-                else:
-                    last_error = f"{model_name} HTTP {response.status_code}: {response.text}"
-                    break
-
-            except Exception as e:
-                last_error = f"{model_name} Exception: {str(e)}"
-                break
-
-    raise RuntimeError(f"{last_error}")
+    b64_data, mime_type = image_to_optimized_base64(image_input)
+    return _request_gemini(SYSTEM_PROMPT, b64_data, mime_type, api_key)
 
 if __name__ == "__main__":
     import sys
