@@ -17,9 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
 try:
-    from API.vision_service import analyze_plant_with_vision
+    from API.vision_service import analyze_plant_with_vision, is_plant_image
 except ImportError:
-    from vision_service import analyze_plant_with_vision
+    from vision_service import analyze_plant_with_vision, is_plant_image
 
 # ---------------- PATHS & CONSTANTS ----------------
 MODEL_PTH = BASE_DIR / "models" / "best_model.pth"
@@ -104,6 +104,20 @@ async def predict_project_model(file: UploadFile = File(...)):
         image = Image.open(BytesIO(image_bytes))
     except Exception:
         raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
+
+    try:
+        if not is_plant_image(image):
+            return {
+                "mode": "project",
+                "status": "success",
+                "is_plant": False,
+                "error_gu": "⚠️ આ તસવીરમાં છોડ કે પાન સ્પષ્ટ દેખાતું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
+            }
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail="છોડની તસવીર ચકાસી શકાઈ નથી. કૃપા કરીને GEMINI_API_KEY તપાસી ફરી પ્રયાસ કરો."
+        ) from e
 
     input_data = preprocess_image(image)
 
