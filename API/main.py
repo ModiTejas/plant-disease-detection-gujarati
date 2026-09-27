@@ -49,12 +49,71 @@ with open(CLASS_INDICES_PATH, "r", encoding="utf-8") as f:
     CLASSES = class_data["classes"]
 
 with open(DICT_PATH, "r", encoding="utf-8") as f:
-    raw_dict = json.load(f)
-    classes_dict = raw_dict.get("classes", raw_dict)
-    DISEASE_DICT = {k.strip().lower(): v for k, v in classes_dict.items()}
+    try:
+        raw_dict = json.load(f)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Could not parse disease dictionary JSON: {DICT_PATH}") from exc
+
+if not isinstance(raw_dict, dict) or "classes" not in raw_dict:
+    raise ValueError("Disease dictionary must contain a 'classes' list or dictionary.")
+
+classes_data = raw_dict["classes"]
+DISEASE_DICT = {}
+seen_class_ids = set()
+
+if isinstance(classes_data, list):
+    for item in classes_data:
+        if not isinstance(item, dict) or "class_id" not in item:
+            raise ValueError("Disease dictionary contains a class without class_id.")
+        class_id = item["class_id"]
+        if not isinstance(class_id, str) or not class_id.strip():
+            raise ValueError("Disease dictionary contains an empty or invalid class_id.")
+        lookup_key = class_id.strip().lower()
+        if lookup_key in seen_class_ids:
+            raise ValueError(f"Disease dictionary contains duplicate class_id: {class_id}")
+        seen_class_ids.add(lookup_key)
+        DISEASE_DICT[lookup_key] = item
+elif isinstance(classes_data, dict):
+    for class_id, item in classes_data.items():
+        if not isinstance(class_id, str) or not class_id.strip():
+            raise ValueError("Disease dictionary contains an empty or invalid class_id.")
+        if not isinstance(item, dict):
+            raise ValueError(f"Disease dictionary entry for {class_id} must be an object.")
+        lookup_key = class_id.strip().lower()
+        if lookup_key in seen_class_ids:
+            raise ValueError(f"Disease dictionary contains duplicate class_id: {class_id}")
+        seen_class_ids.add(lookup_key)
+        DISEASE_DICT[lookup_key] = item
+else:
+    raise ValueError("Disease dictionary 'classes' must be a list or dictionary.")
+
+if len(DISEASE_DICT) != EXPECTED_CLASS_COUNT:
+    raise ValueError(
+        f"Disease dictionary must contain exactly {EXPECTED_CLASS_COUNT} classes; "
+        f"found {len(DISEASE_DICT)}."
+    )
+
+def normalize_class_name(class_name: str) -> str:
+    return " ".join(class_name.replace("_", " ").replace("-", " ").split()).lower()
+
+LEGACY_CLASS_LOOKUP = {
+    normalize_class_name(item.get("class_id", key)): key
+    for key, item in DISEASE_DICT.items()
+}
+CLASS_NAME_ALIASES = {
+    normalize_class_name("Cotton___Healthy Leaf"): normalize_class_name("Cotton___Healthy"),
+    normalize_class_name("Cotton___Leaf Redding"): normalize_class_name("Cotton___Leaf Reddening"),
+}
 
 def get_disease_details(class_name: str) -> dict:
-    return DISEASE_DICT.get(class_name.strip().lower(), {})
+    class_id = class_name.strip()
+    details = DISEASE_DICT.get(class_id.lower())
+    if details is not None:
+        return details
+    legacy_key = normalize_class_name(class_id)
+    legacy_key = CLASS_NAME_ALIASES.get(legacy_key, legacy_key)
+    lookup_key = LEGACY_CLASS_LOOKUP.get(legacy_key)
+    return DISEASE_DICT.get(lookup_key, {})
 
 # 2. Setup Inference Engine (ONNX for Vercel/Production, fallback to PyTorch)
 USE_ONNX = MODEL_ONNX.exists()
