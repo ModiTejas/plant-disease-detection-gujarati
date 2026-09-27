@@ -1,1058 +1,1946 @@
 {
   "metadata": {
-    "version": "1.0",
+    "version": "2.0",
     "language": "Gujarati",
-    "purpose": "English ML class -> Gujarati website presentation layer",
+    "purpose": "English ML class -> Gujarati farmer-facing presentation layer",
     "class_count": 37,
-    "important_note": "Keep the English class_name exactly as used by the trained model. This dictionary is only the presentation/information layer.",
-    "categories": [
-      "disease",
-      "pest",
-      "chemical_damage",
-      "physiological_problem",
-      "healthy"
-    ]
+    "important_note": "Keep class_id exactly as used by the trained model/API. This dictionary is the farmer-facing information layer."
   },
-  "classes": {
-    "Castor___Alternaria Blight": {
-      "plant_en": "Castor",
-      "plant_gu": "એરંડા",
-      "name_en": "Alternaria Blight",
-      "name_gu": "બળીયા ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Alternaria ricini",
-      "cause_gu": "Alternaria ricini નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના ભૂરા ટપકાં દેખાય છે.",
-        "ટપકાંમાં ગોળાકાર કેન્દ્રિત વર્તુળો દેખાઈ શકે છે.",
-        "ટપકાં મોટા થઈને એકબીજા સાથે જોડાઈ શકે છે.",
-        "ગંભીર ચેપમાં પાન, દાંડી અને કૅપ્સ્યુલને અસર થઈ શકે છે."
-      ],
-      "management_gu": [
-        "સ્વસ્થ અને રોગમુક્ત બીજનો ઉપયોગ કરો.",
-        "અસરગ્રસ્ત પાન અને પાકના અવશેષો દૂર કરો.",
-        "યોગ્ય અંતર રાખીને હવાની અવરજવર જાળવો.",
-        "જરૂર પડે ત્યારે સ્થાનિક કૃષિ ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બિયારણ પસંદ કરો.",
-        "પાક અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "યોગ્ય પાક ફેરબદલી રાખો.",
-        "વધુ ભેજ અને લાંબા સમય સુધી પાન ભીનું રહે તેવી સ્થિતિ ઘટાડો."
-      ],
-      "verification": "Gujarati display name is based on agricultural terminology; confirm the exact original dataset source if a strict historical/local-name claim is required.",
-      "gujarati_name": "બળીયા ટપકાંનો રોગ / કાળો ચરમો"
+  "classes": [
+    {
+      "class_id": "Castor___Alternaria_Blight",
+      "crop_name_en": "Castor",
+      "crop_name_gu": "દિવેલા / એરંડા",
+      "condition_name_en": "Alternaria Blight",
+      "condition_name_gu": "કાળો ચરમો / અલ્ટરનેરિયાનો સુકારો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Alternaria ricini (Yoshii) Hansford",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "કાળો ચરમો / અલ્ટરનેરિયાનો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Alternaria ricini નામની ફૂગથી પાન પર ભૂરા ટપકાં અને ગોળાકાર વર્તુળો જેવા ચિહ્નો દેખાય છે. ટપકાં વધીને જોડાઈ શકે છે અને ગંભીર ચેપમાં પાન, દાંડી તથા કૅપ્સ્યુલને નુકસાન થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Captan અથવા Thiram @ 4 g/kg બીજ",
+              "Mancozeb @ 2.5 g/L પાણી"
+            ],
+            "product_examples": [],
+            "description": "આ રોગ માટે Captan અથવા Thiram @ 4 g/kg બીજથી બીજમાવજત કરી શકાય છે. રોગ દેખાય ત્યારે Mancozeb @ 2.5 g/L પાણીનો છંટકાવ સ્થાનિક મંજૂર લેબલ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગમુક્ત બીજ અને સ્વચ્છ વાવેતર સામગ્રીનો ઉપયોગ કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ બીજ પસંદ કરો અને પાકના ચેપગ્રસ્ત અવશેષો દૂર કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati display name is based on agricultural terminology; confirm the exact original dataset source if a strict historical/local-name claim is required."
     },
-    "Castor___Hairy Caterpillar": {
-      "plant_en": "Castor",
-      "plant_gu": "એરંડા",
-      "name_en": "Hairy Caterpillar",
-      "name_gu": "વાળવાળી ઈયળ / રુવાંટીવાળી ઈયળ",
-      "type": "pest",
-      "type_gu": "જીવાત",
-      "cause": "Hairy caterpillar",
-      "cause_gu": "વાળવાળી ઈયળની વિવિધ જાતિઓ",
-      "symptoms_gu": [
-        "ઈયળો પાન ખાઈને પાનને નુકસાન કરે છે.",
-        "શરૂઆતમાં પાનમાં ખવાયેલા પાતળા ભાગો દેખાય છે.",
-        "ભારે ઉપદ્રવમાં પાનનો મોટો ભાગ અથવા આખું પાન ખાઈ શકાય છે.",
-        "છોડની વૃદ્ધિ અને ઉત્પાદન પર અસર થઈ શકે છે."
-      ],
-      "management_gu": [
-        "ઈંડાંના સમૂહ અને નાની ઈયળો એકત્ર કરીને નાશ કરો.",
-        "નિયમિત ખેતર નિરીક્ષણ કરો.",
-        "શરૂઆતના ઉપદ્રવમાં યાંત્રિક નિયંત્રણ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક કૃષિ ભલામણ મુજબ જીવાત નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "ખેતરમાં નિયમિત મોનીટરીંગ કરો.",
-        "ઈંડાં અને નાની ઈયળો વહેલી તકે દૂર કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો."
-      ],
-      "verification": "This class is a pest, not a disease.",
-      "gujarati_name": "કાતરા / કાળા માથાની ઈયળ"
+    {
+      "class_id": "Castor___Hairy_Caterpillar",
+      "crop_name_en": "Castor",
+      "crop_name_gu": "દિવેલા / એરંડા",
+      "condition_name_en": "Hairy Caterpillar",
+      "condition_name_gu": "કાતરા / કાળા માથાની ઈયળ",
+      "category": "Pest",
+      "category_gu": "જીવાત",
+      "pathogen_scientific_name": "Spilosoma obliqua Walker / Amsacta albistriga Walker",
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "કાતરા / કાળા માથાની ઈયળ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "આ જીવાતની ઈયળો પાન ખાઈને નુકસાન કરે છે. શરૂઆતમાં પાનનો ભાગ ખવાયેલો દેખાય છે અને ભારે ઉપદ્રવમાં આખું પાન પણ ખાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Neem Seed Kernel Extract (NSKE) 5%",
+              "Azadirachtin 1500 ppm @ 3–5 ml/L",
+              "Novaluron 10% EC @ 1.0 ml/L",
+              "Emamectin Benzoate 5% SG @ 0.4 g/L",
+              "Chlorantraniliprole 18.5% SC @ 0.3 ml/L"
+            ],
+            "product_examples": [],
+            "description": "નાની ઈયળ માટે NSKE 5% અથવા Azadirachtin 1500 ppm @ 3–5 ml/L. મોટી ઈયળ માટે Novaluron 10% EC @ 1.0 ml/L, Emamectin Benzoate 5% SG @ 0.4 g/L અથવા Chlorantraniliprole 18.5% SC @ 0.3 ml/Lમાંથી સ્થાનિક મંજૂર વિકલ્પ પસંદ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાની ચોક્કસ માત્રા અને છંટકાવની રીત સંબંધિત પાક અને સમસ્યા માટેના વર્તમાન ઉત્પાદન લેબલ મુજબ જ રાખવી."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "કુદરતી શત્રુઓનું સંરક્ષણ કરો અને બિનજરૂરી પહોળી અસરવાળી જંતુનાશક દવાઓનો ઉપયોગ ટાળો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "શરૂઆતની ઈયળો દેખાય ત્યારે હાથથી એકત્ર કરી નાશ કરો અને કુદરતી શત્રુઓને બચાવો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "ખેતરમાં નિયમિત દેખરેખ રાખો અને શરૂઆતના ઉપદ્રવમાં જ નિયંત્રણ શરૂ કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "This class is a pest, not a disease."
     },
-    "Castor___Healthy": {
-      "plant_en": "Castor",
-      "plant_gu": "એરંડા",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત એરંડાનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત છોડ / રોગમુક્ત દિવેલા"
+    {
+      "class_id": "Castor___Healthy",
+      "crop_name_en": "Castor",
+      "crop_name_gu": "દિવેલા / એરંડા",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત છોડ / રોગમુક્ત દિવેલા",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત છોડ / રોગમુક્ત દિવેલા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "દિવેલા પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Corn___Common Rust": {
-      "plant_en": "Corn",
-      "plant_gu": "મકાઈ",
-      "name_en": "Common Rust",
-      "name_gu": "મકાઈનો ગેરુ રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Puccinia sorghi",
-      "cause_gu": "Puccinia sorghi નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના પીળાશવાળા અથવા ભૂરા ટપકાં દેખાય છે.",
-        "પછી કાટ જેવા ભૂરા-લાલ પાવડરી ગેરુના ફોલ્લા બને છે.",
-        "ગંભીર ચેપમાં પાનની કાર્યક્ષમતા ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક અથવા સહનશીલ જાતો પસંદ કરો.",
-        "ખેતરમાં નિયમિત નિરીક્ષણ કરો.",
-        "રોગગ્રસ્ત અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશકનો ઉપયોગ કરો."
-      ],
-      "prevention_gu": [
-        "રોગપ્રતિકારક જાતનો ઉપયોગ કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "રોગની શરૂઆતમાં જ દેખરેખ રાખો."
-      ],
-      "gujarati_name": "ગેરુ રોગ / રસ્ટ"
+    {
+      "class_id": "Corn___Common_Rust",
+      "crop_name_en": "Corn",
+      "crop_name_gu": "મકાઈ",
+      "condition_name_en": "Common Rust",
+      "condition_name_gu": "ગેરુ",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Puccinia sorghi Schwein.",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "ગેરુ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Puccinia sorghiથી પાન પર કાટ જેવા પીળા-ભૂરા ઊપસેલા ગેરુના ફોલ્લા બને છે. ભારે ચેપમાં પાનની કાર્યક્ષમતા ઘટી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Kresoxim-methyl 44.3% SC @ 1 ml/L",
+              "Tebuconazole @ 1 ml/L",
+              "Mancozeb @ 2 ml/L"
+            ],
+            "product_examples": [],
+            "description": "Kresoxim-methyl 44.3% SC @ 1 ml/L, Tebuconazole @ 1 ml/L અથવા Mancozeb @ 2 ml/Lમાંથી પાક અને રોગ માટે વર્તમાન મંજૂર વિકલ્પનો ઉપયોગ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત અવશેષો દૂર રાખો અને ખેતરની સ્વચ્છતા જાળવો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "વૈકલ્પિક યજમાન છોડ દૂર કરો અને રોગની શરૂઆતથી નિયમિત દેખરેખ રાખો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Corn___Gray Leaf Spot": {
-      "plant_en": "Corn",
-      "plant_gu": "મકાઈ",
-      "name_en": "Gray Leaf Spot",
-      "name_gu": "ભૂખરા પાનના ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Cercospora species, especially Cercospora zeae-maydis",
-      "cause_gu": "Cercospora જૂથની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના મૃત ટપકાં દેખાય છે.",
-        "પછી લાંબા, સાંકડા ભૂખરા અથવા કથ્થાઈ ટપકાં બને છે.",
-        "ટપકાં પાનની નસોની વચ્ચે લંબાઈ શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન સુકાઈ શકે છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "પાક ફેરબદલી કરો.",
-        "મકાઈના અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "એક જ ખેતરમાં સતત મકાઈ ન લો.",
-        "રોગગ્રસ્ત અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "વધુ ભેજવાળી સ્થિતિ ઘટાડો."
-      ],
-      "gujarati_name": "ભૂખરા પાનના ટપકાં / ભૂખરા ડાઘનો રોગ"
+    {
+      "class_id": "Corn___Gray_Leaf_Spot",
+      "crop_name_en": "Corn",
+      "crop_name_gu": "મકાઈ",
+      "condition_name_en": "Gray Leaf Spot",
+      "condition_name_gu": "ભૂખરા પાનના ટપકા",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Cercospora zeae-maydis Tehon & E.Y. Daniels",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "ભૂખરા પાનના ટપકા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Cercospora zeae-maydisથી પાન પર લાંબા ભૂખરા અથવા કથ્થાઈ ટપકાં બને છે. ટપકાં નસોની વચ્ચે લંબાઈ શકે છે અને ભારે ચેપમાં પાન સુકાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ વર્ગ માટે વિશ્વસનીય ભારતીય સ્ત્રોતમાંથી પાક-વિશિષ્ટ દવા અને માત્રા પૂરતી રીતે ચકાસી શકાઈ નથી; તેથી અંદાજિત દવાની માત્રા આપવામાં આવતી નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત અવશેષોનું યોગ્ય સંચાલન કરો અને સ્થાનિક કૃષિ નિષ્ણાતની પાક-વિશિષ્ટ ભલામણ લો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પ્રતિરોધક અથવા સહનશીલ જાતો, પાક ફેરબદલી અને અવશેષ વ્યવસ્થાપન અપનાવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Corn___Healthy": {
-      "plant_en": "Corn",
-      "plant_gu": "મકાઈ",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત મકાઈનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત છોડ / રોગમુક્ત મકાઈ"
+    {
+      "class_id": "Corn___Healthy",
+      "crop_name_en": "Corn",
+      "crop_name_gu": "મકાઈ",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત મકાઈ",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત મકાઈ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "મકાઈ પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Corn___Northern Leaf Blight": {
-      "plant_en": "Corn",
-      "plant_gu": "મકાઈ",
-      "name_en": "Northern Leaf Blight",
-      "name_gu": "ઉત્તરીય પાનનો ઝાળ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Exserohilum turcicum",
-      "cause_gu": "Exserohilum turcicum નામની ફૂગ",
-      "symptoms_gu": [
-        "નીચેનાં પાનથી લાંબા ભૂખરા-કથ્થાઈ ટપકાં શરૂ થાય છે.",
-        "ટપકાં ઘણીવાર સિગાર જેવા લાંબા આકારના હોય છે.",
-        "ટપકાં મોટા થઈને પાનનો મોટો ભાગ આવરી શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન સુકાઈ જાય છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક હાઇબ્રિડ અથવા જાત પસંદ કરો.",
-        "પાક ફેરબદલી કરો.",
-        "પાક અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશકનો ઉપયોગ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ અને રોગપ્રતિકારક જાત વાવો.",
-        "પાક અવશેષો ખેતરમાં વધુ સમય ન રાખો.",
-        "નિયમિત ખેતર નિરીક્ષણ કરો."
-      ],
-      "gujarati_name": "પાનનો સુકારો / ઉત્તરીય પાનનો સુકારો"
+    {
+      "class_id": "Corn___Northern_Leaf_Blight",
+      "crop_name_en": "Corn",
+      "crop_name_gu": "મકાઈ",
+      "condition_name_en": "Northern Leaf Blight",
+      "condition_name_gu": "પાનનો સુકારો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Exserohilum turcicum (Pass.) Leonard & Suggs",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનનો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Exserohilum turcicumથી પાન પર લાંબા ભૂખરા-કથ્થાઈ, સિગાર જેવા ટપકાં બને છે. ટપકાં વધીને પાનનો મોટો ભાગ સુકવી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Mancozeb અથવા Zineb @ 2–4 g/L",
+              "Propiconazole 25% EC @ 0.1%",
+              "Kresoxim-methyl 44.3% SC @ 1 ml/L"
+            ],
+            "product_examples": [],
+            "description": "Mancozeb અથવા Zineb @ 2–4 g/L, Propiconazole 25% EC @ 0.1% અથવા Kresoxim-methyl 44.3% SC @ 1 ml/Lમાંથી વર્તમાન મંજૂર વિકલ્પનો ઉપયોગ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "સ્વસ્થ બીજ અને સહનશીલ જાતો પસંદ કરો તથા ચેપગ્રસ્ત અવશેષોનું સંચાલન કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પાક ફેરબદલી રાખો અને ખેતરમાં લાંબા સમય સુધી વધુ ભેજ રહે તેવી સ્થિતિ ઘટાડો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Cotton___Bacterial Blight": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Bacterial Blight",
-      "name_gu": "ખૂણિયા ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "જીવાણુજન્ય રોગ",
-      "cause": "Xanthomonas species/pathovar associated with cotton bacterial blight",
-      "cause_gu": "Xanthomonas જૂથના જીવાણુ",
-      "symptoms_gu": [
-        "પાન પર ખૂણાવાળા પાણીદાર ટપકાં દેખાય છે.",
-        "ટપકાં નસોની આસપાસ પણ જોવા મળે છે.",
-        "નસો કાળી અથવા બદામી થઈ શકે છે.",
-        "દાંડી, ડાળી અથવા અન્ય છોડના ભાગોમાં પણ ચાંઠા થઈ શકે છે."
-      ],
-      "management_gu": [
-        "રોગમુક્ત બિયારણનો ઉપયોગ કરો.",
-        "બીજની માવજત સ્થાનિક ભલામણ મુજબ કરો.",
-        "અસરગ્રસ્ત છોડના ભાગો અને અવશેષો દૂર કરો.",
-        "જરૂર પડે ત્યારે કૃષિ નિષ્ણાતની ભલામણ મુજબ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "પ્રમાણિત સ્વસ્થ બીજ વાપરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "રોગગ્રસ્ત અવશેષો દૂર કરો.",
-        "વધુ ભેજ અને સતત પાન ભીનું રહે તે ઘટાડો."
-      ],
-      "verification": "JAU uses the Gujarat term ખૂણિયા ટપકાંનો રોગ for cotton bacterial blight.",
-      "gujarati_name": "અંગારીયો / કાળી ટપકી"
+    {
+      "class_id": "Cotton___Bacterial_Blight",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Bacterial Blight",
+      "condition_name_gu": "અંગારીયો / કાળી ટપકી",
+      "category": "જીવાણુજન્ય રોગ",
+      "category_gu": "જીવાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Xanthomonas citri pv. malvacearum (Smith)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "અંગારીયો / કાળી ટપકી",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Xanthomonas citri pv. malvacearum નામના જીવાણુથી પાન પર પાણીદાર અથવા કાળા ખૂણાવાળા ટપકાં, નસો પાસે કાળાશ અને અન્ય ભાગોમાં ચાંઠા થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Copper Hydroxide 53.8% DF @ 2.0 g/L",
+              "Copper Oxychloride 50% WP @ 2.5–3.0 g/L"
+            ],
+            "product_examples": [],
+            "description": "Copper Hydroxide 53.8% DF @ 2.0 g/L અથવા Copper Oxychloride 50% WP @ 2.5–3.0 g/Lનો ઉપયોગ વર્તમાન મંજૂર પાક-રોગ ભલામણ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "Pseudomonas fluorescens @ 10 g/L (અથવા 5 ml/L જ્યાં લાગુ પડે)નો ઉપયોગ સ્થાનિક મંજૂર ભલામણ મુજબ કરો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "સ્વસ્થ બીજ વાપરો અને ચેપગ્રસ્ત અવશેષો દૂર કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વચ્છ બિયારણ, પાક ફેરબદલી અને ખેતરની સ્વચ્છતા જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "JAU uses the Gujarat term ખૂણિયા ટપકાંનો રોગ for cotton bacterial blight."
     },
-    "Cotton___Curl Virus": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Curl Virus",
-      "name_gu": "કપાસનો પાન વળાંક વિષાણુ રોગ",
-      "type": "disease",
-      "type_gu": "વિષાણુજન્ય રોગ",
-      "cause": "Cotton leaf curl disease complex; transmitted mainly by whitefly",
-      "cause_gu": "કપાસના પાન વળાંકના વિષાણુઓ; મુખ્યત્વે સફેદમાખી દ્વારા ફેલાય છે.",
-      "symptoms_gu": [
-        "પાનની નસો વધુ સ્પષ્ટ દેખાય છે.",
-        "પાન વળી અથવા કોકળાઈ શકે છે.",
-        "પાન જાડાં અને વિકૃત બની શકે છે.",
-        "છોડની વૃદ્ધિ ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "ચેપગ્રસ્ત છોડ વહેલી તકે દૂર કરીને નાશ કરો.",
-        "સફેદમાખીનું મોનીટરીંગ અને સંકલિત નિયંત્રણ કરો.",
-        "નીંદણ અને વૈકલ્પિક યજમાન છોડ દૂર કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ વાવેતર સામગ્રીનો ઉપયોગ કરો.",
-        "સફેદમાખીનું નિયમિત મોનીટરીંગ કરો.",
-        "ચેપગ્રસ્ત છોડનો સમયસર નાશ કરો."
-      ],
-      "gujarati_name": "પાનનો કોકડવા / પર્ણ ગુચ્છ"
+    {
+      "class_id": "Cotton___Curl_Virus",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Curl Virus",
+      "condition_name_gu": "પાનનો કોકડવા / પર્ણ ગુચ્છ",
+      "category": "Viral",
+      "category_gu": "વિષાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Cotton leaf curl virus (CLCuV, Begomovirus; Vector: Bemisia tabaci)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનનો કોકડવા / પર્ણ ગુચ્છ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "કપાસના પાનના કોકડવાના વિષાણુ સફેદમાખી Bemisia tabaci દ્વારા ફેલાય છે. પાન કોકળાઈ શકે છે, નસો વધુ દેખાઈ શકે છે અને છોડની વૃદ્ધિ ઘટી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Flonicamid 50% WG @ 0.3 g/L — સફેદમાખી વાહક નિયંત્રણ માટે",
+              "Diafenthiuron 50% WP @ 1.2 g/L — સફેદમાખી વાહક નિયંત્રણ માટે"
+            ],
+            "product_examples": [],
+            "description": "વાયરસને સીધો મટાડતી દવા નથી. Flonicamid 50% WG @ 0.3 g/L અથવા Diafenthiuron 50% WP @ 1.2 g/Lનો ઉપયોગ માત્ર વાયરસ ફેલાવતા સફેદમાખી વાહકના નિયંત્રણ માટે, વર્તમાન મંજૂર ભલામણ મુજબ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાની ચોક્કસ માત્રા અને છંટકાવની રીત સંબંધિત પાક અને સમસ્યા માટેના વર્તમાન ઉત્પાદન લેબલ મુજબ જ રાખવી."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત છોડ અને વૈકલ્પિક યજમાન નીંદણ દૂર કરો તથા સફેદમાખીની સંખ્યા પર નજર રાખો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ રોપા અથવા બીજ વાપરો અને શરૂઆતથી સફેદમાખીનું નિયંત્રણ કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Cotton___Healthy Leaf": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Healthy Leaf",
-      "name_gu": "તંદુરસ્ત કપાસનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત પાન / રોગમુક્ત કપાસ"
+    {
+      "class_id": "Cotton___Healthy",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Healthy Leaf",
+      "condition_name_gu": "તંદુરસ્ત પાન",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત પાન",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "કપાસના પાન પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Cotton___Herbicide Growth Damage": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Herbicide Growth Damage",
-      "name_gu": "નીંદણનાશકથી થયેલું નુકસાન",
-      "type": "chemical_damage",
-      "type_gu": "રસાયણજન્ય નુકસાન",
-      "cause": "Herbicide exposure, incorrect dose, drift or unsuitable chemical application",
-      "cause_gu": "નીંદણનાશકની અયોગ્ય માત્રા, છંટકાવની ભૂલ અથવા રસાયણનું drift",
-      "symptoms_gu": [
-        "પાનનો આકાર અસામાન્ય થઈ શકે છે.",
-        "પાન અથવા ડાળીમાં વૃદ્ધિની વિકૃતિ દેખાઈ શકે છે.",
-        "છોડની સામાન્ય વૃદ્ધિ ધીમી પડી શકે છે."
-      ],
-      "management_gu": [
-        "શંકાસ્પદ રસાયણનો વધુ ઉપયોગ બંધ કરો.",
-        "છોડની સ્થિતિનું નિરીક્ષણ કરો.",
-        "પાણી અને પોષણ વ્યવસ્થાપન યોગ્ય રાખો.",
-        "આગામી છંટકાવ માટે પાક-વિશિષ્ટ ભલામણનું પાલન કરો."
-      ],
-      "prevention_gu": [
-        "પાક માટે નોંધાયેલ નીંદણનાશક જ વાપરો.",
-        "લેબલ પર દર્શાવેલી માત્રા અને પદ્ધતિનું પાલન કરો.",
-        "પોતાની રીતે રસાયણોનું મિશ્રણ ન કરો."
-      ],
-      "verification": "This is chemical damage, not an infectious disease.",
-      "gujarati_name": "નિંદણનાશક દવાનું નુકસાન / દવા દાઝ"
+    {
+      "class_id": "Cotton___Herbicide_Growth_Damage",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Herbicide Growth Damage",
+      "condition_name_gu": "નિંદણનાશક દવાનું નુકસાન / દવા દાઝ",
+      "category": "Abiotic / Chemical Injury",
+      "category_gu": "અજૈવિક / રસાયણજન્ય નુકસાન",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "નિંદણનાશક દવાનું નુકસાન / દવા દાઝ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "નીંદણનાશકની અયોગ્ય માત્રા, દવાનો અનિચ્છિત છંટકાવ અથવા ખોટી વપરાશથી પાન અને નવી વૃદ્ધિમાં વાંકાપણું, પીળાશ અથવા દાઝ જેવા લક્ષણો થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Gibberellic Acid (GA3) @ 15–20 ppm — પુનઃપ્રાપ્તિમાં સહાય માટે",
+              "19:19:19 (N:P:K) @ 1% (10 g/L) — પુનઃપ્રાપ્તિમાં સહાય માટે"
+            ],
+            "product_examples": [],
+            "description": "આ નુકસાન માટે સીધી ફૂગનાશક સારવાર નથી. GA3 @ 15–20 ppm અને 19:19:19 @ 1% (10 g/L)ને માત્ર છોડની પુનઃપ્રાપ્તિમાં સહાયરૂપ ઉપાય તરીકે, સ્થાનિક ભલામણ મુજબ વિચારવામાં આવે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "વધુ દવા ન આપો અને છોડને યોગ્ય પાણી તથા સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "નીંદણનાશકનું પાક-વિશિષ્ટ લેબલ, યોગ્ય માત્રા અને છંટકાવની રીતનું પાલન કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "This is chemical damage, not an infectious disease."
     },
-    "Cotton___Leaf Hopper Jassids": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Leaf Hopper Jassids",
-      "name_gu": "તડતડીયા / લીલા તડતડીયા",
-      "type": "pest",
-      "type_gu": "જીવાત",
-      "cause": "Jassid/leafhopper feeding",
-      "cause_gu": "તડતડીયા પાનમાંથી રસ ચૂસે છે.",
-      "symptoms_gu": [
-        "પાનમાંથી રસ ચૂસવાને કારણે પાનને નુકસાન થાય છે.",
-        "પાનની કિનારીઓ પીળી અથવા કથ્થાઈ થઈ શકે છે.",
-        "પાન ચીમળાઈ શકે છે.",
-        "ભારે ઉપદ્રવમાં છોડની વૃદ્ધિ ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ કરો.",
-        "કુદરતી દુશ્મનોનું સંરક્ષણ કરો.",
-        "ઉપદ્રવ વધે ત્યારે સ્થાનિક કૃષિ ભલામણ મુજબ જીવાત નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "નિયમિત મોનીટરીંગ કરો.",
-        "શરૂઆતના ઉપદ્રવમાં નિયંત્રણ કરો.",
-        "અનાવશ્યક broad-spectrum જંતુનાશકનો ઉપયોગ ટાળો."
-      ],
-      "verification": "JAU uses તડતડીયા for cotton jassid/leafhopper pests. This is a pest, not a disease.",
-      "gujarati_name": "લીલા તડતડીયા / લીલી પોપટી"
+    {
+      "class_id": "Cotton___Leaf_Hopper_Jassids",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Leaf Hopper Jassids",
+      "condition_name_gu": "લીલા તડતડીયા / લીલી પોપટી",
+      "category": "Pest",
+      "category_gu": "જીવાત",
+      "pathogen_scientific_name": "Amrasca biguttula biguttula (Ishida)",
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "લીલા તડતડીયા / લીલી પોપટી",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Amrasca biguttula biguttula પાનમાંથી રસ ચૂસે છે. પાનની કિનારીઓ પીળી અથવા કથ્થાઈ થઈ શકે છે અને ભારે ઉપદ્રવમાં વૃદ્ધિ ઘટી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ વર્ગ માટે ચોક્કસ માત્રા અહીં ચકાસેલી નથી. શરૂઆતમાં નીમ આધારિત ઉપાય અથવા NSKE અને કુદરતી શત્રુઓનું સંરક્ષણ કરો; આર્થિક નુકસાન સ્તર વટે ત્યારે સ્થાનિક રીતે નોંધાયેલ પાક-વિશિષ્ટ જંતુનાશક પસંદ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "કુદરતી દુશ્મનોનું સંરક્ષણ કરો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ઉપદ્રવગ્રસ્ત પાન તપાસો અને કુદરતી શત્રુઓને બચાવો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "નિયમિત નિરીક્ષણ કરો અને અનાવશ્યક પહોળા અસરવાળી દવાઓ ટાળો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "JAU uses તડતડીયા for cotton jassid/leafhopper pests. This is a pest, not a disease."
     },
-    "Cotton___Leaf Redding": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Leaf Redding",
-      "name_gu": "કપાસમાં લાલ પાનની સમસ્યા",
-      "type": "physiological_problem",
-      "type_gu": "શારીરિક / પોષણ સંબંધિત સમસ્યા",
-      "cause": "May be associated with nutrient imbalance, water stress, temperature and crop load",
-      "cause_gu": "પોષક તત્ત્વોનું અસંતુલન, પાણીની ખેંચ/વધુ ભેજ, તાપમાન અને પાકના ભાર જેવી પરિસ્થિતિઓ",
-      "symptoms_gu": [
-        "પાનની કિનારીઓ અથવા પાનનો ભાગ લાલાશ ધરાવે છે.",
-        "લાલ રંગ ધીમે ધીમે પાનના વધુ ભાગમાં ફેલાઈ શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન સૂકાઈને ખરી શકે છે."
-      ],
-      "management_gu": [
-        "જમીન અને પાકની સ્થિતિ પ્રમાણે પોષણ સુધારો.",
-        "યોગ્ય સિંચાઈ વ્યવસ્થાપન રાખો.",
-        "પાણી ભરાવું અથવા વધારે પાણીની ખેંચ ટાળો.",
-        "કારણ સ્પષ્ટ કરવા કૃષિ નિષ્ણાતની સલાહ લો."
-      ],
-      "prevention_gu": [
-        "સંતુલિત પોષણ આપો.",
-        "યોગ્ય સિંચાઈ રાખો.",
-        "પાકની વૃદ્ધિ અને પાણીની સ્થિતિનું નિયમિત નિરીક્ષણ કરો."
-      ],
-      "verification": "Treat this as a physiological problem rather than automatically calling it an infectious disease.",
-      "gujarati_name": "લાલટો / પાન લાલ થવા"
+    {
+      "class_id": "Cotton___Leaf_Reddening",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Leaf Reddening",
+      "condition_name_gu": "લાલટો / પાન લાલ થવા",
+      "category": "Physiological Disorder / Nutrient Deficiency",
+      "category_gu": "દેહધાર્મિક વિકૃતિ / પોષક તત્ત્વોની ઉણપ",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "લાલટો / પાન લાલ થવા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "પાન લાલ થવું પોષક તત્ત્વોની ઉણપ, પાણીની ખેંચ અથવા વધુ ભેજ અને અન્ય દેહધાર્મિક કારણો સાથે જોડાયેલ હોઈ શકે છે. માત્ર આ લક્ષણ પરથી ફૂગનો રોગ નક્કી ન કરો.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Magnesium Sulphate (MgSO4) 1% (10 g/L)",
+              "Urea 1% (10 g/L) અથવા DAP 2% (20 g/L)"
+            ],
+            "product_examples": [],
+            "description": "MgSO4 1% (10 g/L) સાથે Urea 1% (10 g/L) અથવા DAP 2% (20 g/L)નો ઉપયોગ ફૂલ આવવા અને બોળ બનવાના સમયગાળા દરમિયાન પોષણ વ્યવસ્થાપન માટે, સ્થાનિક ભલામણ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "પાણી, મૂળની સ્થિતિ અને પોષક તત્ત્વોની ઉપલબ્ધતા તપાસો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સંતુલિત ખાતર વ્યવસ્થાપન અને યોગ્ય સિંચાઈ રાખો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Treat this as a physiological problem rather than automatically calling it an infectious disease."
     },
-    "Cotton___Leaf Variegation": {
-      "plant_en": "Cotton",
-      "plant_gu": "કપાસ",
-      "name_en": "Leaf Variegation",
-      "name_gu": "કપાસના પાનની રંગ/આકારની વિકૃતિ",
-      "type": "physiological_problem",
-      "type_gu": "અન્ય શારીરિક સમસ્યા",
-      "cause": "The dataset label is generic; possible causes include chemical injury, nutrient imbalance or other physiological stress",
-      "cause_gu": "ડેટાસેટનું નામ સામાન્ય છે; રસાયણની અસર, પોષણ અસંતુલન અથવા અન્ય શારીરિક stress સંભવિત કારણો હોઈ શકે છે.",
-      "symptoms_gu": [
-        "પાનના રંગમાં અસમાનતા અથવા વિવિધતા દેખાઈ શકે છે.",
-        "પાનના આકારમાં વિકૃતિ દેખાઈ શકે છે.",
-        "વૃદ્ધિમાં અસામાન્યતા થઈ શકે છે."
-      ],
-      "management_gu": [
-        "રસાયણના તાજેતરના ઉપયોગની તપાસ કરો.",
-        "પોષણ અને પાણીની સ્થિતિ તપાસો.",
-        "અસરગ્રસ્ત છોડની સ્થિતિનું નિરીક્ષણ કરો.",
-        "ચોક્કસ કારણ માટે કૃષિ નિષ્ણાતની સલાહ લો."
-      ],
-      "prevention_gu": [
-        "રસાયણોનું યોગ્ય માત્રામાં અને ભલામણ મુજબ ઉપયોગ કરો.",
-        "સંતુલિત પોષણ આપો.",
-        "ખેતરની નિયમિત દેખરેખ રાખો."
-      ],
-      "verification": "The English dataset label is not specific enough to claim one definitive disease.",
-      "gujarati_name": "પાનનો ચિત્રો / કાબરચીતરા પાન"
+    {
+      "class_id": "Cotton___Leaf_Variegation",
+      "crop_name_en": "Cotton",
+      "crop_name_gu": "કપાસ",
+      "condition_name_en": "Leaf Variegation",
+      "condition_name_gu": "પાનનો ચિત્રો / કાબરચીતરા પાન",
+      "category": "Genetic / Plastid Chimera",
+      "category_gu": "જનીનીય વિકૃતિ / હરિતકણ ખામી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનનો ચિત્રો / કાબરચીતરા પાન",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "પાનમાં લીલા અને ફિક્કા ભાગોની અસમાનતા જનીનીય અથવા હરિતકણ સંબંધિત વિકૃતિને કારણે હોઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ સમસ્યા માટે ફૂગનાશક અથવા જંતુનાશક કોઈ સાબિત ઉપચાર નથી; દવા છાંટવાથી વિકૃતિ દૂર થશે એવું માનશો નહીં.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "અસરગ્રસ્ત છોડની ઓળખ રાખો અને વાવેતર સામગ્રીની ગુણવત્તા તપાસો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ અને પ્રમાણભૂત વાવેતર સામગ્રી પસંદ કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "The English dataset label is not specific enough to claim one definitive disease."
     },
-    "Potato___Early blight": {
-      "plant_en": "Potato",
-      "plant_gu": "બટાટા",
-      "name_en": "Early blight",
-      "name_gu": "વહેલો ઝાળ રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Alternaria solani",
-      "cause_gu": "Alternaria solani નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર ભૂરા અથવા કાળા ટપકાં દેખાય છે.",
-        "ટપકાંમાં કેન્દ્રિત ગોળ વર્તુળો દેખાઈ શકે છે.",
-        "ટપકાં ભેગાં થઈને પાનનો મોટો ભાગ સુકવી શકે છે.",
-        "કંદ પર પણ ઘા અથવા સડો થઈ શકે છે."
-      ],
-      "management_gu": [
-        "સ્વસ્થ seed tubers નો ઉપયોગ કરો.",
-        "અસરગ્રસ્ત અવશેષો દૂર કરો.",
-        "પાક ફેરબદલી કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "રોગમુક્ત બટાટાના બીજકંદ વાપરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "પાક ફેરબદલી રાખો.",
-        "છોડને યોગ્ય પોષણ આપો."
-      ],
-      "gujarati_name": "આગોતરો સુકારો / વહેલો સુકારો"
+    {
+      "class_id": "Potato___Early_blight",
+      "crop_name_en": "Potato",
+      "crop_name_gu": "બટાટા",
+      "condition_name_en": "Early blight",
+      "condition_name_gu": "આગોતરો સુકારો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Alternaria solani Sorauer",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "આગોતરો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Alternaria solaniથી પાન પર ભૂરા અથવા કાળા ગોળ ટપકાં અને કેન્દ્રિત વર્તુળો બને છે. ટપકાં વધે ત્યારે પાન સુકાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Mancozeb 75% WP @ 2–2.5 g/L"
+            ],
+            "product_examples": [],
+            "description": "Mancozeb 75% WP @ 2–2.5 g/Lનો રક્ષણાત્મક ઉપયોગ પાક અને રોગ માટે વર્તમાન મંજૂર લેબલ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત પાન અને અવશેષો દૂર કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પાક ફેરબદલી રાખો અને ખેતરની સ્વચ્છતા જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Potato___Late blight": {
-      "plant_en": "Potato",
-      "plant_gu": "બટાટા",
-      "name_en": "Late blight",
-      "name_gu": "પાછતરો ઝાળ / મોડો ઝાળ રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગસદૃશ રોગજનકથી થતો રોગ",
-      "cause": "Phytophthora infestans",
-      "cause_gu": "Phytophthora infestans નામના રોગજનકથી",
-      "symptoms_gu": [
-        "પાન પર પાણીદાર લીલા-ભૂરા અથવા કાળા ટપકાં દેખાય છે.",
-        "ટપકાં ઝડપથી ફેલાઈ શકે છે.",
-        "ભેજવાળી સ્થિતિમાં પાનની નીચે સફેદ વૃદ્ધિ દેખાઈ શકે છે.",
-        "કંદ પર ભૂરા સડેલા ભાગ થઈ શકે છે."
-      ],
-      "management_gu": [
-        "સ્વસ્થ seed tubers નો ઉપયોગ કરો.",
-        "અસરગ્રસ્ત છોડ અને કંદ દૂર કરો.",
-        "ખેતરમાં યોગ્ય drainage રાખો.",
-        "રોગની અનુકૂળ હવામાન સ્થિતિમાં નિયમિત નિરીક્ષણ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "રોગમુક્ત બીજકંદ વાપરો.",
-        "પાણી ભરાવું ટાળો.",
-        "રોગગ્રસ્ત અવશેષો દૂર કરો.",
-        "યોગ્ય પાક ફેરબદલી રાખો."
-      ],
-      "gujarati_name": "પાછતરો સુકારો / મોડો સુકારો"
+    {
+      "class_id": "Potato___Healthy",
+      "crop_name_en": "Potato",
+      "crop_name_gu": "બટાટા",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત બટાટા",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત બટાટા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "બટાટાના છોડ પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Rice___Brown Spot": {
-      "plant_en": "Rice",
-      "plant_gu": "ડાંગર",
-      "name_en": "Brown Spot",
-      "name_gu": "ભૂરા ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Bipolaris oryzae",
-      "cause_gu": "Bipolaris oryzae નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના ગોળ અથવા અંડાકાર ભૂરા ટપકાં દેખાય છે.",
-        "ટપકાંની કિનારી ઘેરી અને મધ્ય ભાગ હળવો હોઈ શકે છે.",
-        "ઘણા ટપકાં જોડાઈને પાન સુકવી શકે છે.",
-        "ભૂસી અથવા દાણા પર પણ ભૂરા ડાઘ થઈ શકે છે."
-      ],
-      "management_gu": [
-        "સ્વસ્થ બીજનો ઉપયોગ કરો.",
-        "પોષક તત્ત્વોની ઉણપ ટાળો.",
-        "પાક અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ રોગ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "પ્રમાણિત સ્વસ્થ બીજ વાપરો.",
-        "સંતુલિત પોષણ આપો.",
-        "પાક અવશેષોનું યોગ્ય સંચાલન કરો.",
-        "પાકને અનાવશ્યક stressથી બચાવો."
-      ],
-      "gujarati_name": "કથ્થઈ ટપકાનો રોગ / બદામી ટપકાનો રોગ"
+    {
+      "class_id": "Potato___Late_blight",
+      "crop_name_en": "Potato",
+      "crop_name_gu": "બટાટા",
+      "condition_name_en": "Late blight",
+      "condition_name_gu": "પાછતરો સુકારો",
+      "category": "Oomycota",
+      "category_gu": "વોટર મોલ્ડ / ફૂગસદૃશ રોગજનક",
+      "pathogen_scientific_name": "Phytophthora infestans (Mont.) de Bary",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાછતરો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Phytophthora infestans વોટર મોલ્ડ પ્રકારના રોગજનકથી પાન પર પાણીદાર કાળા-ભૂરા ચાંઠા ઝડપથી ફેલાઈ શકે છે. ભેજમાં પાનની નીચે સફેદ વૃદ્ધિ દેખાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Mancozeb 75% WP @ 2.5 g/L — બચાવ માટે",
+              "Cymoxanil 8% + Mancozeb 64% WP @ 2.5 g/L — શરૂઆતના ચેપમાં",
+              "Dimethomorph 50% WP @ 1.0 g/L — શરૂઆતના ચેપમાં"
+            ],
+            "product_examples": [],
+            "description": "બચાવ માટે Mancozeb 75% WP @ 2.5 g/L. શરૂઆતના ચેપમાં Cymoxanil 8% + Mancozeb 64% WP @ 2.5 g/L અથવા Dimethomorph 50% WP @ 1.0 g/Lમાંથી વર્તમાન પાક-મંજૂર વિકલ્પ પસંદ કરો. Mancozeb સ્થાપિત અંદરના ચેપને મટાડતું નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત પાન અને અવશેષો દૂર કરો અને ખેતરમાં પાણી ભરાવું ટાળો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "રોગપ્રવણ હવામાનમાં વહેલી દેખરેખ રાખો અને પાન લાંબા સમય સુધી ભીના રહે તે ઘટાડો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Rice___Healthy": {
-      "plant_en": "Rice",
-      "plant_gu": "ડાંગર",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત ડાંગરનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત ડાંગર / રોગમુક્ત ડાંગર"
+    {
+      "class_id": "Rice___Brown_Spot",
+      "crop_name_en": "Rice",
+      "crop_name_gu": "ડાંગર",
+      "condition_name_en": "Brown Spot",
+      "condition_name_gu": "કથ્થઈ ટપકાનો રોગ",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Bipolaris oryzae (Breda de Haan) Shoemaker",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "કથ્થઈ ટપકાનો રોગ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Bipolaris oryzaeથી પાન પર કથ્થઈ ગોળ અથવા અંડાકાર ટપકાં બને છે. ગંભીર સ્થિતિમાં પાન તથા દાણા પર પણ અસર થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Metominostrobin @ 500 ml/ha"
+            ],
+            "product_examples": [],
+            "description": "રોગના શરૂઆતના લક્ષણો દેખાય ત્યારે Metominostrobin @ 500 ml/haનો ઉપયોગ વર્તમાન મંજૂર લેબલ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "Pseudomonas fluorescens અથવા Bacillus subtilis આધારિત જૈવિક વિકલ્પો સ્થાનિક ભલામણ મુજબ વાપરો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "સ્વસ્થ બીજ વાપરો અને સંતુલિત પોષણ જાળવો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "ખેતરની સ્વચ્છતા, યોગ્ય પાણી વ્યવસ્થાપન અને સંતુલિત ખાતર આપો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Rice___Leaf Blast": {
-      "plant_en": "Rice",
-      "plant_gu": "ડાંગર",
-      "name_en": "Leaf Blast",
-      "name_gu": "પાનનો બ્લાસ્ટ / પાનનો ઝાળ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Magnaporthe oryzae",
-      "cause_gu": "Magnaporthe oryzae નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના ભૂરા ટપકાંથી શરૂઆત થાય છે.",
-        "પછી હીરા અથવા સૂંડિયા જેવા આકારના ટપકાં બને છે.",
-        "ટપકાંનો મધ્ય ભાગ ભૂખરો અને કિનારી કથ્થાઈ હોઈ શકે છે.",
-        "ગંભીર ચેપમાં પાનનો મોટો ભાગ સુકાઈ શકે છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "સ્વસ્થ બીજનો ઉપયોગ કરો.",
-        "વધારે નાઈટ્રોજન આપવાનું ટાળો.",
-        "રોગગ્રસ્ત અવશેષોનું સંચાલન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બીજ વાપરો.",
-        "સંતુલિત ખાતર વ્યવસ્થાપન કરો.",
-        "નિયમિત ખેતર નિરીક્ષણ કરો.",
-        "રોગપ્રતિકારક જાત પસંદ કરો."
-      ],
-      "gujarati_name": "પાનનો કરમો રોગ / પાનનો બ્લાસ્ટ"
+    {
+      "class_id": "Rice___Healthy",
+      "crop_name_en": "Rice",
+      "crop_name_gu": "ડાંગર",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત ડાંગર",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત ડાંગર",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "ડાંગરના છોડ પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Rice___Neck Blast": {
-      "plant_en": "Rice",
-      "plant_gu": "ડાંગર",
-      "name_en": "Neck Blast",
-      "name_gu": "કંઠનો બ્લાસ્ટ / ગળાનો બ્લાસ્ટ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Magnaporthe oryzae",
-      "cause_gu": "Magnaporthe oryzae નામની ફૂગ",
-      "symptoms_gu": [
-        "ડૂંડીના ગળા ભાગે ભૂરા અથવા કાળા ઘા બને છે.",
-        "ગળો નબળો પડીને ડૂંડી લટકી શકે છે.",
-        "વહેલો ચેપ દાણા ભરાવાને ગંભીર રીતે અસર કરી શકે છે.",
-        "દાણા અપૂર્ણ અથવા હલકા રહી શકે છે."
-      ],
-      "management_gu": [
-        "heading અને flowering સમયે ખાસ દેખરેખ રાખો.",
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "સંતુલિત nitrogen વ્યવસ્થાપન કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ સમયસર નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બીજ વાપરો.",
-        "રોગપ્રતિકારક જાત પસંદ કરો.",
-        "વધુ nitrogen ટાળો.",
-        "heading સમયે નિયમિત નિરીક્ષણ કરો."
-      ],
-      "gujarati_name": "ડોકનો કરમો રોગ / ડોકનો બ્લાસ્ટ"
+    {
+      "class_id": "Rice___Leaf_Blast",
+      "crop_name_en": "Rice",
+      "crop_name_gu": "ડાંગર",
+      "condition_name_en": "Leaf Blast",
+      "condition_name_gu": "પાનનો કરમો રોગ",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Magnaporthe oryzae B.C. Couch\n(Anamorph: Pyricularia oryzae)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનનો કરમો રોગ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Magnaporthe oryzaeથી પાન પર હીરા જેવા ભૂરા ટપકાં બને છે, જેમાં મધ્ય ભાગ ભૂખરો હોઈ શકે છે. ચેપ વધે તો પાનનો મોટો ભાગ સુકાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Tricyclazole 75% WP @ 0.6 g/L",
+              "Azoxystrobin @ 0.5 ml/L"
+            ],
+            "product_examples": [],
+            "description": "Tricyclazole 75% WP @ 0.6 g/L અથવા Azoxystrobin @ 0.5 ml/Lમાંથી વર્તમાન મંજૂર વિકલ્પનો સમયસર ઉપયોગ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "સંતુલિત નાઇટ્રોજન આપો અને ખેતરમાં અતિશય ભેજ ન રહેવા દો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સહનશીલ જાતો, યોગ્ય પોષણ અને નિયમિત નિરીક્ષણ અપનાવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Sugarcane___Bacterial Blight": {
-      "plant_en": "Sugarcane",
-      "plant_gu": "શેરડી",
-      "name_en": "Bacterial Blight",
-      "name_gu": "જીવાણુજન્ય ઝાળ",
-      "type": "disease",
-      "type_gu": "જીવાણુજન્ય રોગ",
-      "cause": "Exact pathogen should be confirmed from the original dataset source before scientific identification.",
-      "cause_gu": "આ ડેટાસેટમાં ચોક્કસ જીવાણુનું નામ મૂળ dataset source સાથે ચકાસ્યા પછી જ નક્કી કરવું.",
-      "symptoms_gu": [
-        "પાન પર લાંબા પાણીદાર અથવા ભૂરા વિસ્તારો દેખાઈ શકે છે.",
-        "પાન પર ઝાળ અથવા સુકાવાના લક્ષણો દેખાઈ શકે છે.",
-        "ગંભીર ચેપમાં છોડની વૃદ્ધિ ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "સ્વસ્થ planting material વાપરો.",
-        "ચેપગ્રસ્ત છોડ દૂર કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "વાવેતરના સાધનો સ્વચ્છ રાખો.",
-        "ચોક્કસ નિયંત્રણ માટે સ્થાનિક કૃષિ ભલામણ અનુસરો."
-      ],
-      "prevention_gu": [
-        "રોગમુક્ત planting material વાપરો.",
-        "રોગગ્રસ્ત અવશેષો દૂર કરો.",
-        "પ્રતિકારક જાતો ઉપલબ્ધ હોય તો પસંદ કરો.",
-        "ખેતરમાં સ્વચ્છતા રાખો."
-      ],
-      "verification": "Do not attach a specific pathogen or a different local disease name until the original Sugarcane dataset source is confirmed.",
-      "gujarati_name": "જીવાણુનો સુકારો / જીવાણુજન્ય પાનનો રોગ"
+    {
+      "class_id": "Rice___Neck_Blast",
+      "crop_name_en": "Rice",
+      "crop_name_gu": "ડાંગર",
+      "condition_name_en": "Neck Blast",
+      "condition_name_gu": "ડોકનો કરમો રોગ (કુચ્મો)",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Magnaporthe oryzae B.C. Couch\n(Attacks panicle node)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "ડોકનો કરમો રોગ (કુચ્મો)",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Magnaporthe oryzae ડાંગરની ડોક પાસે ચેપ કરે છે. ડોક ભૂરા કે કાળા થઈને નબળી પડે તો કંકી લટકી શકે છે અને દાણા ભરાવા પર અસર થાય છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Tricyclazole 75% WP @ 0.6 g/L",
+              "Isoprothiolane 40% EC @ 1.5 ml/L"
+            ],
+            "product_examples": [],
+            "description": "છંટકાવનો મુખ્ય સમય મોડા ડોડ અવસ્થા અને કંકી નીકળવાની શરૂઆતના 5–10% સમયે છે. Tricyclazole 75% WP @ 0.6 g/L અથવા Isoprothiolane 40% EC @ 1.5 ml/Lમાંથી વર્તમાન મંજૂર વિકલ્પ પસંદ કરો. ડોક કાળી થઈ ગયા પછી કરવામાં આવતો છંટકાવ અસરકારક ઉપચાર નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ડોડ અવસ્થા અને કંકી નીકળવાની શરૂઆતમાં ખેતરની નજીકથી દેખરેખ રાખો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સહનશીલ જાતો, સંતુલિત નાઇટ્રોજન અને સમયસર નિયંત્રણ અપનાવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Sugarcane___Healthy": {
-      "plant_en": "Sugarcane",
-      "plant_gu": "શેરડી",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત શેરડી",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન અને છોડ સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત શેરડી / રોગમુક્ત શેરડી"
+    {
+      "class_id": "Sugarcane___Bacterial_Blight",
+      "crop_name_en": "Sugarcane",
+      "crop_name_gu": "શેરડી",
+      "condition_name_en": "Bacterial Blight",
+      "condition_name_gu": "જીવાણુનો સુકારો",
+      "category": "જીવાણુજન્ય રોગ",
+      "category_gu": "જીવાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Acidovorax avenae subsp. avenae / Xanthomonas albilineans",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "જીવાણુનો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "જીવાણુજન્ય સુકારામાં પાન પર લાંબા પાણીદાર અથવા ભૂરા વિસ્તારો અને સુકાવાના લક્ષણો થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ વર્ગ માટે વિશ્વસનીય ભારતીય સ્ત્રોતમાં એકસરખી રાસાયણિક ઉપચાર પદ્ધતિ પૂરતી રીતે ચકાસી શકાઈ નથી; તેથી દવાની માત્રા બનાવટી રીતે આપવામાં આવતી નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "સ્વસ્થ સેટ વાપરો અને ચેપગ્રસ્ત છોડ તથા અવશેષો દૂર કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વચ્છ વાવેતર સામગ્રી અને ખેતરની સ્વચ્છતા જાળવો તથા સ્થાનિક કૃષિ ભલામણ અનુસરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Do not attach a specific pathogen or a different local disease name until the original Sugarcane dataset source is confirmed."
     },
-    "Sugarcane___Red Rot": {
-      "plant_en": "Sugarcane",
-      "plant_gu": "શેરડી",
-      "name_en": "Red Rot",
-      "name_gu": "રાતડો / લાલ સડો",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Colletotrichum falcatum",
-      "cause_gu": "Colletotrichum falcatum નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન નીચેથી ઉપર તરફ પીળાં અને પછી સુકાં થઈ શકે છે.",
-        "શેરડી ચીરીએ ત્યારે અંદર લાલ રંગના ભાગો અને સફેદ પટ્ટા દેખાય છે.",
-        "કેટલાક કિસ્સામાં અંદર સડો અને ગંધ જોવા મળે છે.",
-        "છોડની વૃદ્ધિ અને શેરડીની ગુણવત્તા ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "રોગગ્રસ્ત છોડ અથવા clumps દૂર કરીને નાશ કરો.",
-        "સ્વસ્થ setts નો ઉપયોગ કરો.",
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "રોગગ્રસ્ત ખેતરમાંથી planting material ન લો.",
-        "પાક ફેરબદલી અને ખેતરની સ્વચ્છતા રાખો."
-      ],
-      "prevention_gu": [
-        "પ્રમાણિત રોગમુક્ત planting material વાપરો.",
-        "રોગપ્રતિકારક જાત પસંદ કરો.",
-        "રોગગ્રસ્ત શેરડીમાંથી setts ન લો.",
-        "રોગગ્રસ્ત અવશેષો દૂર કરો."
-      ],
-      "verification": "JAU uses the local Gujarati term રાતડો for sugarcane red-rot terminology.",
-      "gujarati_name": "લાલ સુકારો / રતાડો"
+    {
+      "class_id": "Sugarcane___Healthy",
+      "crop_name_en": "Sugarcane",
+      "crop_name_gu": "શેરડી",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત શેરડી",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત શેરડી",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "શેરડી પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Tomato___Bacterial spot": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Bacterial spot",
-      "name_gu": "જીવાણુજન્ય પાનનાં ટપકાં",
-      "type": "disease",
-      "type_gu": "જીવાણુજન્ય રોગ",
-      "cause": "Xanthomonas species complex",
-      "cause_gu": "Xanthomonas જૂથના જીવાણુ",
-      "symptoms_gu": [
-        "પાન પર નાના પાણીદાર ભૂરા અથવા કાળા ટપકાં દેખાય છે.",
-        "ટપકાંની આસપાસ પીળી halo હોઈ શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન ખરી શકે છે.",
-        "લીલા ફળ પર પણ નાના ચાંઠા જેવા ટપકાં થઈ શકે છે."
-      ],
-      "management_gu": [
-        "રોગમુક્ત બીજ અને રોપાનો ઉપયોગ કરો.",
-        "અસરગ્રસ્ત અવશેષો દૂર કરો.",
-        "પાણીના છાંટા અને લાંબા સમય સુધી પાન ભીનું રહે તે ઘટાડો.",
-        "સ્થાનિક ભલામણ મુજબ રોગ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બીજ વાપરો.",
-        "પાક ફેરબદલી કરો.",
-        "અસરગ્રસ્ત છોડ અને અવશેષો દૂર કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો."
-      ],
-      "gujarati_name": "જીવાણુના ટપકા / જીવાણુજન્ય પાનના ટપકાં"
+    {
+      "class_id": "Sugarcane___Red_Rot",
+      "crop_name_en": "Sugarcane",
+      "crop_name_gu": "શેરડી",
+      "condition_name_en": "Red Rot",
+      "condition_name_gu": "લાલ સુકારો / રતાડો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Colletotrichum falcatum Went\n(Teleomorph: Glomerella tucumanensis)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "લાલ સુકારો / રતાડો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Colletotrichum falcatumથી શેરડીના અંદરના ભાગમાં લાલાશ અને સફેદ પટ્ટા દેખાય છે. ગંભીર ચેપમાં અંદરનો પિથ સડી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Carbendazim 50% WP @ 1.0 g/L — સેટ ડુબાડવાની સારવાર",
+              "Thiophanate Methyl 70% WP @ 1.5 g/L — સેટ ડુબાડવાની સારવાર"
+            ],
+            "product_examples": [],
+            "description": "વાવેતર પહેલાં સેટને Carbendazim 50% WP @ 1.0 g/L અથવા Thiophanate Methyl 70% WP @ 1.5 g/Lના દ્રાવણમાં 15–20 મિનિટ ડુબાડવાની સારવાર વર્તમાન મંજૂર ભલામણ મુજબ કરો. ઊભા પાકમાં અંદરનો સડો શરૂ થયા પછી પાન પર ફૂગનાશક છંટકાવથી રોગ મટતો નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "Trichoderma harzianum / viride @ 5 kg ને 500 kg FYMમાં સમૃદ્ધ કરીને પ્રતિ હેક્ટર ઉપયોગ કરી શકાય છે, જો સ્થાનિક કૃષિ ભલામણમાં માન્ય હોય."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત ઝુંડ વહેલી તકે દૂર કરો અને સ્વસ્થ સેટ પસંદ કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "રોગગ્રસ્ત ખેતરમાં યોગ્ય પાક ફેરબદલી કરો અને રોગમુક્ત વાવેતર સામગ્રી લો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "JAU uses the local Gujarati term રાતડો for sugarcane red-rot terminology."
     },
-    "Tomato___Early blight": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Early blight",
-      "name_gu": "આગોતરો ઝાળ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Alternaria solani",
-      "cause_gu": "Alternaria solani નામની ફૂગ",
-      "symptoms_gu": [
-        "જૂનાં પાનથી ભૂરા અથવા કાળા ટપકાં શરૂ થાય છે.",
-        "ટપકાંમાં ગોળાકાર કેન્દ્રિત વર્તુળો દેખાય છે.",
-        "પાન પીળાં થઈ શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન ખરી શકે છે."
-      ],
-      "management_gu": [
-        "રોગમુક્ત બીજનો ઉપયોગ કરો.",
-        "અસરગ્રસ્ત અવશેષો દૂર કરો.",
-        "પાક ફેરબદલી કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બીજ અને રોપાનો ઉપયોગ કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "પાક ફેરબદલી રાખો.",
-        "પાન લાંબા સમય સુધી ભીનું રહે તે ઘટાડો."
-      ],
-      "verification": "Gujarati Vishwakosh explicitly uses ટમેટાંનો આગોતરો ઝાળ.",
-      "gujarati_name": "આગોતરો સુકારો / વહેલો સુકારો"
+    {
+      "class_id": "Tomato___Bacterial_spot",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Bacterial spot",
+      "condition_name_gu": "જીવાણુના ટપકા",
+      "category": "જીવાણુજન્ય રોગ",
+      "category_gu": "જીવાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Xanthomonas campestris pv. vesicatoria / X. perforans",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "જીવાણુના ટપકા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Xanthomonas જૂથના જીવાણુથી પાન અને ફળ પર નાના પાણીદાર ભૂરા અથવા કાળા ટપકાં થઈ શકે છે. ભેજવાળા હવામાનમાં રોગ ઝડપથી ફેલાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Copper Hydroxide 53.8% DF @ 2.0 g/L",
+              "Copper Oxychloride 50% WP @ 2.5–3.0 g/L"
+            ],
+            "product_examples": [],
+            "description": "Copper Hydroxide 53.8% DF @ 2.0 g/L અથવા Copper Oxychloride 50% WP @ 2.5–3.0 g/Lનો ઉપયોગ વર્તમાન મંજૂર પાક-રોગ ભલામણ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "Pseudomonas fluorescensનો ઉપયોગ સ્થાનિક મંજૂર ભલામણ મુજબ કરો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત પાન અને છોડના અવશેષો દૂર કરો અને ઉપરથી પાણી આપવાનું ટાળો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "રોગમુક્ત બીજ/રોપા, પાક ફેરબદલી અને ખેતરની સ્વચ્છતા જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Tomato___Late blight": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Late blight",
-      "name_gu": "પાછતરો ઝાળ કે સડો",
-      "type": "disease",
-      "type_gu": "ફૂગસદૃશ રોગજનકથી થતો રોગ",
-      "cause": "Phytophthora infestans",
-      "cause_gu": "Phytophthora infestans નામના રોગજનકથી",
-      "symptoms_gu": [
-        "પાન પર પાણીદાર લીલા-કાળા અથવા ભૂરા વિસ્તારો દેખાય છે.",
-        "ઘા ઝડપથી વિસ્તરી શકે છે.",
-        "ભેજવાળી સ્થિતિમાં પાન પર સફેદ વૃદ્ધિ દેખાઈ શકે છે.",
-        "ફળ પર ગાઢ ભૂરા ડાઘ અને સડો થઈ શકે છે."
-      ],
-      "management_gu": [
-        "અસરગ્રસ્ત છોડના અવશેષો દૂર કરો.",
-        "યોગ્ય drainage રાખો.",
-        "પાક ફેરબદલી કરો.",
-        "રોગની અનુકૂળ હવામાન સ્થિતિમાં નિયમિત નિરીક્ષણ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ રોપા વાપરો.",
-        "વધુ ભેજ અને પાણી ભરાવું ટાળો.",
-        "અસરગ્રસ્ત અવશેષો દૂર કરો.",
-        "રોગની શરૂઆતમાં જ ઓળખ કરો."
-      ],
-      "verification": "Gujarati Vishwakosh explicitly uses પાછતરો ઝાળ કે સડો.",
-      "gujarati_name": "પાછતરો સુકારો / મોડો સુકારો"
+    {
+      "class_id": "Tomato___Early_blight",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Early blight",
+      "condition_name_gu": "આગોતરો સુકારો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Alternaria solani Sorauer",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "આગોતરો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Alternaria solaniથી ખાસ કરીને જૂનાં પાન પર ભૂરા ટપકાં અને કેન્દ્રિત વર્તુળો બને છે. ગંભીર ચેપમાં પાન ખરી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Mancozeb 75% WP @ 2 g/L"
+            ],
+            "product_examples": [],
+            "description": "Mancozeb 75% WP @ 2 g/Lનો ઉપયોગ રોગની શરૂઆતમાં, વર્તમાન પાક-મંજૂર લેબલ મુજબ, કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત પાન દૂર કરો અને ખેતરમાં હવાની અવરજવર રાખો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પાક ફેરબદલી, સ્વચ્છતા અને યોગ્ય સિંચાઈ રાખો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh explicitly uses ટમેટાંનો આગોતરો ઝાળ."
     },
-    "Tomato___Leaf Mold": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Leaf Mold",
-      "name_gu": "ઘાટા પાનનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Passalora fulva (formerly Cladosporium fulvum)",
-      "cause_gu": "Passalora fulva નામની ફૂગ",
-      "symptoms_gu": [
-        "પાનની ઉપરની બાજુ પીળાશવાળા ભાગ દેખાઈ શકે છે.",
-        "પાનની નીચેની બાજુ ફૂગ જેવી વૃદ્ધિ દેખાય છે.",
-        "ભારે ચેપમાં પાન સુકાઈ શકે છે."
-      ],
-      "management_gu": [
-        "અસરગ્રસ્ત પાન દૂર કરો.",
-        "હવાની અવરજવર વધારવી.",
-        "ભેજ ઘટાડો.",
-        "ખેતરની અથવા protected cultivationની સ્વચ્છતા જાળવો."
-      ],
-      "prevention_gu": [
-        "વધુ ભેજ ટાળો.",
-        "સારી હવાની અવરજવર રાખો.",
-        "અસરગ્રસ્ત અવશેષો દૂર કરો."
-      ],
-      "verification": "Gujarati Vishwakosh uses ઘાટા પાનનો રોગ.",
-      "gujarati_name": "પાનનો ગડર / પાનનો ફૂગજન્ય રોગ"
+    {
+      "class_id": "Tomato___Healthy",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત ટમેટા",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત ટમેટા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "ટમેટાના છોડ પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Tomato___Septoria leaf spot": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Septoria leaf spot",
-      "name_gu": "સેપ્ટોરિયા પાનનાં ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Septoria lycopersici",
-      "cause_gu": "Septoria lycopersici નામની ફૂગ",
-      "symptoms_gu": [
-        "નાના ગોળ ટપકાં પાન પર દેખાય છે.",
-        "ટપકાંનો મધ્ય ભાગ ભૂખરો અને કિનારી ઘેરી હોઈ શકે છે.",
-        "ઘણા ટપકાં જોડાઈને પાનનો મોટો ભાગ અસરગ્રસ્ત કરી શકે છે.",
-        "ગંભીર સ્થિતિમાં પાન ખરી શકે છે."
-      ],
-      "management_gu": [
-        "અસરગ્રસ્ત પાન અને અવશેષો દૂર કરો.",
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "સ્વસ્થ બીજ અને રોપાનો ઉપયોગ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ નિયંત્રણ કરો."
-      ],
-      "prevention_gu": [
-        "રોગગ્રસ્ત અવશેષો દૂર કરો.",
-        "પાન પર લાંબા સમય સુધી ભેજ રહે તે ઘટાડો.",
-        "પાક ફેરબદલી રાખો."
-      ],
-      "gujarati_name": "સેપ્ટોરિયા પાનનો સુકારો / સેપ્ટોરિયાના પાનનાં ટપકાં"
+    {
+      "class_id": "Tomato___Late_blight",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Late blight",
+      "condition_name_gu": "પાછતરો સુકારો",
+      "category": "Oomycota",
+      "category_gu": "વોટર મોલ્ડ / ફૂગસદૃશ રોગજનક",
+      "pathogen_scientific_name": "Phytophthora infestans (Mont.) de Bary",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાછતરો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Phytophthora infestans વોટર મોલ્ડ પ્રકારના રોગજનકથી પાન પર પાણીદાર કાળા-ભૂરા ચાંઠા ઝડપથી ફેલાય છે. ભેજમાં પાનની નીચે સફેદ વૃદ્ધિ દેખાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Mancozeb 75% WP @ 2 g/L"
+            ],
+            "product_examples": [],
+            "description": "રોગપ્રવણ હવામાન અને શરૂઆતના લક્ષણોમાં Mancozeb 75% WP @ 2 g/Lનો ઉપયોગ, જો વર્તમાન લેબલ મુજબ મંજૂર હોય, તો રોગની વૃદ્ધિ ઘટાડવામાં મદદ કરી શકે છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત પાન અને છોડના અવશેષો દૂર કરો તથા પાણી ભરાવું ટાળો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "હવાની અવરજવર રાખો અને પાન લાંબા સમય સુધી ભીના રહે તે ઘટાડો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh explicitly uses પાછતરો ઝાળ કે સડો."
     },
-    "Tomato___Spider mites Two-spotted spider mite": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Spider mites - Two-spotted spider mite",
-      "name_gu": "સ્પાઈડર માઈટ / બે-ટપકાવાળો સ્પાઈડર માઈટ",
-      "type": "pest",
-      "type_gu": "જીવાત / માઈટ",
-      "cause": "Two-spotted spider mite (Tetranychus urticae)",
-      "cause_gu": "બે-ટપકાવાળો સ્પાઈડર માઈટ",
-      "symptoms_gu": [
-        "પાન પર સૂક્ષ્મ પીળાશવાળા ટપકાં દેખાય છે.",
-        "પાન ધીમે ધીમે પીળાં અથવા કાંસ્ય રંગનાં બની શકે છે.",
-        "ગંભીર ઉપદ્રવમાં પાન સુકાઈ શકે છે.",
-        "પાનની નીચે સૂક્ષ્મ જાળું દેખાઈ શકે છે."
-      ],
-      "management_gu": [
-        "પાનની નીચે નિયમિત તપાસ કરો.",
-        "છોડને પાણીની અછતથી બચાવો.",
-        "કુદરતી શત્રુઓનું સંરક્ષણ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક રીતે મંજૂર acaricideનો ઉપયોગ કરો."
-      ],
-      "prevention_gu": [
-        "નિયમિત scouting કરો.",
-        "ધૂળ અને water-stress ઘટાડો.",
-        "અનાવશ્યક broad-spectrum pesticideનો ઉપયોગ ટાળો."
-      ],
-      "verification": "This is a pest, not a disease.",
-      "gujarati_name": "પાનની કથિરી / પાંજી"
+    {
+      "class_id": "Tomato___Leaf_Mold",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Leaf Mold",
+      "condition_name_gu": "પાનનો ગડર (ફૂગ)",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Passalora fulva (Cooke) U. Braun\n(syn. Cladosporium fulvum)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનનો ગડર (ફૂગ)",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Passalora fulvaથી પાનની ઉપર પીળાશ અને નીચેની બાજુ ફૂગ જેવી વૃદ્ધિ દેખાઈ શકે છે. ભેજ વધુ હોય ત્યારે રોગ વધે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ વર્ગ માટે ચોક્કસ દવાની માત્રા અહીં વિશ્વસનીય રીતે ચકાસેલી નથી; વર્તમાન સ્થાનિક કૃષિ ભલામણ અને મંજૂર લેબલ મુજબ જ દવા પસંદ કરો.",
+            "how_to_use": "ચોક્કસ દવાની ભલામણ ચકાસ્યા વગર છંટકાવ ન કરો; પાક અને સમસ્યા માટેની વર્તમાન મંજૂર ભલામણ અનુસરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "અસરગ્રસ્ત પાન દૂર કરો અને ભેજ તથા પાનની ભીનાશ ઘટાડો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "હવાની અવરજવર વધારવી અને વધારે ભેજ ટાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh uses ઘાટા પાનનો રોગ."
     },
-    "Tomato___Target Spot": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Target Spot",
-      "name_gu": "લક્ષ્યાકાર ટપકાંનો રોગ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Corynespora cassiicola",
-      "cause_gu": "Corynespora cassiicola નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર ભૂરા ટપકાં દેખાય છે.",
-        "ટપકાંમાં કેન્દ્રિત વર્તુળો દેખાઈ શકે છે.",
-        "ગંભીર ચેપમાં પાન ખરી શકે છે.",
-        "ફળ પર પણ ટપકાં અથવા ઘા થઈ શકે છે."
-      ],
-      "management_gu": [
-        "અસરગ્રસ્ત પાન અને અવશેષો દૂર કરો.",
-        "છોડમાં હવાની અવરજવર જાળવો.",
-        "પાક ફેરબદલી કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "ખેતરની સ્વચ્છતા જાળવો.",
-        "યોગ્ય અંતર રાખો.",
-        "લાંબા સમય સુધી પાન ભીનું રહે તે ઘટાડો."
-      ],
-      "verification": "Gujarati name is a descriptive display translation; no strong standardized traditional Gujarat farmer-name was established.",
-      "gujarati_name": "આંખ જેવા ગોળ ટપકા / લક્ષ્યાકાર ટપકાં"
+    {
+      "class_id": "Tomato___Septoria_leaf_spot",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Septoria leaf spot",
+      "condition_name_gu": "સેપ્ટોરિયા પાનનો સુકારો",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Septoria lycopersici Speg.",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "સેપ્ટોરિયા પાનનો સુકારો",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Septoria lycopersiciથી પાન પર નાના ગોળ ટપકાં બને છે. ટપકાં વધીને પાનનો મોટો ભાગ અસરગ્રસ્ત કરી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Fluxapyroxad 250 g/L + Pyraclostrobin 250 g/L SC @ 200–250 ml/ha"
+            ],
+            "product_examples": [],
+            "description": "Fluxapyroxad 250 g/L + Pyraclostrobin 250 g/L SC @ 200–250 ml/haનો ઉપયોગ વર્તમાન પાક-મંજૂર લેબલ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "Trichoderma asperellum @ 4 g/kg બીજથી બીજમાવજત."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત પાન અને અવશેષો દૂર કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વચ્છ રોપા, યોગ્ય અંતર અને પાક અવશેષ વ્યવસ્થાપન રાખો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Tomato___Tomato mosaic virus": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Tomato mosaic virus",
-      "name_gu": "ટામેટાનો પંચરંગિયો / મોઝેક રોગ",
-      "type": "disease",
-      "type_gu": "વિષાણુજન્ય રોગ",
-      "cause": "Tomato mosaic virus / mosaic-virus complex depending on the source",
-      "cause_gu": "મોઝેક વિષાણુ; ચોક્કસ વિષાણુ મૂળ dataset source સાથે ચકાસી શકાય.",
-      "symptoms_gu": [
-        "પાન પર હળવા અને ઘેરા લીલા રંગનું mosaic pattern દેખાય છે.",
-        "પાન વિકૃત અથવા કરચલીવાળાં થઈ શકે છે.",
-        "છોડની વૃદ્ધિ ઘટી શકે છે.",
-        "કેટલીક સ્થિતિમાં પાનનો આકાર પણ બદલાઈ શકે છે."
-      ],
-      "management_gu": [
-        "ચેપગ્રસ્ત છોડ વહેલી તકે દૂર કરીને નાશ કરો.",
-        "સ્વસ્થ બીજ અને રોપાનો ઉપયોગ કરો.",
-        "હાથ અને સાધનોની સ્વચ્છતા જાળવો.",
-        "ચેપગ્રસ્ત છોડના રસથી ફેલાવો ન થાય તેનું ધ્યાન રાખો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ બીજ અને રોપા વાપરો.",
-        "ચેપગ્રસ્ત છોડ દૂર કરો.",
-        "સાધનો અને હાથ સ્વચ્છ રાખો.",
-        "નીંદણ અને વૈકલ્પિક યજમાનનું સંચાલન કરો."
-      ],
-      "verification": "Gujarati Vishwakosh uses પાનનો પંચરંગિયો (mosaic) for tomato mosaic.",
-      "gujarati_name": "ચિત્રો વિષાણુ / મોઝેક રોગ"
+    {
+      "class_id": "Tomato___Spider_mites_Two_spotted_spider_mite",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Spider mites - Two-spotted spider mite",
+      "condition_name_gu": "પાનની કથિરી / પાંજી",
+      "category": "Pest / Mite",
+      "category_gu": "કથિરી જેવી સૂક્ષ્મ જીવાત",
+      "pathogen_scientific_name": "Tetranychus urticae Koch",
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પાનની કથિરી / પાંજી",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Tetranychus urticae પાનમાંથી રસ ચૂસે છે. પાન પર સૂક્ષ્મ પીળા ટપકાં, કાંસ્ય રંગ અને નીચેની બાજુ જાળું દેખાઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Spiromesifen 22.9% SC @ 1.0 ml/L",
+              "Fenazaquin 10% EC @ 1.5–2.0 ml/L",
+              "Propargite 57% EC @ 2.0 ml/L",
+              "Wettable Sulphur 80% WP @ 3.0 g/L"
+            ],
+            "product_examples": [],
+            "description": "Spiromesifen 22.9% SC @ 1.0 ml/L, Fenazaquin 10% EC @ 1.5–2.0 ml/L, Propargite 57% EC @ 2.0 ml/L અથવા Wettable Sulphur 80% WP @ 3.0 g/Lમાંથી વર્તમાન મંજૂર કથિરી નિયંત્રણ વિકલ્પ પસંદ કરો. સામાન્ય પહોળી અસરવાળી પાયરેથ્રોઇડ અથવા Imidaclopridને મુખ્ય કથિરી નિયંત્રણ તરીકે ન વાપરો. Fenpyroximateની માત્રા અહીં આપેલી નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [
+              "કુદરતી શત્રુઓનું સંરક્ષણ કરો.",
+              "બિનજરૂરી પહોળી અસરવાળી જંતુનાશક દવાઓનો ઉપયોગ ટાળો.",
+              "ધૂળ અને પાણીની તંગી જેવી તણાવની પરિસ્થિતિ ઘટાડો."
+            ],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ઉપદ્રવની શરૂઆતમાં પાનની નીચેની બાજુ તપાસો અને કુદરતી શત્રુઓને બચાવો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "ખેતરની નિયમિત દેખરેખ રાખો અને બિનજરૂરી પહોળી અસરવાળી જંતુનાશક દવાઓ ટાળો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "This is a pest, not a disease."
     },
-    "Tomato___Tomato Yellow Leaf Curl Virus": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Tomato Yellow Leaf Curl Virus",
-      "name_gu": "ટામેટાનો પીળો પાન વળાંક રોગ",
-      "type": "disease",
-      "type_gu": "વિષાણુજન્ય રોગ",
-      "cause": "Tomato yellow leaf curl disease complex (begomoviruses), mainly transmitted by whitefly",
-      "cause_gu": "Begomovirus જૂથના વિષાણુ; મુખ્યત્વે સફેદમાખી દ્વારા ફેલાય છે.",
-      "symptoms_gu": [
-        "નવા પાન નાના અને પીળાશવાળા થાય છે.",
-        "પાનની કિનારીઓ ઉપરની તરફ વળે છે.",
-        "છોડ બટકો રહી શકે છે.",
-        "આંતરગાંઠો ટૂંકી થઈ શકે છે.",
-        "ફૂલ ખરવાથી ફળધારણ ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "સફેદમાખીનું મોનીટરીંગ અને સંકલિત નિયંત્રણ કરો.",
-        "ચેપગ્રસ્ત છોડ વહેલી તકે દૂર કરો.",
-        "નીંદણ અને વૈકલ્પિક યજમાન છોડનું સંચાલન કરો.",
-        "સ્વસ્થ રોપાનો ઉપયોગ કરો."
-      ],
-      "prevention_gu": [
-        "સ્વસ્થ રોપા વાપરો.",
-        "સફેદમાખીનું નિયમિત મોનીટરીંગ કરો.",
-        "પીળા sticky traps મોનીટરીંગ માટે ઉપયોગ કરી શકાય.",
-        "ચેપગ્રસ્ત છોડનો વહેલો નાશ કરો."
-      ],
-      "verification": "The disease has been documented in Gujarat; the Gujarati display name is descriptive and farmer-friendly.",
-      "gujarati_name": "કોકડવા / પીળો પાન વળાંક રોગ"
+    {
+      "class_id": "Tomato___Target_Spot",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Target Spot",
+      "condition_name_gu": "આંખ જેવા ગોળ ટપકા",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Corynespora cassiicola (Berk. & M.A. Curtis) Wei",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "આંખ જેવા ગોળ ટપકા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Corynespora cassiicolaથી પાન પર ભૂરા, આંખ જેવા ગોળ ટપકાં બને છે. ગંભીર ચેપમાં પાન અને ક્યારેક ફળ પણ અસરગ્રસ્ત થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "આ વર્ગ માટે ચોક્કસ દવાની માત્રા અહીં વિશ્વસનીય રીતે ચકાસેલી નથી; વર્તમાન સ્થાનિક કૃષિ ભલામણ અને મંજૂર લેબલ મુજબ જ દવા પસંદ કરો.",
+            "how_to_use": "ચોક્કસ દવાની ભલામણ ચકાસ્યા વગર છંટકાવ ન કરો; પાક અને સમસ્યા માટેની વર્તમાન મંજૂર ભલામણ અનુસરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત પાન દૂર કરો અને પાનની ભીનાશ ઘટાડો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વચ્છ ખેતર, યોગ્ય અંતર અને પાક ફેરબદલી રાખો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati name is a descriptive display translation; no strong standardized traditional Gujarat farmer-name was established."
     },
-    "Wheat___Brown Rust": {
-      "plant_en": "Wheat",
-      "plant_gu": "ઘઉં",
-      "name_en": "Brown Rust",
-      "name_gu": "બદામી ગેરુ / પાનનો ભૂરો ગેરુ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Puccinia triticina",
-      "cause_gu": "Puccinia triticina નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર નાના ગોળ નારંગી-ભૂરા ઊપસેલા ગેરુના ફોલ્લા દેખાય છે.",
-        "ગેરુના ફોલ્લા પાનની ઉપરની સપાટી પર વધુ જોવા મળે છે.",
-        "ગંભીર ચેપમાં પાનની પ્રકાશસંશ્લેષણ ક્ષમતા ઘટી શકે છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "ખેતરમાં નિયમિત નિરીક્ષણ કરો.",
-        "વધારે nitrogen આપવાનું ટાળો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશકનો ઉપયોગ કરો."
-      ],
-      "prevention_gu": [
-        "રોગપ્રતિકારક જાત વાવો.",
-        "નિયમિત ખેતર નિરીક્ષણ કરો.",
-        "રોગની શરૂઆતમાં નિયંત્રણ કરો."
-      ],
-      "verification": "Gujarati Vishwakosh uses બદામી અથવા પાનનો ભૂરો (કથ્થાઈ) ગેરુ.",
-      "gujarati_name": "કથ્થઈ ગેરુ / બદામી ગેરુ"
+    {
+      "class_id": "Tomato___Tomato_mosaic_virus",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Tomato mosaic virus",
+      "condition_name_gu": "ચિત્રો વિષાણુ / મોઝેક",
+      "category": "Viral",
+      "category_gu": "વિષાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Tomato mosaic virus (ToMV)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "ચિત્રો વિષાણુ / મોઝેક",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "ટમેટાના મોઝેક વિષાણુથી પાન પર હળવા અને ઘેરા લીલા રંગના ચિત્ર જેવા ડાઘ, વિકૃતિ અને વૃદ્ધિમાં ઘટાડો થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Trisodium Phosphate (TSP) 10% — બીજમાવજત માટે"
+            ],
+            "product_examples": [],
+            "description": "વાયરસને સીધો મટાડતી દવા નથી. TSP 10% બીજમાવજતનો હેતુ બીજની સપાટી પર રહેલા ચેપના જોખમને ઘટાડવાનો છે; તે પહેલેથી ચેપગ્રસ્ત છોડનો ઉપચાર નથી.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત છોડ દૂર કરો અને સાધનો હાથવગા રાખતા પહેલાં અને પછી સ્વચ્છ કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "રોગમુક્ત બીજ વાપરો અને ચેપગ્રસ્ત છોડ તથા નીંદણ દૂર કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh uses પાનનો પંચરંગિયો (mosaic) for tomato mosaic."
     },
-    "Wheat___Healthy": {
-      "plant_en": "Wheat",
-      "plant_gu": "ઘઉં",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત ઘઉંનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત છોડ / રોગમુક્ત ઘઉં"
+    {
+      "class_id": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+      "crop_name_en": "Tomato",
+      "crop_name_gu": "ટમેટા",
+      "condition_name_en": "Tomato Yellow Leaf Curl Virus",
+      "condition_name_gu": "કોકડવા / માથા બંધાઈ જવા",
+      "category": "Viral",
+      "category_gu": "વિષાણુજન્ય રોગ",
+      "pathogen_scientific_name": "Tomato yellow leaf curl virus (TYLCV; Vector: Bemisia tabaci)",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "કોકડવા / માથા બંધાઈ જવા",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "ટમેટાના પીળા પાનના કોકડવાના વિષાણુ મુખ્યત્વે સફેદમાખી Bemisia tabaci દ્વારા ફેલાય છે. નવા પાન નાના, પીળાશવાળા અને ઉપરની તરફ વળેલા થઈ શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Flonicamid 50% WG @ 0.3 g/L — સફેદમાખી વાહક નિયંત્રણ માટે",
+              "Diafenthiuron 50% WP @ 1.2 g/L — સફેદમાખી વાહક નિયંત્રણ માટે"
+            ],
+            "product_examples": [],
+            "description": "વાયરસને સીધો મટાડતી દવા નથી. Flonicamid 50% WG @ 0.3 g/L અથવા Diafenthiuron 50% WP @ 1.2 g/Lનો ઉપયોગ માત્ર વાયરસના વાહક સફેદમાખીના નિયંત્રણ માટે, વર્તમાન મંજૂર ભલામણ મુજબ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "ચેપગ્રસ્ત છોડ દૂર કરો, વૈકલ્પિક યજમાન નીંદણ ઘટાડો અને સફેદમાખીની સંખ્યા પર નજર રાખો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ રોપા વાપરો અને શરૂઆતથી વાહક જીવાતનું સંચાલન કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "The disease has been documented in Gujarat; the Gujarati display name is descriptive and farmer-friendly."
     },
-    "Wheat___Yellow Rust": {
-      "plant_en": "Wheat",
-      "plant_gu": "ઘઉં",
-      "name_en": "Yellow Rust",
-      "name_gu": "પીળો ગેરુ / પીળી પટ્ટીનો ગેરુ",
-      "type": "disease",
-      "type_gu": "ફૂગજન્ય રોગ",
-      "cause": "Puccinia striiformis",
-      "cause_gu": "Puccinia striiformis નામની ફૂગ",
-      "symptoms_gu": [
-        "પાન પર ચમકતા પીળા ગેરુના સૂક્ષ્મ ફોલ્લા દેખાય છે.",
-        "ફોલ્લા ઘણીવાર પીળી પટ્ટી જેવા ગોઠવાયેલા હોય છે.",
-        "પાન, પર્ણદંડ, દાંડી અને ક્યારેક દાણા પણ અસરગ્રસ્ત થઈ શકે છે."
-      ],
-      "management_gu": [
-        "રોગપ્રતિકારક જાતો પસંદ કરો.",
-        "નિયમિત ખેતર નિરીક્ષણ કરો.",
-        "રોગની શરૂઆતમાં નિયંત્રણ કરો.",
-        "જરૂર પડે ત્યારે સ્થાનિક ભલામણ મુજબ ફૂગનાશક વ્યવસ્થાપન કરો."
-      ],
-      "prevention_gu": [
-        "રોગપ્રતિકારક જાત વાવો.",
-        "નિયમિત scouting કરો.",
-        "સંતુલિત ખાતર વ્યવસ્થાપન રાખો.",
-        "રોગની શરૂઆતમાં ઓળખ કરીને પગલાં લો."
-      ],
-      "verification": "Gujarati Vishwakosh explicitly uses પીળો ગેરુ / પીળી પટ્ટીના ગેરુ. It also notes that yellow rust is not commonly seen in Gujarat compared with brown/black rust.",
-      "gujarati_name": "પીળો ગેરુ / પીળી પટ્ટીનો ગેરુ"
+    {
+      "class_id": "Wheat___Brown_Rust",
+      "crop_name_en": "Wheat",
+      "crop_name_gu": "ઘઉં",
+      "condition_name_en": "Brown Rust",
+      "condition_name_gu": "કથ્થઈ ગેરુ",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Puccinia triticina Erikss.",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "કથ્થઈ ગેરુ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Puccinia triticinaથી પાન પર નાના નારંગી-કથ્થાઈ ઊપસેલા ગેરુના ફોલ્લા બને છે. ભારે ચેપમાં પ્રકાશસંશ્લેષણ ઘટી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Propiconazole 25% EC @ 0.1% (1 ml/L)"
+            ],
+            "product_examples": [],
+            "description": "Propiconazole 25% EC @ 0.1% (1 ml/L)નો ઉપયોગ રોગ દેખાય ત્યારે, વર્તમાન મંજૂર લેબલ અને સ્થાનિક ભલામણ મુજબ કરી શકાય છે.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગગ્રસ્ત ખેતરની નજીક નિયમિત નિરીક્ષણ કરો અને સંતુલિત ખાતર આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પ્રતિરોધક જાતો પસંદ કરો અને નાઇટ્રોજનનું અતિરેક ટાળો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh uses બદામી અથવા પાનનો ભૂરો (કથ્થાઈ) ગેરુ."
     },
-    "Potato___Healthy": {
-      "plant_en": "Potato",
-      "plant_gu": "બટાટા",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત બટાટાનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત છોડ / રોગમુક્ત બટાટા"
+    {
+      "class_id": "Wheat___Healthy",
+      "crop_name_en": "Wheat",
+      "crop_name_gu": "ઘઉં",
+      "condition_name_en": "Healthy",
+      "condition_name_gu": "તંદુરસ્ત ઘઉં",
+      "category": "Healthy / No Disease",
+      "category_gu": "તંદુરસ્ત / કોઈ લક્ષિત રોગ નથી",
+      "pathogen_scientific_name": null,
+      "is_contagious": false,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "તંદુરસ્ત ઘઉં",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "ઘઉંના છોડ પર આ તપાસમાં ઓળખી શકાય તેવા રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો મળ્યા નથી.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [],
+            "product_examples": [],
+            "description": "છોડ તંદુરસ્ત હોય ત્યારે કોઈ જંતુનાશક અથવા ફૂગનાશક દવાની જરૂર નથી.",
+            "how_to_use": "તંદુરસ્ત છોડ માટે દવાનો છંટકાવ ન કરો; નિયમિત દેખરેખ અને યોગ્ય પાક સંભાળ ચાલુ રાખો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": "તંદુરસ્ત છોડ માટે વિશેષ જૈવિક ઉપચારની જરૂર નથી."
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "નિયમિત રીતે પાન, દાંડી અને છોડની વૃદ્ધિ તપાસો.",
+              "જરૂર મુજબ પાણી અને સંતુલિત પોષણ આપો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "સ્વસ્થ વાવેતર સામગ્રી વાપરો.",
+              "ખેતરની સ્વચ્છતા અને નિયમિત દેખરેખ જાળવો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      }
     },
-    "Tomato___Healthy": {
-      "plant_en": "Tomato",
-      "plant_gu": "ટામેટાં",
-      "name_en": "Healthy",
-      "name_gu": "તંદુરસ્ત ટામેટાનું પાન",
-      "type": "healthy",
-      "type_gu": "તંદુરસ્ત",
-      "cause": "No visible target condition",
-      "cause_gu": "ઓળખાયેલ રોગ અથવા નુકસાનના સ્પષ્ટ લક્ષણો નથી.",
-      "symptoms_gu": [
-        "પાન સામાન્ય રીતે સ્વસ્થ દેખાય છે."
-      ],
-      "management_gu": [
-        "સામાન્ય પાક વ્યવસ્થાપન ચાલુ રાખો."
-      ],
-      "prevention_gu": [
-        "નિયમિત ખેતર નિરીક્ષણ અને યોગ્ય પાક સંભાળ રાખો."
-      ],
-      "gujarati_name": "તંદુરસ્ત છોડ / રોગમુક્ત ટમેટા"
+    {
+      "class_id": "Wheat___Yellow_Rust",
+      "crop_name_en": "Wheat",
+      "crop_name_gu": "ઘઉં",
+      "condition_name_en": "Yellow Rust",
+      "condition_name_gu": "પીળો ગેરુ",
+      "category": "ફૂગજન્ય રોગ",
+      "category_gu": "ફૂગજન્ય રોગ",
+      "pathogen_scientific_name": "Puccinia striiformis f. sp. tritici",
+      "is_contagious": true,
+      "farmer_result": {
+        "header": "🌿 પાકની તપાસનું પરિણામ",
+        "condition_title": "પીળો ગેરુ",
+        "confidence": null,
+        "confidence_note": "વિશ્વાસ API દ્વારા ગતિશીલ રીતે આપવામાં આવશે.",
+        "sections": {
+          "what_happened": "Puccinia striiformis f. sp. triticiથી પાન પર પીળા ગેરુના ફોલ્લા પટ્ટી જેવા ગોઠવાય છે. ઠંડા અને ભેજવાળા હવામાનમાં રોગ ઝડપથી વધી શકે છે.",
+          "chemical_control": {
+            "heading": "💊 દવા દ્વારા નિયંત્રણ",
+            "recommended_active_ingredients": [
+              "Propiconazole 25% EC @ 0.1% (1 ml/L)",
+              "Tebuconazole 25 EC @ 0.1%"
+            ],
+            "product_examples": [],
+            "description": "Propiconazole 25% EC @ 0.1% (1 ml/L) અથવા Tebuconazole 25 EC @ 0.1%માંથી વર્તમાન મંજૂર વિકલ્પનો સમયસર ઉપયોગ કરો.",
+            "how_to_use": "માત્ર વર્તમાન પાક-રોગ/જીવાત માટે મંજૂર લેબલ અને સ્થાનિક કૃષિ ભલામણ મુજબ દવાનો ઉપયોગ કરો.",
+            "safety_note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો."
+          },
+          "natural_biological_control": {
+            "heading": "🌿 કુદરતી / જૈવિક નિયંત્રણ",
+            "recommendations": [],
+            "note": ""
+          },
+          "what_to_do_now": {
+            "heading": "🧹 અત્યારે શું કરવું?",
+            "steps": [
+              "રોગના શરૂઆતના લક્ષણો માટે ખેતરની નિયમિત તપાસ કરો."
+            ]
+          },
+          "prevention": {
+            "heading": "🛡️ આગળથી બચાવ",
+            "steps": [
+              "પ્રતિરોધક જાતો અને સંતુલિત પોષણ અપનાવો તથા રોગ દેખાય ત્યારે વહેલી કાર્યવાહી કરો."
+            ]
+          },
+          "before_using_medicine": {
+            "heading": "⚠️ દવા વાપરતા પહેલાં",
+            "note": "દવાના વર્તમાન લેબલ પર સંબંધિત પાક અને સમસ્યા માટેની મંજૂરી, માત્રા, સુરક્ષા સૂચનાઓ અને લણણી પહેલાંનો રાહ સમય તપાસો. શંકા હોય તો સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો."
+          }
+        }
+      },
+      "verification_note": "Gujarati Vishwakosh explicitly uses પીળો ગેરુ / પીળી પટ્ટીના ગેરુ. It also notes that yellow rust is not commonly seen in Gujarat compared with brown/black rust."
     }
-  },
-  "class_names": [
-    "Castor___Alternaria Blight",
-    "Castor___Hairy Caterpillar",
-    "Castor___Healthy",
-    "Corn___Common Rust",
-    "Corn___Gray Leaf Spot",
-    "Corn___Healthy",
-    "Corn___Northern Leaf Blight",
-    "Cotton___Bacterial Blight",
-    "Cotton___Curl Virus",
-    "Cotton___Healthy Leaf",
-    "Cotton___Herbicide Growth Damage",
-    "Cotton___Leaf Hopper Jassids",
-    "Cotton___Leaf Redding",
-    "Cotton___Leaf Variegation",
-    "Potato___Early blight",
-    "Potato___Healthy",
-    "Potato___Late blight",
-    "Rice___Brown Spot",
-    "Rice___Healthy",
-    "Rice___Leaf Blast",
-    "Rice___Neck Blast",
-    "Sugarcane___Bacterial Blight",
-    "Sugarcane___Healthy",
-    "Sugarcane___Red Rot",
-    "Tomato___Bacterial spot",
-    "Tomato___Early blight",
-    "Tomato___Healthy",
-    "Tomato___Late blight",
-    "Tomato___Leaf Mold",
-    "Tomato___Septoria leaf spot",
-    "Tomato___Spider mites Two-spotted spider mite",
-    "Tomato___Target Spot",
-    "Tomato___Tomato mosaic virus",
-    "Tomato___Tomato Yellow Leaf Curl Virus",
-    "Wheat___Brown Rust",
-    "Wheat___Healthy",
-    "Wheat___Yellow Rust"
   ]
 }
