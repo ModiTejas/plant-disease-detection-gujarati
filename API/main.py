@@ -105,15 +105,46 @@ CLASS_NAME_ALIASES = {
     normalize_class_name("Cotton___Leaf Redding"): normalize_class_name("Cotton___Leaf Reddening"),
 }
 
+def _as_text_list(value) -> list[str]:
+    if isinstance(value, str):
+        return [value] if value.strip() else []
+    if isinstance(value, list):
+        return [item for item in value if isinstance(item, str) and item.strip()]
+    return []
+
 def get_disease_details(class_name: str) -> dict:
     class_id = class_name.strip()
     details = DISEASE_DICT.get(class_id.lower())
-    if details is not None:
+    if details is None:
+        legacy_key = normalize_class_name(class_id)
+        legacy_key = CLASS_NAME_ALIASES.get(legacy_key, legacy_key)
+        lookup_key = LEGACY_CLASS_LOOKUP.get(legacy_key)
+        details = DISEASE_DICT.get(lookup_key, {})
+    sections = details.get("farmer_result", {}).get("sections", {})
+    if not sections:
         return details
-    legacy_key = normalize_class_name(class_id)
-    legacy_key = CLASS_NAME_ALIASES.get(legacy_key, legacy_key)
-    lookup_key = LEGACY_CLASS_LOOKUP.get(legacy_key)
-    return DISEASE_DICT.get(lookup_key, {})
+
+    chemical = sections.get("chemical_control", {})
+    biological = sections.get("natural_biological_control", {})
+    current_steps = sections.get("what_to_do_now", {})
+    prevention = sections.get("prevention", {})
+    management = (
+        _as_text_list(chemical.get("recommended_active_ingredients"))
+        + _as_text_list(chemical.get("description"))
+        + _as_text_list(biological.get("recommendations"))
+        + _as_text_list(current_steps.get("steps"))
+    )
+
+    return {
+        **details,
+        "plant_gu": details.get("crop_name_gu", ""),
+        "name_gu": details.get("condition_name_gu", ""),
+        "type_gu": details.get("category_gu", ""),
+        "cause_gu": details.get("pathogen_scientific_name", ""),
+        "symptoms_gu": sections.get("what_happened", ""),
+        "management_gu": management,
+        "prevention_gu": _as_text_list(prevention.get("steps")),
+    }
 
 # 2. Setup Inference Engine (ONNX for Vercel/Production, fallback to PyTorch)
 USE_ONNX = MODEL_ONNX.exists()
@@ -200,7 +231,7 @@ async def predict_project_model(file: UploadFile = File(...)):
         {
             "class": CLASSES[idx],
             "predicted_class": CLASSES[idx],
-            "name_gu": get_disease_details(CLASSES[idx]).get("name_gu", CLASSES[idx]),
+            "name_gu": get_disease_details(CLASSES[idx]).get("name_gu") or CLASSES[idx],
             "confidence": round(float(probabilities[idx]) * 100, 2)
         }
         for idx in top3_indices
