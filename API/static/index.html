@@ -4,19 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>પાકના પાનનું નિદાન — Dual-Mode AI</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ================================================================
-       ROOT COLORS
-       ================================================================ */
-
     :root {
       --soil: #362a1f;
       --soil-soft: #6b5c4a;
@@ -32,42 +23,16 @@
       --rust-pale: #fbeee9;
       --white: #ffffff;
     }
-
-
-    /* ================================================================
-       GLOBAL
-       ================================================================ */
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body {
-      min-height: 100%;
-      background-color: var(--field);
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; background-color: var(--field); }
     body {
       color: var(--soil);
-      background-image:
-        repeating-linear-gradient(
-          115deg,
-          transparent 0 42px,
-          rgba(61, 107, 71, .03) 43px 44px
-        );
+      background-image: repeating-linear-gradient(115deg, transparent 0 42px, rgba(61,107,71,.03) 43px 44px);
       background-attachment: fixed;
       font-family: "Mukta Vaani", sans-serif;
       min-height: 100vh;
       min-height: 100svh;
     }
-
-
-    /* ================================================================
-       MAIN LAYOUT
-       ================================================================ */
 
     main {
       display: flex;
@@ -79,49 +44,14 @@
       margin: 0 auto;
       padding: 22px 0 64px;
     }
+    main.has-result { justify-content: flex-start; padding-top: 16px; padding-bottom: 16px; }
+    main.has-result .header-row { margin-bottom: 12px; }
+    main.has-result .intro { display: none; }
+    main.has-result h1 { font-size: 21px; }
 
-    main.has-result {
-      justify-content: flex-start;
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
-    main.has-result .header-row {
-      margin-bottom: 12px;
-    }
-
-    main.has-result .intro {
-      display: none;
-    }
-
-    main.has-result h1 {
-      font-size: 21px;
-    }
-
-
-    /* ================================================================
-       HEADER
-       ================================================================ */
-
-    .header-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-
-    .sprout-mark {
-      flex: 0 0 auto;
-      width: 40px;
-      height: 40px;
-      color: var(--leaf);
-    }
-
-    .eyebrow {
-      color: var(--soil-soft);
-      font: 600 13.5px/1.3 "Mukta Vaani", sans-serif;
-      letter-spacing: .1px;
-    }
+    .header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .sprout-mark { flex: 0 0 auto; width: 40px; height: 40px; color: var(--leaf); }
+    .eyebrow { color: var(--soil-soft); font: 600 13.5px/1.3 "Mukta Vaani", sans-serif; letter-spacing: .1px; }
 
     h1 {
       font-size: clamp(27px, 4vw, 38px);
@@ -131,18 +61,7 @@
       font-weight: 800;
       color: var(--leaf-deep);
     }
-
-    .intro {
-      color: var(--soil-soft);
-      font: 15.5px/1.55 "Mukta Vaani", sans-serif;
-      max-width: 640px;
-      margin: 0 0 18px;
-    }
-
-
-    /* ================================================================
-       CONTENT LAYOUT
-       ================================================================ */
+    .intro { color: var(--soil-soft); font: 15.5px/1.55 "Mukta Vaani", sans-serif; max-width: 640px; margin: 0 0 18px; }
 
     .layout {
       display: grid;
@@ -152,71 +71,42 @@
       width: min(680px, 100%);
       align-self: center;
     }
-
     .layout.has-result {
       width: 100%;
       grid-template-columns: minmax(300px, .78fr) minmax(0, 1.22fr);
       align-items: start;
     }
 
-
-    /* ================================================================
-       PANELS
-       ================================================================ */
-
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 4px;
       padding: 22px;
-      box-shadow:
-        0 1px 0 var(--white) inset,
-        0 18px 34px rgba(54, 42, 31, .07);
+      box-shadow: 0 1px 0 var(--white) inset, 0 18px 34px rgba(54, 42, 31, .07);
       position: relative;
-      transition: box-shadow .3s cubic-bezier(.4, 0, .2, 1);
+      transition: box-shadow .3s cubic-bezier(.4,0,.2,1);
     }
-
     .upload-panel {
       border-radius: 18px;
-      background:
-        linear-gradient(
-          165deg,
-          #fffefb 0%,
-          var(--panel) 55%,
-          #faf6e9 100%
-        );
-
+      background: linear-gradient(165deg, #fffefb 0%, var(--panel) 55%, #faf6e9 100%);
       box-shadow:
-        0 1.5px 0 rgba(255, 255, 255, .9) inset,
-        0 -10px 20px rgba(54, 42, 31, .05) inset,
-        0 2px 4px rgba(54, 42, 31, .06),
-        0 16px 30px rgba(54, 42, 31, .14),
-        0 30px 54px rgba(54, 42, 31, .08);
+        0 1.5px 0 rgba(255,255,255,.9) inset,
+        0 -10px 20px rgba(54,42,31,.05) inset,
+        0 2px 4px rgba(54,42,31,.06),
+        0 16px 30px rgba(54,42,31,.14),
+        0 30px 54px rgba(54,42,31,.08);
     }
-
     .upload-panel:hover {
       box-shadow:
-        0 1.5px 0 rgba(255, 255, 255, .9) inset,
-        0 -10px 20px rgba(54, 42, 31, .05) inset,
-        0 2px 4px rgba(54, 42, 31, .07),
-        0 20px 36px rgba(54, 42, 31, .17),
-        0 36px 64px rgba(54, 42, 31, .1);
+        0 1.5px 0 rgba(255,255,255,.9) inset,
+        0 -10px 20px rgba(54,42,31,.05) inset,
+        0 2px 4px rgba(54,42,31,.07),
+        0 20px 36px rgba(54,42,31,.17),
+        0 36px 64px rgba(54,42,31,.1);
     }
 
-    .result-panel {
-      display: none;
-      min-width: 0;
-    }
-
-    .layout.has-result .result-panel {
-      display: flex;
-      flex-direction: column;
-    }
-
-
-    /* ================================================================
-       UPLOAD / DROPZONE
-       ================================================================ */
+    .result-panel { display: none; min-width: 0; }
+    .layout.has-result .result-panel { display: flex; flex-direction: column; }
 
     .dropzone {
       display: grid;
@@ -228,1231 +118,214 @@
       text-align: center;
       padding: 18px;
       cursor: pointer;
-      transition:
-        border-color .25s ease,
-        background-color .25s ease,
-        transform .25s cubic-bezier(.34, 1.56, .64, 1);
+      transition: border-color .25s ease, background-color .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
     }
+    .dropzone:hover { border-color: var(--leaf); background: #dfebd7; transform: translateY(-1px); }
+    .dropzone.dragging { border-color: var(--leaf); background: #dfebd7; transform: scale(1.01); }
+    .leaf-icon { font-size: 34px; margin-bottom: 6px; line-height: 1; }
+    .dropzone strong { display: block; font-size: 17.5px; font-weight: 700; margin-bottom: 4px; color: var(--leaf-deep); }
+    .dropzone span { color: var(--soil-soft); font: 13.5px/1.5 "Mukta Vaani", sans-serif; }
+    input[type=file] { display: none; }
+    .preview { display: none; width: 100%; max-height: 230px; object-fit: contain; border-radius: 3px; }
+    .file-name { display: block; margin-top: 8px; color: var(--soil-soft); font: 12.5px "Mukta Vaani", sans-serif; overflow-wrap: anywhere; }
 
-    .dropzone:hover {
-      border-color: var(--leaf);
-      background: #dfebd7;
-      transform: translateY(-1px);
+    button, .capture-button {
+      display: inline-flex; align-items: center; justify-content: center; text-align: center;
+      width: 100%; border: 0; border-radius: 3px; padding: 12px 16px; color: var(--white);
+      background: var(--leaf); font: 700 16px "Mukta Vaani", sans-serif; cursor: pointer;
+      transition: background-color .22s cubic-bezier(.4,0,.2,1), transform .28s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
+      text-decoration: none; user-select: none; letter-spacing: .2px;
+      box-shadow: 0 1px 2px rgba(54,42,31,.12);
     }
+    button:hover, .capture-button:hover { background: var(--leaf-deep); transform: translateY(-1px); box-shadow: 0 6px 14px rgba(38,69,45,.22); }
+    button:active, .capture-button:active { transform: scale(.965); box-shadow: 0 1px 2px rgba(54,42,31,.14); transition-duration: .1s; }
+    button.btn-vision { background: var(--turmeric); }
+    button.btn-vision:hover { background: var(--turmeric-deep); box-shadow: 0 6px 14px rgba(156,104,15,.24); }
+    button:disabled { cursor: not-allowed; opacity: .5; transform: none; box-shadow: none; }
 
-    .dropzone.dragging {
-      border-color: var(--leaf);
-      background: #dfebd7;
-      transform: scale(1.01);
-    }
+    .actions { display: flex; gap: 10px; align-items: stretch; margin-top: 12px; }
+    .actions #analyze { flex: 1; }
+    .capture-button { width: auto; flex: 0 0 auto; white-space: nowrap; background: var(--leaf); }
+    .capture-button:hover { background: var(--leaf-deep); }
 
-    .leaf-icon {
-      font-size: 34px;
-      margin-bottom: 6px;
-      line-height: 1;
-    }
-
-    .dropzone strong {
-      display: block;
-      font-size: 17.5px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--leaf-deep);
-    }
-
-    .dropzone span {
-      color: var(--soil-soft);
-      font: 13.5px/1.5 "Mukta Vaani", sans-serif;
-    }
-
-    input[type=file] {
-      display: none;
-    }
-
-    .preview {
-      display: none;
-      width: 100%;
-      max-height: 230px;
-      object-fit: contain;
-      border-radius: 3px;
-    }
-
-    .file-name {
-      display: block;
-      margin-top: 8px;
-      color: var(--soil-soft);
-      font: 12.5px "Mukta Vaani", sans-serif;
-      overflow-wrap: anywhere;
-    }
-
-
-    /* ================================================================
-       BUTTONS
-       ================================================================ */
-
-    button,
-    .capture-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      width: 100%;
-      border: 0;
-      border-radius: 3px;
-      padding: 12px 16px;
-
-      color: var(--white);
-      background: var(--leaf);
-
-      font: 700 16px "Mukta Vaani", sans-serif;
-      cursor: pointer;
-
-      transition:
-        background-color .22s cubic-bezier(.4, 0, .2, 1),
-        transform .28s cubic-bezier(.34, 1.56, .64, 1),
-        box-shadow .22s ease;
-
-      text-decoration: none;
-      user-select: none;
-      letter-spacing: .2px;
-
-      box-shadow: 0 1px 2px rgba(54, 42, 31, .12);
-    }
-
-    button:hover,
-    .capture-button:hover {
-      background: var(--leaf-deep);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(38, 69, 45, .22);
-    }
-
-    button:active,
-    .capture-button:active {
-      transform: scale(.965);
-      box-shadow: 0 1px 2px rgba(54, 42, 31, .14);
-      transition-duration: .1s;
-    }
-
-    button.btn-vision {
-      background: var(--turmeric);
-    }
-
-    button.btn-vision:hover {
-      background: var(--turmeric-deep);
-      box-shadow: 0 6px 14px rgba(156, 104, 15, .24);
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .5;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      align-items: stretch;
-      margin-top: 12px;
-    }
-
-    .actions #analyze {
-      flex: 1;
-    }
-
-    .capture-button {
-      width: auto;
-      flex: 0 0 auto;
-      white-space: nowrap;
-      background: var(--leaf);
-    }
-
-    .capture-button:hover {
-      background: var(--leaf-deep);
-    }
-
-
-    /* ================================================================
-       RESULT
-       ================================================================ */
-
-    .result {
-      display: none;
-      padding: 2px;
-      min-height: 0;
-    }
-
-    .result.visible {
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      animation: rise-in .5s cubic-bezier(.16, 1, .3, 1);
-    }
-
-    @keyframes rise-in {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .result.visible {
-        animation: none;
-      }
-    }
-
+    .result { display: none; padding: 2px; min-height: 0; }
+    .result.visible { display: flex; flex-direction: column; min-height: 0; animation: rise-in .5s cubic-bezier(.16,1,.3,1); }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { .result.visible { animation: none; } }
     .result-heading {
-      margin: 0 0 12px;
-      color: var(--leaf-deep);
-      font: 800 18.5px/1.3 "Mukta Vaani", sans-serif;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
+      margin: 0 0 12px; color: var(--leaf-deep); font: 800 18.5px/1.3 "Mukta Vaani", sans-serif;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
     }
+    .result-body { padding-right: 4px; }
+    .prediction { margin: 2px 0; font-size: 12.5px; font-weight: 600; color: var(--soil-soft); }
+    .gujarati-title { font-size: 22px; font-weight: 800; color: var(--soil); margin: 2px 0 8px; line-height: 1.3; }
 
-    .result-body {
-      padding-right: 4px;
-    }
+    .result-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .result-category { display: inline-block; padding: 4px 11px; border-radius: 3px; background: var(--leaf-pale); color: var(--leaf-deep); font: 700 12.5px "Mukta Vaani", sans-serif; border: 1px solid #cfe1c8; }
+    .confidence { display: inline-block; padding: 4px 11px; border-radius: 3px; background: #fbf1dd; color: var(--turmeric-deep); font: 700 12.5px "Mukta Vaani", sans-serif; border: 1px solid #ecd8ac; }
+    .uncertain { margin: 10px 0; padding: 10px 12px; border-left: 3px solid var(--turmeric); background: #fbf1dd; color: #6c4a0e; font: 700 13px/1.45 "Mukta Vaani", sans-serif; border-radius: 2px; }
 
-    .prediction {
-      margin: 2px 0;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--soil-soft);
-    }
+    .result-section { padding-top: 11px; margin-top: 11px; border-top: 1px dashed var(--line); }
+    .result-section h3 { margin: 0 0 5px; color: var(--leaf-deep); font: 800 14.5px/1.4 "Mukta Vaani", sans-serif; }
+    .result-section p, .result-section ul { margin: 0; color: #362a1f; font: 14px/1.6 "Mukta Vaani", sans-serif; }
+    .result-section ul { padding-left: 18px; }
+    .result-section li + li { margin-top: 3px; }
+    .result-section li::marker { color: var(--leaf); }
 
-    .gujarati-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--soil);
-      margin: 2px 0 8px;
-      line-height: 1.3;
-    }
-
-    .result-meta {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .result-category {
-      display: inline-block;
-      padding: 4px 11px;
-      border-radius: 3px;
-      background: var(--leaf-pale);
-      color: var(--leaf-deep);
-      font: 700 12.5px "Mukta Vaani", sans-serif;
-      border: 1px solid #cfe1c8;
-    }
-
-    .confidence {
-      display: inline-block;
-      padding: 4px 11px;
-      border-radius: 3px;
-      background: #fbf1dd;
-      color: var(--turmeric-deep);
-      font: 700 12.5px "Mukta Vaani", sans-serif;
-      border: 1px solid #ecd8ac;
-    }
-
-    .uncertain {
-      margin: 10px 0;
-      padding: 10px 12px;
-      border-left: 3px solid var(--turmeric);
-      background: #fbf1dd;
-      color: #6c4a0e;
-      font: 700 13px/1.45 "Mukta Vaani", sans-serif;
-      border-radius: 2px;
-    }
-
-    .result-section {
-      padding-top: 11px;
-      margin-top: 11px;
-      border-top: 1px dashed var(--line);
-    }
-
-    .result-section h3 {
-      margin: 0 0 5px;
-      color: var(--leaf-deep);
-      font: 800 14.5px/1.4 "Mukta Vaani", sans-serif;
-    }
-
-    .result-section p,
-    .result-section ul {
-      margin: 0;
-      color: #362a1f;
-      font: 14px/1.6 "Mukta Vaani", sans-serif;
-    }
-
-    .result-section ul {
-      padding-left: 18px;
-    }
-
-    .result-section li + li {
-      margin-top: 3px;
-    }
-
-    .result-section li::marker {
-      color: var(--leaf);
-    }
-
-    .bar-row {
-      display: grid;
-      grid-template-columns: 1fr 46px;
-      gap: 6px;
-      margin-top: 8px;
-      font: 12px "Mukta Vaani", sans-serif;
-      color: var(--soil-soft);
-    }
-
-    .bar-track {
-      grid-column: 1 / -1;
-      height: 5px;
-      overflow: hidden;
-      border-radius: 8px;
-      background: #e6ded0;
-    }
-
-    .bar {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(
-        90deg,
-        var(--leaf),
-        var(--turmeric)
-      );
-      transition: width .5s ease;
-    }
-
-
-    /* ================================================================
-       MODE SWITCH — DESKTOP
-       
-       Desktop remains the normal pill:
-       
-       ICON → LABEL → SWITCH
-       ================================================================ */
+    .bar-row { display: grid; grid-template-columns: 1fr 46px; gap: 6px; margin-top: 8px; font: 12px "Mukta Vaani", sans-serif; color: var(--soil-soft); }
+    .bar-track { grid-column: 1 / -1; height: 5px; overflow: hidden; border-radius: 8px; background: #e6ded0; }
+    .bar { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--leaf), var(--turmeric)); transition: width .5s ease; }
 
     .mode-switch {
-      position: fixed;
-
-      left: max(16px, env(safe-area-inset-left));
-      bottom: max(16px, env(safe-area-inset-bottom));
-
-      z-index: 100;
-
-      display: flex;
-      align-items: center;
-      gap: 9px;
-
+      position: fixed; left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 100;
+      display: flex; align-items: center; gap: 10px;
       background: rgba(255, 253, 246, .68);
-
-      -webkit-backdrop-filter:
-        saturate(180%) blur(18px);
-
-      backdrop-filter:
-        saturate(180%) blur(18px);
-
-      padding: 9px 15px;
-      border-radius: 30px;
-
-      box-shadow:
-        0 10px 28px rgba(54, 42, 31, .16),
-        0 1px 0 rgba(255, 255, 255, .6) inset;
-
-      border: 1px solid rgba(221, 211, 184, .7);
-
-      transition:
-        box-shadow .25s ease,
-        transform .25s cubic-bezier(.34, 1.56, .64, 1);
+      -webkit-backdrop-filter: saturate(180%) blur(18px);
+      backdrop-filter: saturate(180%) blur(18px);
+      padding: 9px 15px; border-radius: 30px;
+      box-shadow: 0 10px 28px rgba(54,42,31,.16), 0 1px 0 rgba(255,255,255,.6) inset;
+      border: 1px solid rgba(221,211,184,.7);
+      transition: box-shadow .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
     }
+    .mode-switch:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(54,42,31,.2), 0 1px 0 rgba(255,255,255,.6) inset; }
+    .mode-switch-label { font-size: 13px; font-weight: 700; color: var(--leaf-deep); white-space: nowrap; transition: color .25s ease; }
+    .switch-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .switch { position: relative; display: block; width: 44px; height: 25px; padding: 2px; border: 1px solid rgba(54,42,31,.15); border-radius: 999px; background: rgba(54,42,31,.14); cursor: pointer; transition: background-color .3s cubic-bezier(.4,0,.2,1); }
+    .switch::before { content: ""; display: block; width: 19px; height: 19px; border-radius: 50%; background: var(--white); box-shadow: 0 1px 3px rgba(54,42,31,.3); transform: translateX(0); transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+    .switch-input:checked + .switch { background: var(--turmeric); }
+    .switch-input:checked + .switch::before { transform: translateX(19px); }
 
-    .mode-switch:hover {
-      transform: translateY(-2px);
+    /* Mode icon support (desktop: hidden, label keeps its own emoji) */
+    .mode-icon { display: none; }
+    .mode-label-icon { display: inline; }
 
-      box-shadow:
-        0 14px 32px rgba(54, 42, 31, .2),
-        0 1px 0 rgba(255, 255, 255, .6) inset;
-    }
+    .mode-note { display: none; margin: 10px 0 0; padding: 8px 12px; border-radius: 3px; background: #fbf1dd; border-left: 3px solid var(--turmeric); color: #6c4a0e; font: 700 12.5px/1.4 "Mukta Vaani", sans-serif; }
+    .mode-note.visible { display: block; }
 
-
-    /* ---------------------------------------------------------------
-       REAL MODE ICON
-       
-       IMPORTANT:
-       This is a real HTML element.
-       It is NOT ::before.
-       --------------------------------------------------------------- */
-
-    .mode-icon {
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      width: 22px;
-      height: 22px;
-
-      flex: 0 0 22px;
-
-      font-size: 17px;
-      line-height: 1;
-
-      transition:
-        transform .25s cubic-bezier(.34, 1.56, .64, 1),
-        opacity .2s ease;
-    }
-
-
-    .mode-switch-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--leaf-deep);
-      white-space: nowrap;
-      transition: color .25s ease;
-    }
-
-    .switch-input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-    }
-
-    .switch {
-      position: relative;
-
-      display: block;
-
-      width: 44px;
-      height: 25px;
-
-      padding: 2px;
-
-      border: 1px solid rgba(54, 42, 31, .15);
-      border-radius: 999px;
-
-      background: rgba(54, 42, 31, .14);
-
-      cursor: pointer;
-
-      transition:
-        background-color .3s cubic-bezier(.4, 0, .2, 1);
-    }
-
-    .switch::before {
-      content: "";
-
-      display: block;
-
-      width: 19px;
-      height: 19px;
-
-      border-radius: 50%;
-
-      background: var(--white);
-
-      box-shadow:
-        0 1px 3px rgba(54, 42, 31, .3);
-
-      transform: translateX(0);
-
-      transition:
-        transform .3s cubic-bezier(.34, 1.56, .64, 1);
-    }
-
-    .switch-input:checked + .switch {
-      background: var(--turmeric);
-    }
-
-    .switch-input:checked + .switch::before {
-      transform: translateX(19px);
-    }
-
-
-    /* ================================================================
-       MODE NOTE / LOADING / ERROR
-       ================================================================ */
-
-    .mode-note {
-      display: none;
-      margin: 10px 0 0;
-      padding: 8px 12px;
-      border-radius: 3px;
-      background: #fbf1dd;
-      border-left: 3px solid var(--turmeric);
-      color: #6c4a0e;
-      font: 700 12.5px/1.4 "Mukta Vaani", sans-serif;
-    }
-
-    .mode-note.visible {
-      display: block;
-    }
-
-    .loading {
-      display: none;
-      margin-top: 12px;
-      color: var(--leaf-deep);
-      font: 700 14px "Mukta Vaani", sans-serif;
-      text-align: center;
-    }
-
-    .loading.visible {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
+    .loading { display: none; margin-top: 12px; color: var(--leaf-deep); font: 700 14px "Mukta Vaani", sans-serif; text-align: center; }
+    .loading.visible { display: flex; align-items: center; justify-content: center; gap: 8px; }
     .loading.visible::before {
-      content: "";
-
-      width: 14px;
-      height: 14px;
-
-      border-radius: 50%;
-
-      border: 2px solid var(--leaf-pale);
-      border-top-color: var(--leaf);
-
+      content: ""; width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid var(--leaf-pale); border-top-color: var(--leaf);
       animation: spin .7s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .loading.visible::before { animation: none; } }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    .error { display: none; margin-top: 14px; font: 600 13.5px/1.5 "Mukta Vaani", sans-serif; background: #fbf1dd; color: #6c4a0e; padding: 11px 13px; border-radius: 3px; border-left: 3px solid var(--turmeric); }
+    .error.visible { display: block; }
+    .error.not-plant { background: var(--rust-pale); color: var(--rust); border-left-color: var(--rust); }
 
-    @media (prefers-reduced-motion: reduce) {
-      .loading.visible::before {
-        animation: none;
-      }
-    }
-
-    .error {
-      display: none;
-      margin-top: 14px;
-
-      font: 600 13.5px/1.5 "Mukta Vaani", sans-serif;
-
-      background: #fbf1dd;
-      color: #6c4a0e;
-
-      padding: 11px 13px;
-
-      border-radius: 3px;
-      border-left: 3px solid var(--turmeric);
-    }
-
-    .error.visible {
-      display: block;
-    }
-
-    .error.not-plant {
-      background: var(--rust-pale);
-      color: var(--rust);
-      border-left-color: var(--rust);
-    }
-
-
-    /* ================================================================
-       FOOTER
-       ================================================================ */
-
-    footer {
-      margin-top: 18px;
-      color: var(--soil-soft);
-      font: 12px/1.5 "Mukta Vaani", sans-serif;
-      text-align: center;
-    }
-
-    main.has-result footer {
-      display: none;
-    }
-
-
-    /* ================================================================
-       DESKTOP RESULT PANEL
-       ================================================================ */
+    footer { margin-top: 18px; color: var(--soil-soft); font: 12px/1.5 "Mukta Vaani", sans-serif; text-align: center; }
+    main.has-result footer { display: none; }
 
     @media (min-width: 761px) {
-      .layout.has-result .panel {
-        display: flex;
-        flex-direction: column;
-      }
+      .layout.has-result .panel { display: flex; flex-direction: column; }
     }
-
-
-    /* ================================================================
-       MOBILE
-       
-       MOBILE COLLAPSED:
-       LEFT BOTTOM → 🔬 / 🤖
-       
-       MOBILE EXPANDED:
-       LEFT → ICON → LABEL → SWITCH
-       ================================================================ */
 
     @media (max-width: 760px) {
+      main { width: min(560px, calc(100% - 24px)); padding: 14px 0 80px; }
+      .layout, .layout.has-result { width: 100%; grid-template-columns: minmax(0, 1fr); }
+      .result-panel { grid-row: 2; }
+      h1 { font-size: 27px; }
+      .panel { padding: 16px; }
+      .dropzone { min-height: 150px; }
+      .preview { max-height: 175px; }
+      .capture-button { padding: 12px 12px; font-size: 13.5px; }
 
-      main {
-        width: min(560px, calc(100% - 24px));
-        padding: 14px 0 80px;
-      }
-
-      .layout,
-      .layout.has-result {
-        width: 100%;
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .result-panel {
-        grid-row: 2;
-      }
-
-      h1 {
-        font-size: 27px;
-      }
-
-      .panel {
-        padding: 16px;
-      }
-
-      .dropzone {
-        min-height: 150px;
-      }
-
-      .preview {
-        max-height: 175px;
-      }
-
-      .capture-button {
-        padding: 12px 12px;
-        font-size: 13.5px;
-      }
-
-
-      /* ==============================================================
-         MOBILE MODE SWITCH — COLLAPSED
-         
-         IMPORTANT:
-         LEFT SIDE, NOT RIGHT SIDE.
-         ============================================================== */
-
+      /* Mobile mode switch: collapsed circular icon (bottom-left) */
       .mode-switch {
-
-        left: max(
-          16px,
-          env(safe-area-inset-left)
-        );
-
-        right: auto;
-
-        bottom: max(
-          16px,
-          env(safe-area-inset-bottom)
-        );
-
-        width: 48px;
-        height: 48px;
-
-        padding: 0;
-
-        border-radius: 50%;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        gap: 0;
-
-        background: rgba(255, 253, 246, .84);
-
-        -webkit-backdrop-filter:
-          saturate(180%) blur(18px);
-
-        backdrop-filter:
-          saturate(180%) blur(18px);
-
-        border: 1px solid rgba(221, 211, 184, .85);
-
-        box-shadow:
-          0 8px 22px rgba(54, 42, 31, .16),
-          0 2px 5px rgba(54, 42, 31, .08),
-          0 1px 0 rgba(255, 255, 255, .85) inset;
-
-        overflow: hidden;
-
+        left: max(16px, env(safe-area-inset-left)); right: auto;
+        width: 48px; height: 48px; padding: 0; gap: 0;
+        justify-content: center; border-radius: 50%;
         cursor: pointer;
-
-        user-select: none;
-
-        -webkit-tap-highlight-color: transparent;
-
-        transition:
-          width .38s cubic-bezier(.34, 1.25, .64, 1),
-          border-radius .32s ease,
-          padding .32s ease,
-          gap .32s ease,
-          box-shadow .25s ease,
-          transform .25s cubic-bezier(.34, 1.56, .64, 1);
       }
+      .mode-icon { display: inline-block; font-size: 22px; line-height: 1; }
+      .mode-label-icon { display: none; }
+      .mode-switch .mode-switch-label,
+      .mode-switch .switch { display: none; }
 
-
-      /* ==============================================================
-         MOBILE ICON — COLLAPSED
-         
-         REAL HTML ELEMENT.
-         
-         🔬 = Project
-         🤖 = AI Vision
-         ============================================================== */
-
-      .mode-icon {
-
-        width: 48px;
-        height: 48px;
-
-        flex: 0 0 48px;
-
-        font-size: 21px;
-
-        line-height: 1;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        opacity: 1;
-      }
-
-
-      /* ==============================================================
-         MOBILE LABEL — HIDDEN WHEN COLLAPSED
-         ============================================================== */
-
-      .mode-switch-label {
-
-        display: none;
-
-        flex: 1 1 auto;
-
-        min-width: 0;
-
-        font-size: 13px;
-        font-weight: 700;
-
-        white-space: nowrap;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        opacity: 0;
-
-        transform: translateX(5px);
-
-        transition:
-          opacity .22s ease,
-          transform .32s cubic-bezier(.34, 1.25, .64, 1);
-      }
-
-
-      /* ==============================================================
-         MOBILE SWITCH — HIDDEN WHEN COLLAPSED
-         ============================================================== */
-
-      .mode-switch .switch {
-        display: none;
-      }
-
-
-      /* ==============================================================
-         MOBILE EXPANDED
-         
-         ORDER:
-         ICON → LABEL → SWITCH
-         ============================================================== */
-
+      /* Mobile mode switch: expanded pill, ICON → LABEL → SWITCH */
       .mode-switch.expanded {
-
-        width: min(
-          245px,
-          calc(100vw - 32px)
-        );
-
-        height: 48px;
-
-        padding: 9px 12px;
-
-        border-radius: 28px;
-
-        gap: 9px;
-
-        justify-content: flex-start;
-
-        cursor: default;
-
-        box-shadow:
-          0 12px 30px rgba(54, 42, 31, .19),
-          0 3px 8px rgba(54, 42, 31, .08),
-          0 1px 0 rgba(255, 255, 255, .85) inset;
+        width: auto; height: auto; padding: 9px 15px; gap: 10px;
+        justify-content: flex-start; border-radius: 30px;
       }
-
-
-      /* ==============================================================
-         EXPANDED ICON
-         
-         Always remains on the LEFT.
-         ============================================================== */
-
-      .mode-switch.expanded .mode-icon {
-
-        width: 25px;
-        height: 25px;
-
-        flex: 0 0 25px;
-
-        font-size: 19px;
-
-        transform: scale(1);
-      }
-
-
-      /* ==============================================================
-         EXPANDED LABEL
-         ============================================================== */
-
-      .mode-switch.expanded .mode-switch-label {
-
-        display: block;
-
-        opacity: 1;
-
-        transform: translateX(0);
-      }
-
-
-      /* ==============================================================
-         EXPANDED SWITCH
-         
-         Always remains on the RIGHT.
-         ============================================================== */
-
-      .mode-switch.expanded .switch {
-
-        display: block;
-
-        width: 44px;
-        height: 25px;
-
-        flex: 0 0 44px;
-
-        margin-left: auto;
-      }
-
-
-      /* ==============================================================
-         MOBILE PRESS FEEDBACK
-         ============================================================== */
-
-      .mode-switch:active {
-        transform: scale(.96);
-      }
-
-      .mode-switch.expanded:active {
-        transform: scale(.985);
-      }
+      .mode-switch.expanded .mode-icon { font-size: 18px; }
+      .mode-switch.expanded .mode-switch-label { display: inline; }
+      .mode-switch.expanded .switch { display: block; }
     }
-
-
-    /* ================================================================
-       VERY SMALL PHONES
-       ================================================================ */
-
-    @media (max-width: 380px) {
-
-      .mode-switch.expanded {
-
-        width: min(
-          225px,
-          calc(100vw - 24px)
-        );
-
-        padding-left: 10px;
-        padding-right: 10px;
-
-        gap: 7px;
-      }
-
-      .mode-switch.expanded .mode-switch-label {
-        font-size: 12.5px;
-      }
-
-      .mode-switch.expanded .mode-icon {
-        flex-basis: 24px;
-        width: 24px;
-      }
-
-      .mode-switch.expanded .switch {
-        flex-basis: 42px;
-        width: 42px;
-      }
-    }
-
-
-    /* ================================================================
-       REDUCED MOTION
-       ================================================================ */
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .mode-switch,
-      .mode-icon,
-      .mode-switch-label {
-        transition: none !important;
-      }
-    }
-
   </style>
 </head>
-
-
 <body>
-
   <main>
-
-    <!-- ==============================================================
-         HEADER
-         ============================================================== -->
-
     <div class="header-row">
-
-      <svg
-        class="sprout-mark"
-        viewBox="0 0 48 48"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-
-        <path
-          d="M24 43V24"
-          stroke="currentColor"
-          stroke-width="2.4"
-          stroke-linecap="round"
-        />
-
-        <path
-          d="M24 26C24 14 34 12 40 12C40 22 34 27 24 26Z"
-          fill="currentColor"
-          opacity=".85"
-        />
-
-        <path
-          d="M24 30C24 20 15 17 9 17C9 27 16 32 24 30Z"
-          fill="currentColor"
-        />
-
+      <svg class="sprout-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 43V24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M24 26C24 14 34 12 40 12C40 22 34 27 24 26Z" fill="currentColor" opacity=".85"/>
+        <path d="M24 30C24 20 15 17 9 17C9 27 16 32 24 30Z" fill="currentColor"/>
       </svg>
-
-      <div class="eyebrow">
-        ખેડૂત મિત્રો માટે તૈયાર કરેલું સાધન
-      </div>
-
+      <div class="eyebrow">ખેડૂત મિત્રો માટે તૈયાર કરેલું સાધન</div>
     </div>
-
-
-    <h1>
-      એક ફોટોથી પાકનું ચોક્કસ નિદાન
-    </h1>
-
-
-    <p class="intro">
-      પાનની તસવીર અપલોડ કરો અને સરળ ગુજરાતી ભાષામાં
-      રોગનું નિદાન તથા ઉપચારનું માર્ગદર્શન મેળવો.
-    </p>
-
-
-    <!-- ==============================================================
-         MAIN CONTENT
-         ============================================================== -->
+    <h1>એક ફોટોથી પાકનું ચોક્કસ નિદાન</h1>
+    <p class="intro">પાનની તસવીર અપલોડ કરો અને સરળ ગુજરાતી ભાષામાં રોગનું નિદાન તથા ઉપચારનું માર્ગદર્શન મેળવો.</p>
 
     <section class="layout">
-
-      <!-- ============================================================
-           UPLOAD PANEL
-           ============================================================ -->
-
       <div class="panel upload-panel">
-
-        <label
-          class="dropzone"
-          id="dropzone"
-          for="image-input"
-        >
-
+        <label class="dropzone" id="dropzone" for="image-input">
           <div id="upload-message">
-
-            <div class="leaf-icon">
-              🌿
-            </div>
-
-            <strong>
-              પાનની તસવીર પસંદ કરો
-            </strong>
-
-            <span>
-              અહીં ક્લિક કરો અથવા તસવીર ખેંચીને મૂકો
-            </span>
-
+            <div class="leaf-icon">🌿</div>
+            <strong>પાનની તસવીર પસંદ કરો</strong>
+            <span>અહીં ક્લિક કરો અથવા તસવીર ખેંચીને મૂકો</span>
           </div>
-
-
-          <img
-            class="preview"
-            id="preview"
-            alt="પસંદ કરેલી તસવીર"
-          >
-
-
-          <input
-            id="image-input"
-            type="file"
-            accept="image/*"
-          >
-
+          <img class="preview" id="preview" alt="પસંદ કરેલી તસવીર">
+          <input id="image-input" type="file" accept="image/*">
         </label>
 
+        <input id="camera-input" type="file" accept="image/*" capture="environment">
 
-        <input
-          id="camera-input"
-          type="file"
-          accept="image/*"
-          capture="environment"
-        >
-
-
-        <span
-          class="file-name"
-          id="file-name"
-        >
-          કોઈ તસવીર પસંદ કરી નથી
-        </span>
-
+        <span class="file-name" id="file-name">કોઈ તસવીર પસંદ કરી નથી</span>
 
         <div class="actions">
-
-          <label
-            class="capture-button"
-            for="camera-input"
-          >
-            📷 ફોટો લો
-          </label>
-
-
-          <button
-            id="analyze"
-            type="button"
-            disabled
-          >
-            તપાસ કરો
-          </button>
-
+          <label class="capture-button" for="camera-input">📷 ફોટો લો</label>
+          <button id="analyze" type="button" disabled>તપાસ કરો</button>
         </div>
 
-
-        <p
-          class="mode-note"
-          id="mode-note"
-          role="status"
-        ></p>
-
-
-        <div
-          class="loading"
-          id="loading"
-          role="status"
-          aria-live="polite"
-        >
-          તપાસ ચાલી રહી છે... કૃપા કરીને રાહ જુઓ.
-        </div>
-
-
-        <div
-          class="error"
-          id="error"
-          role="alert"
-        ></div>
-
+        <p class="mode-note" id="mode-note" role="status"></p>
+        <div class="loading" id="loading" role="status" aria-live="polite">તપાસ ચાલી રહી છે... કૃપા કરીને રાહ જુઓ.</div>
+        <div class="error" id="error" role="alert"></div>
       </div>
-
-
-      <!-- ============================================================
-           RESULT PANEL
-           ============================================================ -->
 
       <div class="panel result-panel">
-
-        <div
-          class="result"
-          id="result"
-          aria-live="polite"
-        >
-
-          <h2
-            class="result-heading"
-            id="result-heading"
-          >
-            🌿 પાકની તપાસનું પરિણામ
-          </h2>
-
-
+        <div class="result" id="result" aria-live="polite">
+          <h2 class="result-heading" id="result-heading">🌿 પાકની તપાસનું પરિણામ</h2>
           <div class="result-body">
-
-            <div
-              class="prediction"
-              id="prediction"
-            ></div>
-
-
-            <div
-              class="gujarati-title"
-              id="gujarati-title"
-            ></div>
-
+            <div class="prediction" id="prediction"></div>
+            <div class="gujarati-title" id="gujarati-title"></div>
 
             <div class="result-meta">
-
-              <div
-                class="result-category"
-                id="category"
-              ></div>
-
-
-              <div
-                class="confidence"
-                id="confidence"
-              ></div>
-
+              <div class="result-category" id="category"></div>
+              <div class="confidence" id="confidence"></div>
             </div>
 
-
-            <div
-              class="uncertain"
-              id="uncertainty"
-              hidden
-            ></div>
-
-
+            <div class="uncertain" id="uncertainty" hidden></div>
             <div id="result-sections"></div>
-
             <div id="probabilities"></div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ==============================================================
-         DUAL-MODE SWITCH
-         
-         PC:
-         🔬 / 🤖 → LABEL → SWITCH
-
-         MOBILE:
-         collapsed = icon only
-         expanded  = icon → label → switch
-         ============================================================== -->
-
-    <div
-      class="mode-switch"
-      id="mode-switch"
-      aria-label="વિશ્લેષણ મોડ"
-    >
-
-      <!-- ============================================================
-           REAL MODE ICON
-           
-           JavaScript changes this:
-           
-           🔬 = Project Model
-           🤖 = AI Vision
-           ============================================================ -->
-
-      <span
-        class="mode-icon"
-        id="mode-icon"
-        aria-hidden="true"
-      >🔬</span>
-
-
-      <!-- ============================================================
-           MODE LABEL
-           ============================================================ -->
-
-      <span
-        class="mode-switch-label"
-        id="mode-switch-label"
-      >
-        🔬 મોડેલ વિશ્લેષણ
-      </span>
-
-
-      <!-- ============================================================
-           ACTUAL SWITCH INPUT
-           ============================================================ -->
-
-      <input
-        class="switch-input"
-        id="mode-toggle"
-        type="checkbox"
-        role="switch"
-        aria-label="AI Vision mode"
-      >
-
-
-      <label
-        class="switch"
-        for="mode-toggle"
-        aria-hidden="true"
-      ></label>
-
+    <div class="mode-switch" id="mode-switch">
+      <span class="mode-icon" id="mode-icon" aria-hidden="true">🔬</span>
+      <span class="mode-switch-label" id="mode-switch-label"><span class="mode-label-icon" id="mode-label-icon" aria-hidden="true">🔬</span> <span id="mode-label-text">મોડેલ વિશ્લેષણ</span></span>
+      <input class="switch-input" id="mode-toggle" type="checkbox" role="switch" aria-label="AI Vision mode">
+      <label class="switch" for="mode-toggle" aria-hidden="true"></label>
     </div>
 
-
-    <!-- ==============================================================
-         FOOTER
-         ============================================================== -->
-
-    <footer>
-      ચોક્કસ માર્ગદર્શન માટે સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો.
-    </footer>
-
+    <footer>ચોક્કસ માર્ગદર્શન માટે સ્થાનિક કૃષિ નિષ્ણાતની સલાહ લો.</footer>
   </main>
 
-
   <script>
-
-    /* ================================================================
-       DOM REFERENCES
-       ================================================================ */
-
     const imageInput   = document.getElementById('image-input');
     const cameraInput  = document.getElementById('camera-input');
     const dropzone     = document.getElementById('dropzone');
@@ -1464,12 +337,12 @@
     const resultBox    = document.getElementById('result');
     const layout       = document.querySelector('.layout');
     const mainEl       = document.querySelector('main');
-
-    const modeSwitch   = document.getElementById('mode-switch');
-    const modeIcon     = document.getElementById('mode-icon');
     const modeToggle   = document.getElementById('mode-toggle');
     const modeLabel    = document.getElementById('mode-switch-label');
-
+    const modeSwitch   = document.getElementById('mode-switch');
+    const modeIcon     = document.getElementById('mode-icon');
+    const modeLabelIcon = document.getElementById('mode-label-icon');
+    const modeLabelText = document.getElementById('mode-label-text');
     const modeNote     = document.getElementById('mode-note');
     const loadingEl    = document.getElementById('loading');
     const sectionsEl   = document.getElementById('result-sections');
@@ -1481,1204 +354,290 @@
     const uncertainEl  = document.getElementById('uncertainty');
     const probsEl      = document.getElementById('probabilities');
 
-
-    /* ================================================================
-       APPLICATION STATE
-       ================================================================ */
-
     let currentMode = 'project';
     let selectedFile = null;
     let previewUrl = null;
     let isAnalyzing = false;
-
-    let mobileModeExpanded = false;
-
-
-    /* ================================================================
-       MESSAGES
-       ================================================================ */
+    let collapseTimer = null;
+    const mobileQuery = window.matchMedia('(max-width: 760px)');
 
     const MSG = {
-
-      invalid:
-        'કૃપા કરીને માન્ય તસવીર (JPG / PNG / WebP) પસંદ કરો.',
-
-      offline:
-        'સર્વર સાથે જોડાણ થઈ શક્યું નથી. થોડા સમય પછી ફરી પ્રયાસ કરો.',
-
-      failed:
-        'તપાસ પૂર્ણ થઈ શકી નથી. કૃપા કરીને બીજી તસવીર સાથે ફરી પ્રયાસ કરો.',
-
-      notPlant:
-        '⚠️ આ તસવીરમાં કોઈ છોડ કે પાન ઓળખાયું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો.'
+      invalid: 'કૃપા કરીને માન્ય તસવીર (JPG / PNG / WebP) પસંદ કરો.',
+      offline: 'સર્વર સાથે જોડાણ થઈ શક્યું નથી. થોડા સમય પછી ફરી પ્રયાસ કરો.',
+      failed:  'તપાસ પૂર્ણ થઈ શકી નથી. કૃપા કરીને બીજી તસવીર સાથે ફરી પ્રયાસ કરો.',
+      notPlant:'⚠️ આ તસવીરમાં કોઈ છોડ કે પાન ઓળખાયું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો.'
     };
 
-
-    /* ================================================================
-       MOBILE MODE ICON
-       
-       THIS IS THE IMPORTANT FIX.
-       
-       We directly update the REAL HTML element:
-       
-       Project → 🔬
-       Vision  → 🤖
-       
-       No CSS ::before.
-       No CSS variable.
-       No vision-mode class required.
-       ================================================================ */
-
-    function updateMobileModeIcon() {
-
-      if (!modeIcon) {
-        return;
-      }
-
-      modeIcon.textContent =
-        currentMode === 'vision'
-          ? '🤖'
-          : '🔬';
-    }
-
-
-    /* ================================================================
-       MOBILE MODE SWITCH — EXPAND
-       ================================================================ */
-
-    function expandMobileModeSwitch() {
-
-      if (
-        !window.matchMedia(
-          '(max-width: 760px)'
-        ).matches
-      ) {
-        return;
-      }
-
-      mobileModeExpanded = true;
-
-      modeSwitch.classList.add(
-        'expanded'
-      );
-    }
-
-
-    /* ================================================================
-       MOBILE MODE SWITCH — COLLAPSE
-       ================================================================ */
-
-    function collapseMobileModeSwitch() {
-
-      if (
-        !window.matchMedia(
-          '(max-width: 760px)'
-        ).matches
-      ) {
-        return;
-      }
-
-      mobileModeExpanded = false;
-
-      modeSwitch.classList.remove(
-        'expanded'
-      );
-    }
-
-
-    /* ================================================================
-       MOBILE MODE SWITCH CLICK
-       ================================================================ */
-
-    modeSwitch.addEventListener(
-      'click',
-      (event) => {
-
-        /*
-         * Desktop:
-         * Do nothing.
-         */
-        if (
-          !window.matchMedia(
-            '(max-width: 760px)'
-          ).matches
-        ) {
-          return;
-        }
-
-
-        /*
-         * Already expanded:
-         *
-         * Do NOT collapse.
-         *
-         * This allows the label and switch
-         * to work normally.
-         */
-        if (mobileModeExpanded) {
-          return;
-        }
-
-
-        /*
-         * Collapsed:
-         *
-         * Expand the circle.
-         */
-        expandMobileModeSwitch();
-      }
-    );
-
-
-    /* ================================================================
-       MODE CHANGE
-       ================================================================ */
-
-    modeToggle.addEventListener(
-      'change',
-      () => {
-
-        setMode(
-          modeToggle.checked
-            ? 'vision'
-            : 'project'
-        );
-
-
-        /*
-         * Immediately update:
-         *
-         * 🔬 → 🤖
-         *
-         * or
-         *
-         * 🤖 → 🔬
-         */
-        updateMobileModeIcon();
-
-
-        /*
-         * On mobile:
-         *
-         * Give the user a short moment
-         * to see the new mode.
-         *
-         * Then collapse back to the circle.
-         */
-        if (
-          window.matchMedia(
-            '(max-width: 760px)'
-          ).matches
-        ) {
-
-          setTimeout(
-            () => {
-              collapseMobileModeSwitch();
-            },
-            260
-          );
-        }
-      }
-    );
-
-
-    /* ================================================================
-       RESIZE / ROTATION
-       ================================================================ */
-
-    window.addEventListener(
-      'resize',
-      () => {
-
-        /*
-         * Keep icon synchronized.
-         */
-        updateMobileModeIcon();
-
-
-        /*
-         * If device changes from mobile
-         * to desktop, remove mobile state.
-         */
-        if (
-          !window.matchMedia(
-            '(max-width: 760px)'
-          ).matches
-        ) {
-
-          mobileModeExpanded = false;
-
-          modeSwitch.classList.remove(
-            'expanded'
-          );
-        }
-      }
-    );
-
-
-    /* ================================================================
-       ERROR HANDLING
-       ================================================================ */
-
-    function showError(
-      msg,
-      isNotPlant = false
-    ) {
-
+    function showError(msg, isNotPlant = false) {
       errorBox.textContent = msg;
-
-      errorBox.classList.add(
-        'visible'
-      );
-
-      errorBox.classList.toggle(
-        'not-plant',
-        isNotPlant
-      );
+      errorBox.classList.add('visible');
+      errorBox.classList.toggle('not-plant', isNotPlant);
     }
-
 
     function hideError() {
-
-      errorBox.classList.remove(
-        'visible',
-        'not-plant'
-      );
-
+      errorBox.classList.remove('visible', 'not-plant');
       errorBox.textContent = '';
     }
 
-
-    /* ================================================================
-       RESULT VISIBILITY
-       ================================================================ */
-
     function hideResult() {
-
-      resultBox.classList.remove(
-        'visible'
-      );
-
-      layout.classList.remove(
-        'has-result'
-      );
-
-      mainEl.classList.remove(
-        'has-result'
-      );
+      resultBox.classList.remove('visible');
+      layout.classList.remove('has-result');
+      mainEl.classList.remove('has-result');
     }
-
-
-    /* ================================================================
-       FILE SELECTION
-       ================================================================ */
 
     function chooseFile(file) {
-
-      if (
-        !file ||
-        !file.type ||
-        !file.type.startsWith('image/')
-      ) {
-
+      if (!file || !file.type || !file.type.startsWith('image/')) {
         showError(MSG.invalid);
-
         return;
       }
-
-
       selectedFile = file;
-
-
-      fileNameEl.textContent =
-        file.name ||
-        'કેમેરા તસવીર';
-
-
-      if (previewUrl) {
-
-        URL.revokeObjectURL(
-          previewUrl
-        );
-      }
-
-
-      previewUrl =
-        URL.createObjectURL(file);
-
-
-      preview.src =
-        previewUrl;
-
-
-      preview.style.display =
-        'block';
-
-
-      uploadMsg.style.display =
-        'none';
-
-
-      analyzeBtn.disabled =
-        isAnalyzing;
-
-
+      fileNameEl.textContent = file.name || 'કેમેરા તસવીર';
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+      preview.src = previewUrl;
+      preview.style.display = 'block';
+      uploadMsg.style.display = 'none';
+      analyzeBtn.disabled = isAnalyzing;
       hideError();
-
       hideResult();
     }
-
-
-    /* ================================================================
-       MODE CONTROL
-       ================================================================ */
 
     function setMode(mode) {
-
       currentMode = mode;
+      const isProject = mode === 'project';
+      modeToggle.checked = !isProject;
 
-      const isProject =
-        mode === 'project';
-
-
-      modeToggle.checked =
-        !isProject;
-
+      const icon = isProject ? '🔬' : '🤖';
+      modeIcon.textContent = icon;
+      modeLabelIcon.textContent = icon;
 
       if (isProject) {
-
-        modeLabel.textContent =
-          '🔬 મોડેલ વિશ્લેષણ';
-
-        modeLabel.style.color =
-          'var(--leaf-deep)';
-
-        modeNote.classList.remove(
-          'visible'
-        );
-
-        analyzeBtn.classList.remove(
-          'btn-vision'
-        );
-
+        modeLabelText.textContent = 'મોડેલ વિશ્લેષણ';
+        modeLabel.style.color = 'var(--leaf-deep)';
+        modeNote.classList.remove('visible');
+        analyzeBtn.classList.remove('btn-vision');
       } else {
-
-        modeLabel.textContent =
-          '🤖 AI વિઝન મોડ';
-
-        modeLabel.style.color =
-          'var(--turmeric-deep)';
-
-        modeNote.textContent =
-          '🤖 AI વિઝન મોડ સક્રિય: કેરી, લીંબુ, પપૈયા કે અન્ય કોઈપણ છોડના સામાન્ય વિશ્લેષણ માટે.';
-
-        modeNote.classList.add(
-          'visible'
-        );
-
-        analyzeBtn.classList.add(
-          'btn-vision'
-        );
+        modeLabelText.textContent = 'AI વિઝન મોડ';
+        modeLabel.style.color = 'var(--turmeric-deep)';
+        modeNote.textContent = '🤖 AI વિઝન મોડ સક્રિય: કેરી, લીંબુ, પપૈયા કે અન્ય કોઈપણ છોડના સામાન્ય વિશ્લેષણ માટે.';
+        modeNote.classList.add('visible');
+        analyzeBtn.classList.add('btn-vision');
       }
 
-
-      analyzeBtn.disabled =
-        !selectedFile ||
-        isAnalyzing;
-
-
+      analyzeBtn.disabled = !selectedFile || isAnalyzing;
       hideError();
-
       hideResult();
-
-
-      /*
-       * Keep icon synchronized even if
-       * setMode() is called from somewhere else.
-       */
-      updateMobileModeIcon();
     }
 
+    function expandModeSwitch() {
+      clearTimeout(collapseTimer);
+      modeSwitch.classList.add('expanded');
+    }
 
-    /* ================================================================
-       LIST NORMALIZATION
-       ================================================================ */
+    function collapseModeSwitch() {
+      clearTimeout(collapseTimer);
+      modeSwitch.classList.remove('expanded');
+    }
 
     function asList(value) {
-
-      if (Array.isArray(value)) {
-
-        return value.filter(
-          v =>
-            typeof v === 'string' &&
-            v.trim()
-        );
-      }
-
-
-      if (
-        typeof value === 'string' &&
-        value.trim()
-      ) {
-
-        return [
-          value.trim()
-        ];
-      }
-
-
+      if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v.trim());
+      if (typeof value === 'string' && value.trim()) return [value.trim()];
       return [];
     }
 
-
-    /* ================================================================
-       RESULT SECTION CREATION
-       ================================================================ */
-
-    function addSection(
-      title,
-      content,
-      forceList = false
-    ) {
-
-      const items =
-        asList(content);
-
-
-      if (!items.length) {
-        return;
-      }
-
-
-      const section =
-        document.createElement(
-          'section'
-        );
-
-      section.className =
-        'result-section';
-
-
-      const h3 =
-        document.createElement(
-          'h3'
-        );
-
-      h3.textContent =
-        title;
-
-      section.appendChild(
-        h3
-      );
-
-
-      if (
-        forceList ||
-        items.length > 1
-      ) {
-
-        const ul =
-          document.createElement(
-            'ul'
-          );
-
-
-        items.forEach(
-          t => {
-
-            const li =
-              document.createElement(
-                'li'
-              );
-
-            li.textContent =
-              t;
-
-            ul.appendChild(
-              li
-            );
-          }
-        );
-
-
-        section.appendChild(
-          ul
-        );
-
+    function addSection(title, content, forceList = false) {
+      const items = asList(content);
+      if (!items.length) return;
+      const section = document.createElement('section');
+      section.className = 'result-section';
+      const h3 = document.createElement('h3');
+      h3.textContent = title;
+      section.appendChild(h3);
+      if (forceList || items.length > 1) {
+        const ul = document.createElement('ul');
+        items.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+        section.appendChild(ul);
       } else {
-
-        const p =
-          document.createElement(
-            'p'
-          );
-
-        p.textContent =
-          items[0];
-
-        section.appendChild(
-          p
-        );
+        const p = document.createElement('p');
+        p.textContent = items[0];
+        section.appendChild(p);
       }
-
-
-      sectionsEl.appendChild(
-        section
-      );
+      sectionsEl.appendChild(section);
     }
-
-
-    /* ================================================================
-       DISPLAY PREDICTION
-       ================================================================ */
 
     function displayPrediction(data) {
-
       sectionsEl.replaceChildren();
-
       probsEl.replaceChildren();
 
-
-      /* --------------------------------------------------------------
-         NON-PLANT REJECTION
-         -------------------------------------------------------------- */
-
-      const visionNotPlant =
-        data.mode === 'vision' &&
-        data.diagnosis &&
-        data.diagnosis.is_plant === false;
-
-
-      if (
-        data.is_plant === false ||
-        visionNotPlant
-      ) {
-
-        showError(
-          data.error_gu ||
-          MSG.notPlant,
-          true
-        );
-
+      // ---- NON-PLANT REJECTION (both modes) ----
+      const visionNotPlant = data.mode === 'vision' && data.diagnosis && data.diagnosis.is_plant === false;
+      if (data.is_plant === false || visionNotPlant) {
+        showError(data.error_gu || MSG.notPlant, true);
         hideResult();
-
         return;
       }
 
-
-      /* --------------------------------------------------------------
-         AI VISION MODE
-         -------------------------------------------------------------- */
-
       if (data.mode === 'vision') {
+        // ---------- AI VISION MODE ----------
+        headingEl.textContent = '🤖 AI વિઝન વિશ્લેષણ પરિણામ';
+        const d = data.diagnosis || {};
+        const plantGu = d.plant_gu || d.plant_en || '';
+        const nameGu  = d.name_gu || d.name_en || 'સામાન્ય સમસ્યા';
 
-        headingEl.textContent =
-          '🤖 AI વિઝન વિશ્લેષણ પરિણામ';
+        predictionEl.textContent = [d.plant_en, d.name_en].filter(Boolean).join(' — ');
+        titleEl.textContent = plantGu ? `${nameGu} (${plantGu})` : nameGu;
 
-
-        const d =
-          data.diagnosis ||
-          {};
-
-
-        const plantGu =
-          d.plant_gu ||
-          d.plant_en ||
-          '';
-
-
-        const nameGu =
-          d.name_gu ||
-          d.name_en ||
-          'સામાન્ય સમસ્યા';
-
-
-        predictionEl.textContent =
-          [
-            d.plant_en,
-            d.name_en
-          ]
-            .filter(Boolean)
-            .join(' — ');
-
-
-        titleEl.textContent =
-          plantGu
-            ? `${nameGu} (${plantGu})`
-            : nameGu;
-
-
-        categoryEl.textContent =
-          `પ્રકાર: ${
-            d.type_gu ||
-            'વિશ્લેષણ'
-          }`;
-
-        categoryEl.hidden =
-          false;
-
-
-        confidenceEl.textContent =
-          `વિશ્વાસ સ્તર: ${
-            d.confidence_assessment ||
-            'મધ્યમ'
-          }`;
-
-        confidenceEl.hidden =
-          false;
-
+        categoryEl.textContent = `પ્રકાર: ${d.type_gu || 'વિશ્લેષણ'}`;
+        categoryEl.hidden = false;
+        confidenceEl.textContent = `વિશ્વાસ સ્તર: ${d.confidence_assessment || 'મધ્યમ'}`;
+        confidenceEl.hidden = false;
 
         if (d.ai_note_gu) {
-
-          uncertainEl.textContent =
-            `ℹ️ AI નોંધ: ${d.ai_note_gu}`;
-
-          uncertainEl.hidden =
-            false;
-
+          uncertainEl.textContent = `ℹ️ AI નોંધ: ${d.ai_note_gu}`;
+          uncertainEl.hidden = false;
         } else {
-
-          uncertainEl.hidden =
-            true;
+          uncertainEl.hidden = true;
         }
 
-
-        if (d.cause_gu) {
-
-          addSection(
-            '🔍 સંભવિત કારણ / જીવાણુ:',
-            d.cause_gu
-          );
-        }
-
-
-        addSection(
-          '🍂 દેખાતા લક્ષણો:',
-          d.symptoms_gu,
-          true
-        );
-
-
-        addSection(
-          '💊 સૂચિત ઉપાય અને સારવાર:',
-          d.management_gu,
-          true
-        );
-
-
-        addSection(
-          '🛡️ ભવિષ્યમાં બચાવના પગલાં:',
-          d.prevention_gu,
-          true
-        );
-
+        if (d.cause_gu) addSection('🔍 સંભવિત કારણ / જીવાણુ:', d.cause_gu);
+        addSection('🍂 દેખાતા લક્ષણો:', d.symptoms_gu, true);
+        addSection('💊 સૂચિત ઉપાય અને સારવાર:', d.management_gu, true);
+        addSection('🛡️ ભવિષ્યમાં બચાવના પગલાં:', d.prevention_gu, true);
 
       } else {
+        // ---------- PROJECT MODEL MODE ----------
+        headingEl.textContent = '🔬 પ્રશિક્ષિત મોડેલ પરિણામ';
+        const d = data.details || {};
+        const rawClass = data.prediction || data.predicted_class || '';
+        const plantGu = d.plant_gu || '';
+        const nameGu  = d.name_gu || rawClass.split('___')[1] || rawClass;
 
-        /* ------------------------------------------------------------
-           PROJECT MODEL MODE
-           ------------------------------------------------------------ */
+        predictionEl.textContent = rawClass.replace('___', ' — ').replaceAll('_', ' ');
+        titleEl.textContent = plantGu ? `${nameGu} (${plantGu})` : nameGu;
 
-        headingEl.textContent =
-          '🔬 પ્રશિક્ષિત મોડેલ પરિણામ';
+        categoryEl.textContent = `પ્રકાર: ${d.type_gu || 'રોગ / સમસ્યા'}`;
+        categoryEl.hidden = false;
 
+        const conf = Number(data.confidence);
+        confidenceEl.textContent = Number.isFinite(conf) ? `ઓળખ વિશ્વાસ: ${conf.toFixed(1)}%` : '';
+        confidenceEl.hidden = !Number.isFinite(conf);
 
-        const d =
-          data.details ||
-          {};
-
-
-        const rawClass =
-          data.prediction ||
-          data.predicted_class ||
-          '';
-
-
-        const plantGu =
-          d.plant_gu ||
-          '';
-
-
-        const nameGu =
-          d.name_gu ||
-          rawClass.split('___')[1] ||
-          rawClass;
-
-
-        predictionEl.textContent =
-          rawClass
-            .replace('___', ' — ')
-            .replaceAll('_', ' ');
-
-
-        titleEl.textContent =
-          plantGu
-            ? `${nameGu} (${plantGu})`
-            : nameGu;
-
-
-        categoryEl.textContent =
-          `પ્રકાર: ${
-            d.type_gu ||
-            'રોગ / સમસ્યા'
-          }`;
-
-        categoryEl.hidden =
-          false;
-
-
-        const conf =
-          Number(data.confidence);
-
-
-        confidenceEl.textContent =
-          Number.isFinite(conf)
-            ? `ઓળખ વિશ્વાસ: ${conf.toFixed(1)}%`
-            : '';
-
-
-        confidenceEl.hidden =
-          !Number.isFinite(conf);
-
-
-        const uncertain =
-          data.is_uncertain === true ||
-          data.is_confident === false;
-
-
+        const uncertain = data.is_uncertain === true || data.is_confident === false;
         if (uncertain) {
-
-          uncertainEl.textContent =
-            data.uncertainty_note ||
-            '⚠️ ઓળખ અંગે ખાતરી ઓછી છે. વધુ સ્પષ્ટ તસવીર અપલોડ કરો અથવા AI વિઝન મોડ વાપરો.';
-
-          uncertainEl.hidden =
-            false;
-
+          uncertainEl.textContent = data.uncertainty_note || '⚠️ ઓળખ અંગે ખાતરી ઓછી છે. વધુ સ્પષ્ટ તસવીર અપલોડ કરો અથવા AI વિઝન મોડ વાપરો.';
+          uncertainEl.hidden = false;
         } else {
-
-          uncertainEl.hidden =
-            true;
+          uncertainEl.hidden = true;
         }
 
+        addSection('🍂 દેખાતા લક્ષણો:', d.symptoms_gu, true);
+        if (d.cause_gu) addSection('🔬 રોગકારક ફૂગ / જીવાણુ:', d.cause_gu);
+        addSection('💊 સૂચિત ઉપાય અને સારવાર:', d.management_gu, true);
+        addSection('🛡️ ભવિષ્ય માટે બચાવ પગલાં:', d.prevention_gu, true);
 
-        addSection(
-          '🍂 દેખાતા લક્ષણો:',
-          d.symptoms_gu,
-          true
-        );
-
-
-        if (d.cause_gu) {
-
-          addSection(
-            '🔬 રોગકારક ફૂગ / જીવાણુ:',
-            d.cause_gu
-          );
-        }
-
-
-        addSection(
-          '💊 સૂચિત ઉપાય અને સારવાર:',
-          d.management_gu,
-          true
-        );
-
-
-        addSection(
-          '🛡️ ભવિષ્ય માટે બચાવ પગલાં:',
-          d.prevention_gu,
-          true
-        );
-
-
-        const preds =
-          data.top_3 ||
-          data.top_predictions ||
-          [];
-
-
+        const preds = data.top_3 || data.top_predictions || [];
         if (preds.length) {
-
-          const head =
-            document.createElement(
-              'h3'
-            );
-
-          head.className =
-            'result-section';
-
-          head.textContent =
-            'અન્ય સંભવિત ઓળખ';
-
-          probsEl.appendChild(
-            head
-          );
-
-
-          preds.forEach(
-            item => {
-
-              const score =
-                Number(
-                  item.confidence
-                );
-
-
-              if (
-                !Number.isFinite(
-                  score
-                )
-              ) {
-                return;
-              }
-
-
-              const row =
-                document.createElement(
-                  'div'
-                );
-
-              row.className =
-                'bar-row';
-
-
-              const label =
-                document.createElement(
-                  'span'
-                );
-
-              label.textContent =
-                item.name_gu ||
-                (item.class || '')
-                  .replace(
-                    '___',
-                    ' — '
-                  );
-
-
-              const pct =
-                document.createElement(
-                  'span'
-                );
-
-              pct.textContent =
-                `${score.toFixed(1)}%`;
-
-
-              const track =
-                document.createElement(
-                  'div'
-                );
-
-              track.className =
-                'bar-track';
-
-
-              const bar =
-                document.createElement(
-                  'div'
-                );
-
-              bar.className =
-                'bar';
-
-              bar.style.width =
-                `${score}%`;
-
-
-              track.appendChild(
-                bar
-              );
-
-
-              row.append(
-                label,
-                pct,
-                track
-              );
-
-
-              probsEl.appendChild(
-                row
-              );
-
-            }
-          );
+          const head = document.createElement('h3');
+          head.className = 'result-section';
+          head.textContent = 'અન્ય સંભવિત ઓળખ';
+          probsEl.appendChild(head);
+          preds.forEach(item => {
+            const score = Number(item.confidence);
+            if (!Number.isFinite(score)) return;
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            const label = document.createElement('span');
+            label.textContent = item.name_gu || (item.class || '').replace('___', ' — ');
+            const pct = document.createElement('span');
+            pct.textContent = `${score.toFixed(1)}%`;
+            const track = document.createElement('div');
+            track.className = 'bar-track';
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.width = `${score}%`;
+            track.appendChild(bar);
+            row.append(label, pct, track);
+            probsEl.appendChild(row);
+          });
         }
       }
 
-
-      resultBox.classList.add(
-        'visible'
-      );
-
-      layout.classList.add(
-        'has-result'
-      );
-
-      mainEl.classList.add(
-        'has-result'
-      );
+      resultBox.classList.add('visible');
+      layout.classList.add('has-result');
+      mainEl.classList.add('has-result');
     }
 
-
-    /* ================================================================
-       FILE EVENT HANDLER
-       ================================================================ */
-
     function handleFileEvent(e) {
-
-      if (
-        e.target.files &&
-        e.target.files[0]
-      ) {
-
-        chooseFile(
-          e.target.files[0]
-        );
-      }
-
+      if (e.target.files && e.target.files[0]) chooseFile(e.target.files[0]);
       e.target.value = '';
     }
 
-
-    imageInput.addEventListener(
-      'change',
-      handleFileEvent
-    );
-
-
-    cameraInput.addEventListener(
-      'change',
-      handleFileEvent
-    );
-
-
-    /* ================================================================
-       DRAG & DROP
-       ================================================================ */
-
-    [
-      'dragenter',
-      'dragover'
-    ].forEach(
-      ev => {
-
-        dropzone.addEventListener(
-          ev,
-          e => {
-
-            e.preventDefault();
-
-            dropzone.classList.add(
-              'dragging'
-            );
-          }
-        );
+    imageInput.addEventListener('change', handleFileEvent);
+    cameraInput.addEventListener('change', handleFileEvent);
+    modeToggle.addEventListener('change', () => {
+      setMode(modeToggle.checked ? 'vision' : 'project');
+      if (mobileQuery.matches) {
+        // Show the new state briefly, then collapse back to the icon
+        clearTimeout(collapseTimer);
+        collapseTimer = setTimeout(collapseModeSwitch, 450);
       }
-    );
+    });
 
+    // Mobile: tap the collapsed icon to expand
+    modeSwitch.addEventListener('click', () => {
+      if (mobileQuery.matches && !modeSwitch.classList.contains('expanded')) expandModeSwitch();
+    });
 
-    [
-      'dragleave',
-      'drop'
-    ].forEach(
-      ev => {
+    // Viewport changes: desktop is always the normal control, mobile starts collapsed.
+    // The selected mode is never touched here.
+    const onViewportChange = () => collapseModeSwitch();
+    if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', onViewportChange);
+    else if (mobileQuery.addListener) mobileQuery.addListener(onViewportChange);
 
-        dropzone.addEventListener(
-          ev,
-          e => {
+    ['dragenter', 'dragover'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('dragging'); }));
+    ['dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('dragging'); }));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragging');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) chooseFile(e.dataTransfer.files[0]);
+    });
 
-            e.preventDefault();
+    analyzeBtn.addEventListener('click', async () => {
+      if (!selectedFile || isAnalyzing) return;
+      isAnalyzing = true;
+      analyzeBtn.disabled = true;
+      analyzeBtn.textContent = 'તપાસ ચાલુ છે...';
+      loadingEl.classList.add('visible');
+      hideError();
+      hideResult();
 
-            dropzone.classList.remove(
-              'dragging'
-            );
-          }
-        );
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      const endpoint = currentMode === 'project' ? '/predict' : '/analyze-vision';
+
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: formData });
+        const data = await res.json().catch(() => null);
+        if (!res.ok) throw new Error((data && data.detail) || MSG.failed);
+        if (!data) throw new Error(MSG.failed);
+        displayPrediction(data);
+      } catch (err) {
+        console.error('Analysis failed:', err);
+        if (err instanceof TypeError) showError(MSG.offline);
+        else showError(err.message || MSG.failed);
+      } finally {
+        isAnalyzing = false;
+        loadingEl.classList.remove('visible');
+        analyzeBtn.textContent = 'તપાસ કરો';
+        analyzeBtn.disabled = !selectedFile;
       }
-    );
+    });
 
-
-    dropzone.addEventListener(
-      'drop',
-      e => {
-
-        e.preventDefault();
-
-        dropzone.classList.remove(
-          'dragging'
-        );
-
-
-        if (
-          e.dataTransfer.files &&
-          e.dataTransfer.files[0]
-        ) {
-
-          chooseFile(
-            e.dataTransfer.files[0]
-          );
-        }
-      }
-    );
-
-
-    /* ================================================================
-       ANALYZE BUTTON
-       ================================================================ */
-
-    analyzeBtn.addEventListener(
-      'click',
-      async () => {
-
-        if (
-          !selectedFile ||
-          isAnalyzing
-        ) {
-          return;
-        }
-
-
-        isAnalyzing =
-          true;
-
-        analyzeBtn.disabled =
-          true;
-
-        analyzeBtn.textContent =
-          'તપાસ ચાલુ છે...';
-
-
-        loadingEl.classList.add(
-          'visible'
-        );
-
-        hideError();
-
-        hideResult();
-
-
-        const formData =
-          new FormData();
-
-
-        formData.append(
-          'file',
-          selectedFile
-        );
-
-
-        const endpoint =
-          currentMode === 'project'
-            ? '/predict'
-            : '/analyze-vision';
-
-
-        try {
-
-          const res =
-            await fetch(
-              endpoint,
-              {
-                method: 'POST',
-                body: formData
-              }
-            );
-
-
-          const data =
-            await res
-              .json()
-              .catch(
-                () => null
-              );
-
-
-          if (!res.ok) {
-
-            throw new Error(
-              (data && data.detail) ||
-              MSG.failed
-            );
-          }
-
-
-          if (!data) {
-
-            throw new Error(
-              MSG.failed
-            );
-          }
-
-
-          displayPrediction(
-            data
-          );
-
-
-        } catch (err) {
-
-          console.error(
-            'Analysis failed:',
-            err
-          );
-
-
-          if (
-            err instanceof TypeError
-          ) {
-
-            showError(
-              MSG.offline
-            );
-
-          } else {
-
-            showError(
-              err.message ||
-              MSG.failed
-            );
-          }
-
-
-        } finally {
-
-          isAnalyzing =
-            false;
-
-          loadingEl.classList.remove(
-            'visible'
-          );
-
-          analyzeBtn.textContent =
-            'તપાસ કરો';
-
-          analyzeBtn.disabled =
-            !selectedFile;
-        }
-      }
-    );
-
-
-    /* ================================================================
-       INITIALIZE APPLICATION
-       ================================================================ */
-
-    /*
-     * Start in Project Model mode.
-     */
     setMode('project');
-
-
-    /*
-     * Explicitly synchronize:
-     *
-     * Mobile icon = 🔬
-     */
-    updateMobileModeIcon();
-
   </script>
-
 </body>
 </html>
