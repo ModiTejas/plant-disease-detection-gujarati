@@ -534,12 +534,11 @@
 
 
     /* ================================================================
-       ================================================================
-       PC / DESKTOP MODE SWITCH
+       MODE SWITCH — DESKTOP
        
-       This is the ORIGINAL full-size control.
-       It remains visible on PC / desktop devices.
-       ================================================================
+       Desktop remains the normal pill:
+       
+       ICON → LABEL → SWITCH
        ================================================================ */
 
     .mode-switch {
@@ -552,7 +551,7 @@
 
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
 
       background: rgba(255, 253, 246, .68);
 
@@ -583,6 +582,35 @@
         0 14px 32px rgba(54, 42, 31, .2),
         0 1px 0 rgba(255, 255, 255, .6) inset;
     }
+
+
+    /* ---------------------------------------------------------------
+       REAL MODE ICON
+       
+       IMPORTANT:
+       This is a real HTML element.
+       It is NOT ::before.
+       --------------------------------------------------------------- */
+
+    .mode-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 22px;
+      height: 22px;
+
+      flex: 0 0 22px;
+
+      font-size: 17px;
+      line-height: 1;
+
+      transition:
+        transform .25s cubic-bezier(.34, 1.56, .64, 1),
+        opacity .2s ease;
+    }
+
 
     .mode-switch-label {
       font-size: 13px;
@@ -766,26 +794,16 @@
 
 
     /* ================================================================
-       ================================================================
-       MOBILE DEVICES
+       MOBILE
        
-       IMPORTANT:
-       The desktop mode switch above is NOT redesigned.
+       MOBILE COLLAPSED:
+       LEFT BOTTOM → 🔬 / 🤖
        
-       On mobile:
-       1. The label disappears when collapsed.
-       2. The control becomes a beautiful circular icon button.
-       3. Tapping the circle expands the control.
-       4. The user can then switch between 🔬 and 🤖.
-       5. After switching, it collapses back to the circle.
-       ================================================================
+       MOBILE EXPANDED:
+       LEFT → ICON → LABEL → SWITCH
        ================================================================ */
 
     @media (max-width: 760px) {
-
-      /* --------------------------------------------------------------
-         MOBILE PAGE LAYOUT
-         -------------------------------------------------------------- */
 
       main {
         width: min(560px, calc(100% - 24px));
@@ -824,26 +842,27 @@
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE MODE SWITCH — COLLAPSED CIRCLE
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         MOBILE MODE SWITCH — COLLAPSED
+         
+         IMPORTANT:
+         LEFT SIDE, NOT RIGHT SIDE.
+         ============================================================== */
 
       .mode-switch {
 
-        /* Position it safely above the bottom edge */
-        left: auto;
-
-        right: max(
+        left: max(
           16px,
-          env(safe-area-inset-right)
+          env(safe-area-inset-left)
         );
+
+        right: auto;
 
         bottom: max(
           16px,
           env(safe-area-inset-bottom)
         );
 
-        /* Perfect circular control */
         width: 48px;
         height: 48px;
 
@@ -851,15 +870,14 @@
 
         border-radius: 50%;
 
-        /* Center everything */
         display: flex;
+
         align-items: center;
         justify-content: center;
 
         gap: 0;
 
-        /* Premium glass appearance */
-        background: rgba(255, 253, 246, .82);
+        background: rgba(255, 253, 246, .84);
 
         -webkit-backdrop-filter:
           saturate(180%) blur(18px);
@@ -874,7 +892,14 @@
           0 2px 5px rgba(54, 42, 31, .08),
           0 1px 0 rgba(255, 255, 255, .85) inset;
 
-        /* Smooth expansion */
+        overflow: hidden;
+
+        cursor: pointer;
+
+        user-select: none;
+
+        -webkit-tap-highlight-color: transparent;
+
         transition:
           width .38s cubic-bezier(.34, 1.25, .64, 1),
           border-radius .32s ease,
@@ -882,64 +907,57 @@
           gap .32s ease,
           box-shadow .25s ease,
           transform .25s cubic-bezier(.34, 1.56, .64, 1);
-
-        overflow: hidden;
-
-        /* Allows JS to toggle the expanded state */
-        cursor: pointer;
-
-        /* Prevent text selection while tapping */
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE ICON
+      /* ==============================================================
+         MOBILE ICON — COLLAPSED
          
-         The JavaScript updates this element to:
-         🔬  = Project / Model mode
-         🤖  = AI Vision mode
-         -------------------------------------------------------------- */
+         REAL HTML ELEMENT.
+         
+         🔬 = Project
+         🤖 = AI Vision
+         ============================================================== */
 
-      .mode-switch::before {
-        content: "🔬";
+      .mode-icon {
+
+        width: 48px;
+        height: 48px;
+
+        flex: 0 0 48px;
+
+        font-size: 21px;
+
+        line-height: 1;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
-        width: 100%;
-        height: 100%;
-
-        flex: 0 0 auto;
-
-        font-size: 21px;
-        line-height: 1;
-
-        transform: scale(1);
-
-        transition:
-          transform .25s cubic-bezier(.34, 1.56, .64, 1),
-          opacity .2s ease;
+        opacity: 1;
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE LABEL
-         
-         Hidden while the control is collapsed.
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         MOBILE LABEL — HIDDEN WHEN COLLAPSED
+         ============================================================== */
 
       .mode-switch-label {
+
         display: none;
 
-        flex: 0 0 auto;
+        flex: 1 1 auto;
+
+        min-width: 0;
 
         font-size: 13px;
         font-weight: 700;
 
         white-space: nowrap;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         opacity: 0;
 
@@ -951,32 +969,26 @@
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE SWITCH
-         
-         Hidden while collapsed.
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         MOBILE SWITCH — HIDDEN WHEN COLLAPSED
+         ============================================================== */
 
       .mode-switch .switch {
         display: none;
-
-        flex: 0 0 auto;
-
-        width: 44px;
-        height: 25px;
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE EXPANDED STATE
+      /* ==============================================================
+         MOBILE EXPANDED
          
-         JS adds .expanded when the user taps the circle.
-         -------------------------------------------------------------- */
+         ORDER:
+         ICON → LABEL → SWITCH
+         ============================================================== */
 
       .mode-switch.expanded {
 
         width: min(
-          235px,
+          245px,
           calc(100vw - 32px)
         );
 
@@ -986,7 +998,7 @@
 
         border-radius: 28px;
 
-        gap: 10px;
+        gap: 9px;
 
         justify-content: flex-start;
 
@@ -999,15 +1011,18 @@
       }
 
 
-      /* --------------------------------------------------------------
+      /* ==============================================================
          EXPANDED ICON
          
-         Turn the pseudo-element into a small fixed icon area.
-         -------------------------------------------------------------- */
+         Always remains on the LEFT.
+         ============================================================== */
 
-      .mode-switch.expanded::before {
+      .mode-switch.expanded .mode-icon {
+
         width: 25px;
         height: 25px;
+
+        flex: 0 0 25px;
 
         font-size: 19px;
 
@@ -1015,34 +1030,42 @@
       }
 
 
-      /* --------------------------------------------------------------
-         SHOW LABEL WHEN EXPANDED
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         EXPANDED LABEL
+         ============================================================== */
 
       .mode-switch.expanded .mode-switch-label {
+
         display: block;
 
         opacity: 1;
 
         transform: translateX(0);
-
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
 
-      /* --------------------------------------------------------------
-         SHOW SWITCH WHEN EXPANDED
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         EXPANDED SWITCH
+         
+         Always remains on the RIGHT.
+         ============================================================== */
 
       .mode-switch.expanded .switch {
+
         display: block;
+
+        width: 44px;
+        height: 25px;
+
+        flex: 0 0 44px;
+
+        margin-left: auto;
       }
 
 
-      /* --------------------------------------------------------------
-         MOBILE EXPANDED CLICK FEEDBACK
-         -------------------------------------------------------------- */
+      /* ==============================================================
+         MOBILE PRESS FEEDBACK
+         ============================================================== */
 
       .mode-switch:active {
         transform: scale(.96);
@@ -1056,26 +1079,35 @@
 
     /* ================================================================
        VERY SMALL PHONES
-       
-       Prevent the expanded control from becoming cramped.
        ================================================================ */
 
     @media (max-width: 380px) {
 
       .mode-switch.expanded {
+
         width: min(
-          220px,
+          225px,
           calc(100vw - 24px)
         );
 
         padding-left: 10px;
         padding-right: 10px;
 
-        gap: 8px;
+        gap: 7px;
       }
 
       .mode-switch.expanded .mode-switch-label {
         font-size: 12.5px;
+      }
+
+      .mode-switch.expanded .mode-icon {
+        flex-basis: 24px;
+        width: 24px;
+      }
+
+      .mode-switch.expanded .switch {
+        flex-basis: 42px;
+        width: 42px;
       }
     }
 
@@ -1087,11 +1119,12 @@
     @media (prefers-reduced-motion: reduce) {
 
       .mode-switch,
-      .mode-switch::before,
+      .mode-icon,
       .mode-switch-label {
         transition: none !important;
       }
     }
+
   </style>
 </head>
 
@@ -1113,6 +1146,7 @@
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
+
         <path
           d="M24 43V24"
           stroke="currentColor"
@@ -1130,6 +1164,7 @@
           d="M24 30C24 20 15 17 9 17C9 27 16 32 24 30Z"
           fill="currentColor"
         />
+
       </svg>
 
       <div class="eyebrow">
@@ -1142,6 +1177,7 @@
     <h1>
       એક ફોટોથી પાકનું ચોક્કસ નિદાન
     </h1>
+
 
     <p class="intro">
       પાનની તસવીર અપલોડ કરો અને સરળ ગુજરાતી ભાષામાં
@@ -1183,11 +1219,13 @@
 
           </div>
 
+
           <img
             class="preview"
             id="preview"
             alt="પસંદ કરેલી તસવીર"
           >
+
 
           <input
             id="image-input"
@@ -1222,6 +1260,7 @@
           >
             📷 ફોટો લો
           </label>
+
 
           <button
             id="analyze"
@@ -1287,6 +1326,7 @@
               id="prediction"
             ></div>
 
+
             <div
               class="gujarati-title"
               id="gujarati-title"
@@ -1299,6 +1339,7 @@
                 class="result-category"
                 id="category"
               ></div>
+
 
               <div
                 class="confidence"
@@ -1332,17 +1373,38 @@
          DUAL-MODE SWITCH
          
          PC:
-         Full label + switch is shown.
-         
+         🔬 / 🤖 → LABEL → SWITCH
+
          MOBILE:
-         Only 🔬 / 🤖 circle is shown initially.
-         Tapping it expands the control.
+         collapsed = icon only
+         expanded  = icon → label → switch
          ============================================================== -->
 
     <div
       class="mode-switch"
       id="mode-switch"
+      aria-label="વિશ્લેષણ મોડ"
     >
+
+      <!-- ============================================================
+           REAL MODE ICON
+           
+           JavaScript changes this:
+           
+           🔬 = Project Model
+           🤖 = AI Vision
+           ============================================================ -->
+
+      <span
+        class="mode-icon"
+        id="mode-icon"
+        aria-hidden="true"
+      >🔬</span>
+
+
+      <!-- ============================================================
+           MODE LABEL
+           ============================================================ -->
 
       <span
         class="mode-switch-label"
@@ -1351,6 +1413,10 @@
         🔬 મોડેલ વિશ્લેષણ
       </span>
 
+
+      <!-- ============================================================
+           ACTUAL SWITCH INPUT
+           ============================================================ -->
 
       <input
         class="switch-input"
@@ -1400,6 +1466,7 @@
     const mainEl       = document.querySelector('main');
 
     const modeSwitch   = document.getElementById('mode-switch');
+    const modeIcon     = document.getElementById('mode-icon');
     const modeToggle   = document.getElementById('mode-toggle');
     const modeLabel    = document.getElementById('mode-switch-label');
 
@@ -1424,12 +1491,6 @@
     let previewUrl = null;
     let isAnalyzing = false;
 
-    /*
-     * Mobile mode-switch state.
-     *
-     * false = compact circle
-     * true  = expanded control
-     */
     let mobileModeExpanded = false;
 
 
@@ -1454,148 +1515,221 @@
 
 
     /* ================================================================
-       MOBILE MODE SWITCH
+       MOBILE MODE ICON
+       
+       THIS IS THE IMPORTANT FIX.
+       
+       We directly update the REAL HTML element:
+       
+       Project → 🔬
+       Vision  → 🤖
+       
+       No CSS ::before.
+       No CSS variable.
+       No vision-mode class required.
        ================================================================ */
 
-    /*
-     * Updates the emoji displayed inside the mobile circular button.
-     *
-     * Project mode = 🔬
-     * AI Vision mode = 🤖
-     */
     function updateMobileModeIcon() {
 
-      const isMobile =
-        window.matchMedia('(max-width: 760px)').matches;
+      if (!modeIcon) {
+        return;
+      }
 
-      if (!isMobile) return;
-
-      modeSwitch.style.setProperty(
-        '--mobile-mode-icon',
-        currentMode === 'vision' ? '"🤖"' : '"🔬"'
-      );
-
-      /*
-       * CSS uses ::before.
-       * We update the actual content directly here so that
-       * the icon changes immediately after switching modes.
-       */
-      modeSwitch.classList.toggle(
-        'vision-mode',
+      modeIcon.textContent =
         currentMode === 'vision'
-      );
+          ? '🤖'
+          : '🔬';
     }
 
 
-    /*
-     * Expand the mobile mode control.
-     */
+    /* ================================================================
+       MOBILE MODE SWITCH — EXPAND
+       ================================================================ */
+
     function expandMobileModeSwitch() {
 
-      if (!window.matchMedia('(max-width: 760px)').matches) {
+      if (
+        !window.matchMedia(
+          '(max-width: 760px)'
+        ).matches
+      ) {
         return;
       }
 
       mobileModeExpanded = true;
 
-      modeSwitch.classList.add('expanded');
+      modeSwitch.classList.add(
+        'expanded'
+      );
     }
 
 
-    /*
-     * Collapse the mobile mode control.
-     */
+    /* ================================================================
+       MOBILE MODE SWITCH — COLLAPSE
+       ================================================================ */
+
     function collapseMobileModeSwitch() {
 
-      if (!window.matchMedia('(max-width: 760px)').matches) {
+      if (
+        !window.matchMedia(
+          '(max-width: 760px)'
+        ).matches
+      ) {
         return;
       }
 
       mobileModeExpanded = false;
 
-      modeSwitch.classList.remove('expanded');
+      modeSwitch.classList.remove(
+        'expanded'
+      );
     }
 
 
-    /*
-     * Clicking the circular mobile control expands it.
-     *
-     * Once expanded, clicks on the actual switch are handled
-     * separately by the change event below.
-     */
-    modeSwitch.addEventListener('click', (event) => {
+    /* ================================================================
+       MOBILE MODE SWITCH CLICK
+       ================================================================ */
 
-      if (!window.matchMedia('(max-width: 760px)').matches) {
-        return;
+    modeSwitch.addEventListener(
+      'click',
+      (event) => {
+
+        /*
+         * Desktop:
+         * Do nothing.
+         */
+        if (
+          !window.matchMedia(
+            '(max-width: 760px)'
+          ).matches
+        ) {
+          return;
+        }
+
+
+        /*
+         * Already expanded:
+         *
+         * Do NOT collapse.
+         *
+         * This allows the label and switch
+         * to work normally.
+         */
+        if (mobileModeExpanded) {
+          return;
+        }
+
+
+        /*
+         * Collapsed:
+         *
+         * Expand the circle.
+         */
+        expandMobileModeSwitch();
       }
+    );
 
-      /*
-       * If already expanded, don't collapse when the user
-       * interacts with the switch itself.
-       */
-      if (mobileModeExpanded) {
-        return;
+
+    /* ================================================================
+       MODE CHANGE
+       ================================================================ */
+
+    modeToggle.addEventListener(
+      'change',
+      () => {
+
+        setMode(
+          modeToggle.checked
+            ? 'vision'
+            : 'project'
+        );
+
+
+        /*
+         * Immediately update:
+         *
+         * 🔬 → 🤖
+         *
+         * or
+         *
+         * 🤖 → 🔬
+         */
+        updateMobileModeIcon();
+
+
+        /*
+         * On mobile:
+         *
+         * Give the user a short moment
+         * to see the new mode.
+         *
+         * Then collapse back to the circle.
+         */
+        if (
+          window.matchMedia(
+            '(max-width: 760px)'
+          ).matches
+        ) {
+
+          setTimeout(
+            () => {
+              collapseMobileModeSwitch();
+            },
+            260
+          );
+        }
       }
-
-      expandMobileModeSwitch();
-    });
+    );
 
 
-    /*
-     * When the user changes the mode:
-     *
-     * 1. Change the application mode.
-     * 2. Update the mobile icon.
-     * 3. Wait briefly so the user sees the new state.
-     * 4. Collapse the mobile control.
-     */
-    modeToggle.addEventListener('change', () => {
+    /* ================================================================
+       RESIZE / ROTATION
+       ================================================================ */
 
-      setMode(
-        modeToggle.checked
-          ? 'vision'
-          : 'project'
-      );
+    window.addEventListener(
+      'resize',
+      () => {
 
-      updateMobileModeIcon();
+        /*
+         * Keep icon synchronized.
+         */
+        updateMobileModeIcon();
 
-      if (window.matchMedia('(max-width: 760px)').matches) {
 
-        setTimeout(() => {
-          collapseMobileModeSwitch();
-        }, 260);
+        /*
+         * If device changes from mobile
+         * to desktop, remove mobile state.
+         */
+        if (
+          !window.matchMedia(
+            '(max-width: 760px)'
+          ).matches
+        ) {
 
+          mobileModeExpanded = false;
+
+          modeSwitch.classList.remove(
+            'expanded'
+          );
+        }
       }
-    });
-
-
-    /*
-     * Keep the mobile icon correct when the screen is resized.
-     */
-    window.addEventListener('resize', () => {
-
-      updateMobileModeIcon();
-
-      /*
-       * If switching from mobile to desktop,
-       * remove the mobile expanded state.
-       */
-      if (!window.matchMedia('(max-width: 760px)').matches) {
-        collapseMobileModeSwitch();
-      }
-
-    });
+    );
 
 
     /* ================================================================
        ERROR HANDLING
        ================================================================ */
 
-    function showError(msg, isNotPlant = false) {
+    function showError(
+      msg,
+      isNotPlant = false
+    ) {
 
       errorBox.textContent = msg;
 
-      errorBox.classList.add('visible');
+      errorBox.classList.add(
+        'visible'
+      );
 
       errorBox.classList.toggle(
         'not-plant',
@@ -1621,11 +1755,17 @@
 
     function hideResult() {
 
-      resultBox.classList.remove('visible');
+      resultBox.classList.remove(
+        'visible'
+      );
 
-      layout.classList.remove('has-result');
+      layout.classList.remove(
+        'has-result'
+      );
 
-      mainEl.classList.remove('has-result');
+      mainEl.classList.remove(
+        'has-result'
+      );
     }
 
 
@@ -1649,12 +1789,17 @@
 
       selectedFile = file;
 
+
       fileNameEl.textContent =
-        file.name || 'કેમેરા તસવીર';
+        file.name ||
+        'કેમેરા તસવીર';
 
 
       if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
+
+        URL.revokeObjectURL(
+          previewUrl
+        );
       }
 
 
@@ -1662,14 +1807,21 @@
         URL.createObjectURL(file);
 
 
-      preview.src = previewUrl;
+      preview.src =
+        previewUrl;
 
-      preview.style.display = 'block';
 
-      uploadMsg.style.display = 'none';
+      preview.style.display =
+        'block';
+
+
+      uploadMsg.style.display =
+        'none';
+
 
       analyzeBtn.disabled =
         isAnalyzing;
+
 
       hideError();
 
@@ -1687,6 +1839,7 @@
 
       const isProject =
         mode === 'project';
+
 
       modeToggle.checked =
         !isProject;
@@ -1733,9 +1886,17 @@
         !selectedFile ||
         isAnalyzing;
 
+
       hideError();
 
       hideResult();
+
+
+      /*
+       * Keep icon synchronized even if
+       * setMode() is called from somewhere else.
+       */
+      updateMobileModeIcon();
     }
 
 
@@ -1754,6 +1915,7 @@
         );
       }
 
+
       if (
         typeof value === 'string' &&
         value.trim()
@@ -1763,6 +1925,7 @@
           value.trim()
         ];
       }
+
 
       return [];
     }
@@ -1781,23 +1944,32 @@
       const items =
         asList(content);
 
-      if (!items.length) return;
+
+      if (!items.length) {
+        return;
+      }
 
 
       const section =
-        document.createElement('section');
+        document.createElement(
+          'section'
+        );
 
       section.className =
         'result-section';
 
 
       const h3 =
-        document.createElement('h3');
+        document.createElement(
+          'h3'
+        );
 
       h3.textContent =
         title;
 
-      section.appendChild(h3);
+      section.appendChild(
+        h3
+      );
 
 
       if (
@@ -1806,32 +1978,46 @@
       ) {
 
         const ul =
-          document.createElement('ul');
+          document.createElement(
+            'ul'
+          );
 
 
-        items.forEach(t => {
+        items.forEach(
+          t => {
 
-          const li =
-            document.createElement('li');
+            const li =
+              document.createElement(
+                'li'
+              );
 
-          li.textContent =
-            t;
+            li.textContent =
+              t;
 
-          ul.appendChild(li);
-        });
+            ul.appendChild(
+              li
+            );
+          }
+        );
 
 
-        section.appendChild(ul);
+        section.appendChild(
+          ul
+        );
 
       } else {
 
         const p =
-          document.createElement('p');
+          document.createElement(
+            'p'
+          );
 
         p.textContent =
           items[0];
 
-        section.appendChild(p);
+        section.appendChild(
+          p
+        );
       }
 
 
@@ -1890,7 +2076,8 @@
 
 
         const d =
-          data.diagnosis || {};
+          data.diagnosis ||
+          {};
 
 
         const plantGu =
@@ -1921,7 +2108,10 @@
 
 
         categoryEl.textContent =
-          `પ્રકાર: ${d.type_gu || 'વિશ્લેષણ'}`;
+          `પ્રકાર: ${
+            d.type_gu ||
+            'વિશ્લેષણ'
+          }`;
 
         categoryEl.hidden =
           false;
@@ -1929,7 +2119,8 @@
 
         confidenceEl.textContent =
           `વિશ્વાસ સ્તર: ${
-            d.confidence_assessment || 'મધ્યમ'
+            d.confidence_assessment ||
+            'મધ્યમ'
           }`;
 
         confidenceEl.hidden =
@@ -1992,7 +2183,8 @@
 
 
         const d =
-          data.details || {};
+          data.details ||
+          {};
 
 
         const rawClass =
@@ -2108,7 +2300,9 @@
         if (preds.length) {
 
           const head =
-            document.createElement('h3');
+            document.createElement(
+              'h3'
+            );
 
           head.className =
             'result-section';
@@ -2116,71 +2310,100 @@
           head.textContent =
             'અન્ય સંભવિત ઓળખ';
 
-          probsEl.appendChild(head);
+          probsEl.appendChild(
+            head
+          );
 
 
-          preds.forEach(item => {
+          preds.forEach(
+            item => {
 
-            const score =
-              Number(item.confidence);
+              const score =
+                Number(
+                  item.confidence
+                );
 
 
-            if (!Number.isFinite(score)) {
-              return;
+              if (
+                !Number.isFinite(
+                  score
+                )
+              ) {
+                return;
+              }
+
+
+              const row =
+                document.createElement(
+                  'div'
+                );
+
+              row.className =
+                'bar-row';
+
+
+              const label =
+                document.createElement(
+                  'span'
+                );
+
+              label.textContent =
+                item.name_gu ||
+                (item.class || '')
+                  .replace(
+                    '___',
+                    ' — '
+                  );
+
+
+              const pct =
+                document.createElement(
+                  'span'
+                );
+
+              pct.textContent =
+                `${score.toFixed(1)}%`;
+
+
+              const track =
+                document.createElement(
+                  'div'
+                );
+
+              track.className =
+                'bar-track';
+
+
+              const bar =
+                document.createElement(
+                  'div'
+                );
+
+              bar.className =
+                'bar';
+
+              bar.style.width =
+                `${score}%`;
+
+
+              track.appendChild(
+                bar
+              );
+
+
+              row.append(
+                label,
+                pct,
+                track
+              );
+
+
+              probsEl.appendChild(
+                row
+              );
+
             }
-
-
-            const row =
-              document.createElement('div');
-
-            row.className =
-              'bar-row';
-
-
-            const label =
-              document.createElement('span');
-
-            label.textContent =
-              item.name_gu ||
-              (item.class || '')
-                .replace('___', ' — ');
-
-
-            const pct =
-              document.createElement('span');
-
-            pct.textContent =
-              `${score.toFixed(1)}%`;
-
-
-            const track =
-              document.createElement('div');
-
-            track.className =
-              'bar-track';
-
-
-            const bar =
-              document.createElement('div');
-
-            bar.className =
-              'bar';
-
-            bar.style.width =
-              `${score}%`;
-
-
-            track.appendChild(bar);
-
-            row.append(
-              label,
-              pct,
-              track
-            );
-
-            probsEl.appendChild(row);
-
-          });
+          );
         }
       }
 
@@ -2238,39 +2461,43 @@
     [
       'dragenter',
       'dragover'
-    ].forEach(ev => {
+    ].forEach(
+      ev => {
 
-      dropzone.addEventListener(
-        ev,
-        e => {
+        dropzone.addEventListener(
+          ev,
+          e => {
 
-          e.preventDefault();
+            e.preventDefault();
 
-          dropzone.classList.add(
-            'dragging'
-          );
-        }
-      );
-    });
+            dropzone.classList.add(
+              'dragging'
+            );
+          }
+        );
+      }
+    );
 
 
     [
       'dragleave',
       'drop'
-    ].forEach(ev => {
+    ].forEach(
+      ev => {
 
-      dropzone.addEventListener(
-        ev,
-        e => {
+        dropzone.addEventListener(
+          ev,
+          e => {
 
-          e.preventDefault();
+            e.preventDefault();
 
-          dropzone.classList.remove(
-            'dragging'
-          );
-        }
-      );
-    });
+            dropzone.classList.remove(
+              'dragging'
+            );
+          }
+        );
+      }
+    );
 
 
     dropzone.addEventListener(
@@ -2335,6 +2562,7 @@
         const formData =
           new FormData();
 
+
         formData.append(
           'file',
           selectedFile
@@ -2362,7 +2590,9 @@
           const data =
             await res
               .json()
-              .catch(() => null);
+              .catch(
+                () => null
+              );
 
 
           if (!res.ok) {
@@ -2382,7 +2612,9 @@
           }
 
 
-          displayPrediction(data);
+          displayPrediction(
+            data
+          );
 
 
         } catch (err) {
@@ -2430,16 +2662,19 @@
 
 
     /* ================================================================
-       INITIALIZE
+       INITIALIZE APPLICATION
        ================================================================ */
 
     /*
-     * Start in Project / Model mode.
+     * Start in Project Model mode.
      */
     setMode('project');
 
+
     /*
-     * Make sure mobile initially displays 🔬.
+     * Explicitly synchronize:
+     *
+     * Mobile icon = 🔬
      */
     updateMobileModeIcon();
 
@@ -2447,4 +2682,3 @@
 
 </body>
 </html>
-```
