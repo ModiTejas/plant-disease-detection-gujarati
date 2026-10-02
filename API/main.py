@@ -63,7 +63,7 @@ MODEL_PTH = MODEL_DIR / "best_model.pth"
 CLASS_INDICES_PATH = MODEL_DIR / "class_indices.json"
 DICT_PATH = BASE_DIR / "disease_dictionary.json"
 
-INDEX_FILE = BASE_DIR / "index.html"
+INDEX_FILE = BASE_DIR / "static" / "index.html"
 STATIC_DIR = BASE_DIR / "static"
 
 
