@@ -1,12 +1,13 @@
 from io import BytesIO
 import json
+import time
 import traceback
 from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
 import numpy as np
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Response
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -18,9 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
 try:
-    from API.vision_service import analyze_plant_with_vision, is_plant_image
+    from API.vision_service import analyze_plant_with_vision, is_plant_image, request_trace
 except ImportError:
-    from vision_service import analyze_plant_with_vision, is_plant_image
+    from vision_service import analyze_plant_with_vision, is_plant_image, request_trace
 
 # ---------------- PATHS & CONSTANTS ----------------
 MODEL_PTH = BASE_DIR / "models" / "best_model.pth"
@@ -180,13 +181,29 @@ def softmax(x):
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=1, keepdims=True)
 
+def _set_timing(response: Response, trace: dict, t0: float, route: str) -> None:
+    """Adds a Server-Timing header (visible in DevTools > Network > Timing) and logs one line."""
+    parts = [f"total;dur={(time.perf_counter() - t0) * 1000:.1f}"]
+    for key, value in trace.items():
+        if isinstance(value, (int, float)):
+            parts.append(f"{key};dur={value:.1f}")
+        else:
+            safe = str(value).replace('"', "").replace(",", " ")[:60]
+            parts.append(f'{key};desc="{safe}"')
+    header = ", ".join(parts)
+    response.headers["Server-Timing"] = header
+    print(f"[timing] {route} {header}", flush=True)
+
 # ---------------- ENDPOINTS ----------------
 @app.get("/ping")
 async def ping():
     return {"status": "live", "engine": "ONNX" if USE_ONNX else "PyTorch", "total_classes": len(CLASSES)}
 
 @app.post("/predict")
-async def predict_project_model(file: UploadFile = File(...)):
+async def predict_project_model(response: Response, file: UploadFile = File(...)):
+    t0 = time.perf_counter()
+    trace: dict = {}
+    request_trace.set(trace)
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
 
@@ -197,7 +214,11 @@ async def predict_project_model(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
     try:
-        if not await run_in_threadpool(is_plant_image, image):
+        t_gate = time.perf_counter()
+        is_plant = await run_in_threadpool(is_plant_image, image)
+        trace["gate"] = (time.perf_counter() - t_gate) * 1000
+        if not is_plant:
+            _set_timing(response, trace, t0, "/predict")
             return {
                 "mode": "project",
                 "status": "success",
@@ -219,7 +240,9 @@ async def predict_project_model(file: UploadFile = File(...)):
             outputs = model(torch.from_numpy(input_data)).numpy()
             return softmax(outputs)[0]
 
+    t_inf = time.perf_counter()
     probabilities = await run_in_threadpool(_run_inference)
+    trace["onnx"] = (time.perf_counter() - t_inf) * 1000
 
     top_idx = int(np.argmax(probabilities))
     confidence = float(probabilities[top_idx])
@@ -239,6 +262,7 @@ async def predict_project_model(file: UploadFile = File(...)):
         for idx in top3_indices
     ]
 
+    _set_timing(response, trace, t0, "/predict")
     return {
         "mode": "project",
         "status": "success",
@@ -253,7 +277,10 @@ async def predict_project_model(file: UploadFile = File(...)):
     }
 
 @app.post("/analyze-vision")
-async def predict_vision_ai(file: UploadFile = File(...)):
+async def predict_vision_ai(response: Response, file: UploadFile = File(...)):
+    t0 = time.perf_counter()
+    trace: dict = {}
+    request_trace.set(trace)
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
 
@@ -265,9 +292,11 @@ async def predict_vision_ai(file: UploadFile = File(...)):
 
     try:
         diagnosis = await run_in_threadpool(analyze_plant_with_vision, image)
+        _set_timing(response, trace, t0, "/analyze-vision")
         return {"mode": "vision", "status": "success", "diagnosis": diagnosis}
     except Exception as e:
         error_msg = str(e)
+        print(f"[timing] /analyze-vision FAILED after {(time.perf_counter() - t0) * 1000:.0f}ms: {error_msg[:200]}", flush=True)
         status_code = 429 if "429" in error_msg or "rate limit" in error_msg.lower() else 500
         raise HTTPException(status_code=status_code, detail=f"AI વિઝન: {error_msg}")
 
