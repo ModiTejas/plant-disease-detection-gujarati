@@ -2,7 +2,13 @@ import os
 import re
 import json
 import time
+import copy
+import random
 import base64
+import hashlib
+import threading
+from collections import OrderedDict
+from contextvars import ContextVar
 from io import BytesIO
 from pathlib import Path
 from PIL import Image
@@ -72,16 +78,102 @@ MODEL_CANDIDATES = [
     "gemini-flash-latest",
 ]
 
-# ---- Speed helpers -------------------------------------------------------
+# ---- Tunables (can be overridden with env vars, no code change needed) ----
+TOTAL_DEADLINE_SECONDS = float(os.getenv("GEMINI_TOTAL_DEADLINE", "20"))   # hard budget per Gemini request
+ATTEMPT_TIMEOUT_SECONDS = float(os.getenv("GEMINI_ATTEMPT_TIMEOUT", "15"))  # max for a single HTTP attempt
+MIN_ATTEMPT_SECONDS = 2.0     # don't start an attempt with less time than this left
+CACHE_MAX_ENTRIES = 128
+CACHE_TTL_SECONDS = 3600
+
+# Circuit-breaker cool-downs (seconds) per failure type
+COOLDOWN_RATE_LIMIT = 30
+COOLDOWN_OVERLOAD = 15
+COOLDOWN_TIMEOUT = 20
+COOLDOWN_NOT_FOUND = 600
+
+# ---- Shared state --------------------------------------------------------
 # One shared HTTP session: reuses the TLS connection instead of re-handshaking.
 _session = requests.Session()
 _session.mount("https://", HTTPAdapter(pool_connections=4, pool_maxsize=16))
 
-# Remembers the last model that worked, so later requests skip failing ones.
-_working_model = None
+_lock = threading.Lock()
+_working_model = None              # last model that answered successfully
+_no_thinking_models = set()        # models that rejected our "low thinking" setting
+_breaker_until = {}                # model -> time.monotonic() until which it is skipped
+_cache = OrderedDict()             # key -> (timestamp, result)
 
-# Models that rejected our "low thinking" setting (so we stop sending it).
-_no_thinking_models = set()
+# Per-request timing trace. main.py sets a dict here; we fill it in.
+request_trace: ContextVar = ContextVar("request_trace", default=None)
+
+
+def _trace_add(key: str, ms: float) -> None:
+    trace = request_trace.get()
+    if trace is not None:
+        trace[key] = trace.get(key, 0.0) + ms
+
+
+def _trace_set(key: str, value) -> None:
+    trace = request_trace.get()
+    if trace is not None:
+        trace[key] = value
+
+
+# ---- Cache (identical image + prompt => instant answer, no Gemini call) ---
+def _cache_key(prompt: str, b64_data: str) -> str:
+    p = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
+    d = hashlib.sha256(b64_data.encode("ascii")).hexdigest()
+    return f"{p}:{d}"
+
+
+def _cache_get(key: str):
+    with _lock:
+        item = _cache.get(key)
+        if item is None:
+            return None
+        ts, value = item
+        if time.time() - ts > CACHE_TTL_SECONDS:
+            del _cache[key]
+            return None
+        _cache.move_to_end(key)
+        return copy.deepcopy(value)
+
+
+def _cache_put(key: str, value: dict) -> None:
+    with _lock:
+        _cache[key] = (time.time(), copy.deepcopy(value))
+        _cache.move_to_end(key)
+        while len(_cache) > CACHE_MAX_ENTRIES:
+            _cache.popitem(last=False)
+
+
+# ---- Circuit breaker (skip a failing model for a short cool-down) ---------
+def _trip(model_name: str, seconds: float) -> None:
+    with _lock:
+        _breaker_until[model_name] = time.monotonic() + seconds
+
+
+def _reset(model_name: str) -> None:
+    with _lock:
+        _breaker_until.pop(model_name, None)
+
+
+def _ordered_candidates() -> list:
+    """Healthy models first (last working one at the very front);
+    tripped models go last (soonest to recover first) so we never fail
+    purely because of the breaker."""
+    now = time.monotonic()
+    with _lock:
+        until = dict(_breaker_until)
+        working = _working_model
+
+    ordered = list(MODEL_CANDIDATES)
+    if working in ordered:
+        ordered.remove(working)
+        ordered.insert(0, working)
+
+    healthy = [m for m in ordered if until.get(m, 0) <= now]
+    tripped = sorted((m for m in ordered if until.get(m, 0) > now), key=lambda m: until[m])
+    return healthy + tripped
 
 
 def _thinking_config(model_name: str):
@@ -151,16 +243,31 @@ def _request_gemini(prompt: str, b64_data: str, mime_type: str, api_key: str,
                     max_tokens: int | None = None) -> dict:
     global _working_model
 
-    # Try the last known-good model first, then the rest in original order.
-    candidates = list(MODEL_CANDIDATES)
-    if _working_model in candidates:
-        candidates.remove(_working_model)
-        candidates.insert(0, _working_model)
+    # 1) Cache: same image + same prompt seen recently => no network call at all.
+    cache_key = _cache_key(prompt, b64_data)
+    cached = _cache_get(cache_key)
+    if cached is not None:
+        _trace_set("cache", "hit")
+        return cached
+    _trace_set("cache", "miss")
 
+    # 2) One total time budget shared by every model/attempt.
+    deadline = time.monotonic() + TOTAL_DEADLINE_SECONDS
     last_error = None
-    for model_name in candidates:
+    tries = 0
+
+    for model_name in _ordered_candidates():
+        if deadline - time.monotonic() < MIN_ATTEMPT_SECONDS:
+            break
+
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        cooldown = None  # set when this model fails; trips the breaker afterwards
+
         for attempt in range(2):
+            remaining = deadline - time.monotonic()
+            if remaining < MIN_ATTEMPT_SECONDS:
+                break
+
             generation_config = {
                 "response_mime_type": "application/json",
                 "temperature": 0.0
@@ -179,35 +286,65 @@ def _request_gemini(prompt: str, b64_data: str, mime_type: str, api_key: str,
                 "generationConfig": generation_config
             }
 
+            tries += 1
+            t0 = time.perf_counter()
             try:
                 response = _session.post(
                     url,
                     headers={"Content-Type": "application/json"},
                     json=payload,
-                    timeout=25
+                    timeout=(5, min(ATTEMPT_TIMEOUT_SECONDS, remaining))
                 )
+                _trace_add("gemini", (time.perf_counter() - t0) * 1000)
+
                 if response.status_code == 200:
                     result = extract_json(_extract_text(response.json()))
-                    _working_model = model_name
+                    with _lock:
+                        _working_model = model_name
+                    _reset(model_name)
+                    _cache_put(cache_key, result)
+                    _trace_set("model", model_name)
+                    _trace_set("tries", float(tries))
                     return result
+
                 if response.status_code == 503:
-                    time.sleep(0.5)
+                    cooldown = COOLDOWN_OVERLOAD
+                    last_error = f"{model_name} HTTP 503: model overloaded"
+                    time.sleep(random.uniform(0.3, 0.7))  # jitter
                     continue
                 if response.status_code == 429:
+                    cooldown = COOLDOWN_RATE_LIMIT
                     last_error = "Free tier rate limit reached. Please wait 10 seconds before trying again."
                     break
                 if response.status_code == 400 and thinking:
-                    # This model doesn't accept our thinking setting: disable it and retry same model.
+                    # Model doesn't accept our thinking setting: disable it and retry same model.
                     _no_thinking_models.add(model_name)
                     last_error = f"{model_name} HTTP 400: {response.text}"
                     continue
+                if response.status_code == 404:
+                    cooldown = COOLDOWN_NOT_FOUND
+                    last_error = f"{model_name} HTTP 404: {response.text}"
+                    break
+                if response.status_code >= 500:
+                    cooldown = COOLDOWN_OVERLOAD
                 last_error = f"{model_name} HTTP {response.status_code}: {response.text}"
                 break
+
+            except requests.exceptions.Timeout:
+                _trace_add("gemini", (time.perf_counter() - t0) * 1000)
+                cooldown = COOLDOWN_TIMEOUT
+                last_error = f"{model_name} timeout after {time.perf_counter() - t0:.1f}s"
+                break
             except Exception as exc:
+                _trace_add("gemini", (time.perf_counter() - t0) * 1000)
                 last_error = f"{model_name} Exception: {exc}"
                 break
 
-    raise RuntimeError(last_error or "Gemini request failed.")
+        if cooldown:
+            _trip(model_name, cooldown)
+
+    _trace_set("tries", float(tries))
+    raise RuntimeError(last_error or "Gemini request timed out (time budget exhausted).")
 
 
 def _get_api_key() -> str:
@@ -224,7 +361,9 @@ def _get_api_key() -> str:
 def is_plant_image(image_input) -> bool:
     api_key = _get_api_key()
     # Small, low-quality image is enough to tell "plant or not" and uploads faster.
+    t0 = time.perf_counter()
     b64_data, mime_type = image_to_optimized_base64(image_input, max_side=384, quality=70)
+    _trace_add("encode", (time.perf_counter() - t0) * 1000)
     result = _request_gemini(PLANT_CHECK_PROMPT, b64_data, mime_type, api_key, max_tokens=256)
     return result.get("is_plant") is True
 
@@ -233,8 +372,10 @@ def analyze_plant_with_vision(image_input) -> dict:
     api_key = _get_api_key()
 
     # Single call: SYSTEM_PROMPT already returns "is_plant": false for non-plants,
-    # so the separate pre-check call is no longer needed here.
+    # so the separate pre-check call is not needed here.
+    t0 = time.perf_counter()
     b64_data, mime_type = image_to_optimized_base64(image_input, max_side=640, quality=75)
+    _trace_add("encode", (time.perf_counter() - t0) * 1000)
     result = _request_gemini(SYSTEM_PROMPT, b64_data, mime_type, api_key, max_tokens=2048)
 
     if result.get("is_plant") is not True:
@@ -251,7 +392,9 @@ if __name__ == "__main__":
     test_img = "Plant Disease Dataset/Tomato/Early blight/1723454500377.jpg"
     if len(sys.argv) > 1:
         test_img = sys.argv[1]
+    trace = {}
+    request_trace.set(trace)
     t0 = time.time()
     res = analyze_plant_with_vision(test_img)
     print(json.dumps(res, indent=2, ensure_ascii=False))
-    print(f"\nTook {time.time() - t0:.2f}s")
+    print(f"\nTook {time.time() - t0:.2f}s | trace: {trace}")
