@@ -1,8 +1,16 @@
+# ============================================================
+# PLANT DISEASE DETECTION API
+# Dual Mode:
+#   1. Project Mode  -> Local 37-class model
+#   2. Vision Mode   -> General Gemini Vision analysis
+# ============================================================
+
 from io import BytesIO
 import json
 import traceback
 from pathlib import Path
-from PIL import Image
+
+from PIL import Image, UnidentifiedImageError
 from dotenv import load_dotenv
 import numpy as np
 
@@ -12,28 +20,78 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-# Load .env
+
+# ============================================================
+# 1. BASE CONFIGURATION
+# ============================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env", override=True)
+
+# Load local .env when running locally.
+# On Vercel, environment variables must also be configured
+# in Vercel Project Settings.
+load_dotenv(
+    BASE_DIR / ".env",
+    override=True
+)
+
+
+# ============================================================
+# 2. AI VISION IMPORT
+# ============================================================
 
 try:
-    from API.vision_service import analyze_plant_with_vision, is_plant_image
+    from API.vision_service import (
+        analyze_plant_with_vision,
+        is_plant_image
+    )
 except ImportError:
-    from vision_service import analyze_plant_with_vision, is_plant_image
+    from vision_service import (
+        analyze_plant_with_vision,
+        is_plant_image
+    )
 
-# ---------------- PATHS & CONSTANTS ----------------
+
+# ============================================================
+# 3. PATHS & CONSTANTS
+# ============================================================
+
 MODEL_PTH = BASE_DIR / "models" / "best_model.pth"
 MODEL_ONNX = BASE_DIR / "models" / "best_model.onnx"
-CLASS_INDICES_PATH = BASE_DIR / "models" / "class_indices.json"
-DICT_PATH = BASE_DIR / "disease_dictionary.json"
-STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+CLASS_INDICES_PATH = (
+    BASE_DIR / "models" / "class_indices.json"
+)
+
+DICT_PATH = (
+    BASE_DIR / "disease_dictionary.json"
+)
+
+STATIC_DIR = (
+    Path(__file__).resolve().parent / "static"
+)
+
 INDEX_FILE = STATIC_DIR / "index.html"
+
 
 EXPECTED_CLASS_COUNT = 37
 CONFIDENCE_THRESHOLD = 0.60
 IMAGE_SIZE = (224, 224)
 
-app = FastAPI(title="Plant Disease Dual-Mode API", version="3.0.0")
+
+# ============================================================
+# 4. FASTAPI APPLICATION
+# ============================================================
+
+app = FastAPI(
+    title="Plant Disease Dual-Mode API",
+    version="3.1.0"
+)
+
+
+# ============================================================
+# 5. CORS
+# ============================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,238 +101,1176 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. Load Classes & Dictionary
-with open(CLASS_INDICES_PATH, "r", encoding="utf-8") as f:
-    class_data = json.load(f)
-    CLASSES = class_data["classes"]
 
-with open(DICT_PATH, "r", encoding="utf-8") as f:
+# ============================================================
+# 6. LOAD CLASS INDICES
+# ============================================================
+
+if not CLASS_INDICES_PATH.exists():
+    raise FileNotFoundError(
+        f"class_indices.json not found: "
+        f"{CLASS_INDICES_PATH}"
+    )
+
+
+with open(
+    CLASS_INDICES_PATH,
+    "r",
+    encoding="utf-8"
+) as f:
+
+    class_data = json.load(f)
+
+
+if not isinstance(class_data, dict):
+    raise ValueError(
+        "class_indices.json must contain a JSON object."
+    )
+
+
+if "classes" not in class_data:
+    raise ValueError(
+        "class_indices.json does not contain 'classes'."
+    )
+
+
+CLASSES = class_data["classes"]
+
+
+if not isinstance(CLASSES, list):
+    raise ValueError(
+        "'classes' in class_indices.json must be a list."
+    )
+
+
+if len(CLASSES) != EXPECTED_CLASS_COUNT:
+    raise ValueError(
+        f"Expected {EXPECTED_CLASS_COUNT} model classes, "
+        f"but found {len(CLASSES)}."
+    )
+
+
+print(
+    f"Loaded {len(CLASSES)} model classes."
+)
+
+
+# ============================================================
+# 7. LOAD DISEASE DICTIONARY
+# ============================================================
+
+if not DICT_PATH.exists():
+    raise FileNotFoundError(
+        f"disease_dictionary.json not found: "
+        f"{DICT_PATH}"
+    )
+
+
+with open(
+    DICT_PATH,
+    "r",
+    encoding="utf-8"
+) as f:
+
     try:
         raw_dict = json.load(f)
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"Could not parse disease dictionary JSON: {DICT_PATH}") from exc
 
-if not isinstance(raw_dict, dict) or "classes" not in raw_dict:
-    raise ValueError("Disease dictionary must contain a 'classes' list or dictionary.")
+    except json.JSONDecodeError as exc:
+
+        raise ValueError(
+            "Could not parse disease dictionary JSON: "
+            f"{DICT_PATH}"
+        ) from exc
+
+
+if not isinstance(raw_dict, dict):
+    raise ValueError(
+        "Disease dictionary must be a JSON object."
+    )
+
+
+if "classes" not in raw_dict:
+    raise ValueError(
+        "Disease dictionary must contain "
+        "a 'classes' list or dictionary."
+    )
+
 
 classes_data = raw_dict["classes"]
+
 DISEASE_DICT = {}
+
 seen_class_ids = set()
 
+
+# ============================================================
+# 8. PARSE DISEASE DICTIONARY
+# ============================================================
+
 if isinstance(classes_data, list):
+
     for item in classes_data:
-        if not isinstance(item, dict) or "class_id" not in item:
-            raise ValueError("Disease dictionary contains a class without class_id.")
-        class_id = item["class_id"]
-        if not isinstance(class_id, str) or not class_id.strip():
-            raise ValueError("Disease dictionary contains an empty or invalid class_id.")
-        lookup_key = class_id.strip().lower()
-        if lookup_key in seen_class_ids:
-            raise ValueError(f"Disease dictionary contains duplicate class_id: {class_id}")
-        seen_class_ids.add(lookup_key)
-        DISEASE_DICT[lookup_key] = item
-elif isinstance(classes_data, dict):
-    for class_id, item in classes_data.items():
-        if not isinstance(class_id, str) or not class_id.strip():
-            raise ValueError("Disease dictionary contains an empty or invalid class_id.")
+
         if not isinstance(item, dict):
-            raise ValueError(f"Disease dictionary entry for {class_id} must be an object.")
+            raise ValueError(
+                "Disease dictionary contains "
+                "an invalid class entry."
+            )
+
+        if "class_id" not in item:
+            raise ValueError(
+                "Disease dictionary contains "
+                "a class without class_id."
+            )
+
+        class_id = item["class_id"]
+
+        if (
+            not isinstance(class_id, str)
+            or not class_id.strip()
+        ):
+            raise ValueError(
+                "Disease dictionary contains "
+                "an empty or invalid class_id."
+            )
+
         lookup_key = class_id.strip().lower()
+
         if lookup_key in seen_class_ids:
-            raise ValueError(f"Disease dictionary contains duplicate class_id: {class_id}")
+            raise ValueError(
+                "Disease dictionary contains "
+                f"duplicate class_id: {class_id}"
+            )
+
         seen_class_ids.add(lookup_key)
+
         DISEASE_DICT[lookup_key] = item
+
+
+elif isinstance(classes_data, dict):
+
+    for class_id, item in classes_data.items():
+
+        if (
+            not isinstance(class_id, str)
+            or not class_id.strip()
+        ):
+            raise ValueError(
+                "Disease dictionary contains "
+                "an empty or invalid class_id."
+            )
+
+        if not isinstance(item, dict):
+            raise ValueError(
+                "Disease dictionary entry for "
+                f"{class_id} must be an object."
+            )
+
+        lookup_key = class_id.strip().lower()
+
+        if lookup_key in seen_class_ids:
+            raise ValueError(
+                "Disease dictionary contains "
+                f"duplicate class_id: {class_id}"
+            )
+
+        seen_class_ids.add(lookup_key)
+
+        DISEASE_DICT[lookup_key] = item
+
+
 else:
-    raise ValueError("Disease dictionary 'classes' must be a list or dictionary.")
+
+    raise ValueError(
+        "Disease dictionary 'classes' must be "
+        "a list or dictionary."
+    )
+
+
+# ============================================================
+# 9. VERIFY DICTIONARY CLASS COUNT
+# ============================================================
 
 if len(DISEASE_DICT) != EXPECTED_CLASS_COUNT:
+
     raise ValueError(
-        f"Disease dictionary must contain exactly {EXPECTED_CLASS_COUNT} classes; "
+        "Disease dictionary must contain exactly "
+        f"{EXPECTED_CLASS_COUNT} classes; "
         f"found {len(DISEASE_DICT)}."
     )
 
-def normalize_class_name(class_name: str) -> str:
-    return " ".join(class_name.replace("_", " ").replace("-", " ").split()).lower()
+
+print(
+    f"Loaded {len(DISEASE_DICT)} disease dictionary classes."
+)
+
+
+# ============================================================
+# 10. CLASS NAME NORMALIZATION
+# ============================================================
+
+def normalize_class_name(
+    class_name: str
+) -> str:
+
+    return (
+        " "
+        .join(
+            class_name
+            .replace("_", " ")
+            .replace("-", " ")
+            .split()
+        )
+        .lower()
+    )
+
 
 LEGACY_CLASS_LOOKUP = {
-    normalize_class_name(item.get("class_id", key)): key
+    normalize_class_name(
+        item.get("class_id", key)
+    ): key
     for key, item in DISEASE_DICT.items()
 }
+
+
 CLASS_NAME_ALIASES = {
-    normalize_class_name("Cotton___Healthy Leaf"): normalize_class_name("Cotton___Healthy"),
-    normalize_class_name("Cotton___Leaf Redding"): normalize_class_name("Cotton___Leaf Reddening"),
+
+    normalize_class_name(
+        "Cotton___Healthy Leaf"
+    ):
+        normalize_class_name(
+            "Cotton___Healthy"
+        ),
+
+    normalize_class_name(
+        "Cotton___Leaf Redding"
+    ):
+        normalize_class_name(
+            "Cotton___Leaf Reddening"
+        ),
 }
 
+
+# ============================================================
+# 11. TEXT LIST HELPER
+# ============================================================
+
 def _as_text_list(value) -> list[str]:
+
     if isinstance(value, str):
-        return [value] if value.strip() else []
+
+        return (
+            [value]
+            if value.strip()
+            else []
+        )
+
     if isinstance(value, list):
-        return [item for item in value if isinstance(item, str) and item.strip()]
+
+        return [
+            item
+            for item in value
+            if (
+                isinstance(item, str)
+                and item.strip()
+            )
+        ]
+
     return []
 
-def get_disease_details(class_name: str) -> dict:
+
+# ============================================================
+# 12. DISEASE DETAILS
+# ============================================================
+
+def get_disease_details(
+    class_name: str
+) -> dict:
+
     class_id = class_name.strip()
-    details = DISEASE_DICT.get(class_id.lower())
+
+    details = DISEASE_DICT.get(
+        class_id.lower()
+    )
+
+    # --------------------------------------------------------
+    # Legacy / alias lookup
+    # --------------------------------------------------------
+
     if details is None:
-        legacy_key = normalize_class_name(class_id)
-        legacy_key = CLASS_NAME_ALIASES.get(legacy_key, legacy_key)
-        lookup_key = LEGACY_CLASS_LOOKUP.get(legacy_key)
-        details = DISEASE_DICT.get(lookup_key, {})
-    sections = details.get("farmer_result", {}).get("sections", {})
+
+        legacy_key = normalize_class_name(
+            class_id
+        )
+
+        legacy_key = CLASS_NAME_ALIASES.get(
+            legacy_key,
+            legacy_key
+        )
+
+        lookup_key = LEGACY_CLASS_LOOKUP.get(
+            legacy_key
+        )
+
+        details = DISEASE_DICT.get(
+            lookup_key,
+            {}
+        )
+
+    if not details:
+        return {}
+
+
+    # --------------------------------------------------------
+    # Farmer result sections
+    # --------------------------------------------------------
+
+    sections = (
+        details
+        .get("farmer_result", {})
+        .get("sections", {})
+    )
+
     if not sections:
         return details
 
-    chemical = sections.get("chemical_control", {})
-    biological = sections.get("natural_biological_control", {})
-    current_steps = sections.get("what_to_do_now", {})
-    prevention = sections.get("prevention", {})
-    management = (
-        _as_text_list(chemical.get("recommended_active_ingredients"))
-        + _as_text_list(chemical.get("description"))
-        + _as_text_list(biological.get("recommendations"))
-        + _as_text_list(current_steps.get("steps"))
+
+    chemical = sections.get(
+        "chemical_control",
+        {}
     )
 
+    biological = sections.get(
+        "natural_biological_control",
+        {}
+    )
+
+    current_steps = sections.get(
+        "what_to_do_now",
+        {}
+    )
+
+    prevention = sections.get(
+        "prevention",
+        {}
+    )
+
+
+    management = (
+
+        _as_text_list(
+            chemical.get(
+                "recommended_active_ingredients"
+            )
+        )
+
+        +
+
+        _as_text_list(
+            chemical.get(
+                "description"
+            )
+        )
+
+        +
+
+        _as_text_list(
+            biological.get(
+                "recommendations"
+            )
+        )
+
+        +
+
+        _as_text_list(
+            current_steps.get(
+                "steps"
+            )
+        )
+    )
+
+
     return {
+
         **details,
-        "plant_gu": details.get("crop_name_gu", ""),
-        "name_gu": details.get("condition_name_gu", ""),
-        "type_gu": details.get("category_gu", ""),
-        "cause_gu": details.get("pathogen_scientific_name", ""),
-        "symptoms_gu": sections.get("what_happened", ""),
-        "management_gu": management,
-        "prevention_gu": _as_text_list(prevention.get("steps")),
+
+        "plant_gu":
+            details.get(
+                "crop_name_gu",
+                ""
+            ),
+
+        "name_gu":
+            details.get(
+                "condition_name_gu",
+                ""
+            ),
+
+        "type_gu":
+            details.get(
+                "category_gu",
+                ""
+            ),
+
+        "cause_gu":
+            details.get(
+                "pathogen_scientific_name",
+                ""
+            ),
+
+        "symptoms_gu":
+            sections.get(
+                "what_happened",
+                ""
+            ),
+
+        "management_gu":
+            management,
+
+        "prevention_gu":
+            _as_text_list(
+                prevention.get(
+                    "steps"
+                )
+            ),
     }
 
-# 2. Setup Inference Engine (ONNX for Vercel/Production, fallback to PyTorch)
+
+# ============================================================
+# 13. INFERENCE ENGINE
+# ============================================================
+
 USE_ONNX = MODEL_ONNX.exists()
+
 ort_session = None
+model = None
+
 
 if USE_ONNX:
-    import onnxruntime as ort
-    ort_session = ort.InferenceSession(str(MODEL_ONNX), providers=['CPUExecutionProvider'])
-    print("Inference Engine: ONNX Runtime (Vercel-Optimized)")
+
+    try:
+
+        import onnxruntime as ort
+
+        ort_session = ort.InferenceSession(
+            str(MODEL_ONNX),
+            providers=[
+                "CPUExecutionProvider"
+            ]
+        )
+
+        print(
+            "Inference Engine: "
+            "ONNX Runtime (Production)"
+        )
+
+    except Exception as exc:
+
+        print(
+            "WARNING: ONNX model exists but "
+            "could not be loaded."
+        )
+
+        print(
+            f"ONNX error: {exc}"
+        )
+
+        traceback.print_exc()
+
+        raise
+
+
 else:
+
     import torch
     import torch.nn as nn
     from torchvision import models
-    model = models.mobilenet_v3_large(weights=None)
-    in_features = model.classifier[3].in_features
-    model.classifier[3] = nn.Linear(in_features, len(CLASSES))
-    ckpt = torch.load(MODEL_PTH, map_location='cpu', weights_only=False)
-    model.load_state_dict(ckpt["model_state_dict"])
+
+
+    if not MODEL_PTH.exists():
+
+        raise FileNotFoundError(
+            "Neither usable ONNX model nor "
+            f"PyTorch model was found.\n"
+            f"ONNX: {MODEL_ONNX}\n"
+            f"PyTorch: {MODEL_PTH}"
+        )
+
+
+    model = models.mobilenet_v3_large(
+        weights=None
+    )
+
+
+    in_features = (
+        model.classifier[3].in_features
+    )
+
+
+    model.classifier[3] = nn.Linear(
+        in_features,
+        len(CLASSES)
+    )
+
+
+    checkpoint = torch.load(
+        MODEL_PTH,
+        map_location="cpu",
+        weights_only=False
+    )
+
+
+    if (
+        not isinstance(checkpoint, dict)
+        or "model_state_dict" not in checkpoint
+    ):
+
+        raise ValueError(
+            "Invalid PyTorch checkpoint. "
+            "Expected 'model_state_dict'."
+        )
+
+
+    model.load_state_dict(
+        checkpoint["model_state_dict"]
+    )
+
     model.eval()
-    print("Inference Engine: PyTorch CPU")
 
-def preprocess_image(image: Image.Image) -> np.ndarray:
-    image = image.convert("RGB").resize(IMAGE_SIZE)
-    img_arr = np.array(image, dtype=np.float32) / 255.0
-    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
-    std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-    img_arr = (img_arr - mean) / std
-    img_arr = np.transpose(img_arr, (2, 0, 1))  # (C, H, W)
-    return np.expand_dims(img_arr, axis=0)      # (1, C, H, W)
 
-def softmax(x):
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum(axis=1, keepdims=True)
+    print(
+        "Inference Engine: PyTorch CPU"
+    )
 
-# ---------------- ENDPOINTS ----------------
+
+# ============================================================
+# 14. IMAGE PREPROCESSING
+# ============================================================
+
+def preprocess_image(
+    image: Image.Image
+) -> np.ndarray:
+
+    image = image.convert(
+        "RGB"
+    ).resize(
+        IMAGE_SIZE
+    )
+
+
+    img_arr = (
+        np.array(
+            image,
+            dtype=np.float32
+        )
+        / 255.0
+    )
+
+
+    mean = np.array(
+        [0.485, 0.456, 0.406],
+        dtype=np.float32
+    )
+
+
+    std = np.array(
+        [0.229, 0.224, 0.225],
+        dtype=np.float32
+    )
+
+
+    img_arr = (
+        img_arr - mean
+    ) / std
+
+
+    img_arr = np.transpose(
+        img_arr,
+        (2, 0, 1)
+    )
+
+
+    return np.expand_dims(
+        img_arr,
+        axis=0
+    )
+
+
+# ============================================================
+# 15. SOFTMAX
+# ============================================================
+
+def softmax(
+    x: np.ndarray
+) -> np.ndarray:
+
+    x = np.asarray(
+        x,
+        dtype=np.float32
+    )
+
+    x = x - np.max(
+        x,
+        axis=1,
+        keepdims=True
+    )
+
+    exp_x = np.exp(x)
+
+    denominator = np.sum(
+        exp_x,
+        axis=1,
+        keepdims=True
+    )
+
+    return exp_x / denominator
+
+
+# ============================================================
+# 16. COMMON IMAGE VALIDATION
+# ============================================================
+
+async def read_uploaded_image(
+    file: UploadFile
+) -> Image.Image:
+
+    if (
+        not file.content_type
+        or not file.content_type.startswith(
+            "image/"
+        )
+    ):
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "કૃપા કરીને માન્ય ફોટો "
+                "ફાઇલ અપલોડ કરો."
+            )
+        )
+
+
+    try:
+
+        image_bytes = await file.read()
+
+        if not image_bytes:
+
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "અપલોડ કરેલી ફોટો ફાઇલ "
+                    "ખાલી છે."
+                )
+            )
+
+
+        image = Image.open(
+            BytesIO(image_bytes)
+        )
+
+        # Force image decoding now.
+        image.load()
+
+        return image.convert(
+            "RGB"
+        )
+
+
+    except HTTPException:
+        raise
+
+
+    except (
+        UnidentifiedImageError,
+        OSError,
+        ValueError
+    ) as exc:
+
+        print(
+            f"Image validation error: {exc}"
+        )
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "ફોટો ફાઇલ વાંચવામાં અસમર્થ. "
+                "કૃપા કરીને JPG, JPEG, PNG અથવા "
+                "માન્ય image ફાઇલ અપલોડ કરો."
+            )
+        ) from exc
+
+
+# ============================================================
+# 17. HEALTH CHECK
+# ============================================================
+
 @app.get("/ping")
 async def ping():
-    return {"status": "live", "engine": "ONNX" if USE_ONNX else "PyTorch", "total_classes": len(CLASSES)}
+
+    return {
+
+        "status": "live",
+
+        "engine":
+            "ONNX"
+            if USE_ONNX
+            else "PyTorch",
+
+        "total_classes":
+            len(CLASSES),
+
+        "vision_mode":
+            "Gemini",
+
+    }
+
+
+# ============================================================
+# 18. PROJECT MODEL
+# ============================================================
 
 @app.post("/predict")
-async def predict_project_model(file: UploadFile = File(...)):
-    if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
+async def predict_project_model(
+    file: UploadFile = File(...)
+):
+
+    # --------------------------------------------------------
+    # Read image
+    # --------------------------------------------------------
+
+    image = await read_uploaded_image(
+        file
+    )
+
+
+    # --------------------------------------------------------
+    # Existing plant validation
+    #
+    # NOTE:
+    # This is intentionally kept because it is part
+    # of your existing Project Mode behavior.
+    #
+    # Your optimized Vision Mode does NOT use this.
+    # --------------------------------------------------------
 
     try:
-        image_bytes = await file.read()
-        image = Image.open(BytesIO(image_bytes))
-    except Exception:
-        raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
-    try:
         if not is_plant_image(image):
+
             return {
+
                 "mode": "project",
+
                 "status": "success",
+
                 "is_plant": False,
-                "error_gu": "⚠️ આ તસવીરમાં છોડ કે પાન સ્પષ્ટ દેખાતું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
+
+                "error_gu":
+                    "⚠️ આ તસવીરમાં છોડ કે પાન "
+                    "સ્પષ્ટ દેખાતું નથી. કૃપા કરીને "
+                    "છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
+
             }
-    except Exception as e:
+
+
+    except Exception as exc:
+
+        print(
+            "PROJECT MODE plant validation error:"
+        )
+
+        print(
+            str(exc)
+        )
+
+        traceback.print_exc()
+
+
         raise HTTPException(
+
             status_code=503,
-            detail="છોડની તસવીર ચકાસી શકાઈ નથી. કૃપા કરીને GEMINI_API_KEY તપાસી ફરી પ્રયાસ કરો."
-        ) from e
 
-    input_data = preprocess_image(image)
+            detail=(
+                "છોડની તસવીર ચકાસી શકાઈ નથી. "
+                "કૃપા કરીને GEMINI_API_KEY તપાસી "
+                "ફરી પ્રયાસ કરો."
+            )
 
-    if USE_ONNX:
-        outputs = ort_session.run(None, {'input': input_data})[0]
-        probabilities = softmax(outputs)[0]
-    else:
-        with torch.no_grad():
-            outputs = model(torch.from_numpy(input_data)).numpy()
-            probabilities = softmax(outputs)[0]
+        ) from exc
 
-    top_idx = int(np.argmax(probabilities))
-    confidence = float(probabilities[top_idx])
-    predicted_class = CLASSES[top_idx]
 
-    is_confident = confidence >= CONFIDENCE_THRESHOLD
-    details = get_disease_details(predicted_class)
+    # --------------------------------------------------------
+    # Preprocess
+    # --------------------------------------------------------
 
-    top3_indices = np.argsort(probabilities)[::-1][:3]
+    input_data = preprocess_image(
+        image
+    )
+
+
+    # --------------------------------------------------------
+    # Inference
+    # --------------------------------------------------------
+
+    try:
+
+        if USE_ONNX:
+
+            outputs = ort_session.run(
+                None,
+                {
+                    "input": input_data
+                }
+            )[0]
+
+        else:
+
+            import torch
+
+            with torch.no_grad():
+
+                outputs = (
+                    model(
+                        torch.from_numpy(
+                            input_data
+                        )
+                    )
+                    .cpu()
+                    .numpy()
+                )
+
+
+    except Exception as exc:
+
+        print(
+            "PROJECT MODEL INFERENCE ERROR:"
+        )
+
+        print(
+            str(exc)
+        )
+
+        traceback.print_exc()
+
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=(
+                "મોડેલ દ્વારા તસવીરનું "
+                "વિશ્લેષણ કરવામાં નિષ્ફળતા."
+            )
+
+        ) from exc
+
+
+    # --------------------------------------------------------
+    # Probabilities
+    # --------------------------------------------------------
+
+    probabilities = softmax(
+        outputs
+    )[0]
+
+
+    # --------------------------------------------------------
+    # Top prediction
+    # --------------------------------------------------------
+
+    top_idx = int(
+        np.argmax(
+            probabilities
+        )
+    )
+
+
+    confidence = float(
+        probabilities[top_idx]
+    )
+
+
+    predicted_class = CLASSES[
+        top_idx
+    ]
+
+
+    is_confident = (
+        confidence
+        >= CONFIDENCE_THRESHOLD
+    )
+
+
+    details = get_disease_details(
+        predicted_class
+    )
+
+
+    # --------------------------------------------------------
+    # Top 3 predictions
+    # --------------------------------------------------------
+
+    top3_indices = np.argsort(
+        probabilities
+    )[::-1][:3]
+
+
     top_3 = [
+
         {
-            "class": CLASSES[idx],
-            "predicted_class": CLASSES[idx],
-            "name_gu": get_disease_details(CLASSES[idx]).get("name_gu") or CLASSES[idx],
-            "confidence": round(float(probabilities[idx]) * 100, 2)
+
+            "class":
+                CLASSES[idx],
+
+            "predicted_class":
+                CLASSES[idx],
+
+            "name_gu":
+                (
+                    get_disease_details(
+                        CLASSES[idx]
+                    ).get("name_gu")
+                    or CLASSES[idx]
+                ),
+
+            "confidence":
+                round(
+                    float(
+                        probabilities[idx]
+                    ) * 100,
+                    2
+                )
+
         }
+
         for idx in top3_indices
     ]
 
+
+    # --------------------------------------------------------
+    # Existing response contract
+    # --------------------------------------------------------
+
     return {
-        "mode": "project",
-        "status": "success",
-        "is_confident": is_confident,
-        "is_uncertain": not is_confident,
-        "prediction": predicted_class,
-        "predicted_class": predicted_class,
-        "confidence": round(confidence * 100, 2),
-        "details": details,
-        "top_3": top_3,
-        "top_predictions": top_3
+
+        "mode":
+            "project",
+
+        "status":
+            "success",
+
+        "is_confident":
+            is_confident,
+
+        "is_uncertain":
+            not is_confident,
+
+        "prediction":
+            predicted_class,
+
+        "predicted_class":
+            predicted_class,
+
+        "confidence":
+            round(
+                confidence * 100,
+                2
+            ),
+
+        "details":
+            details,
+
+        "top_3":
+            top_3,
+
+        "top_predictions":
+            top_3
+
     }
 
+
+# ============================================================
+# 19. GENERAL AI VISION
+# ============================================================
+
 @app.post("/analyze-vision")
-async def predict_vision_ai(file: UploadFile = File(...)):
-    if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
+async def predict_vision_ai(
+    file: UploadFile = File(...)
+):
+
+    # --------------------------------------------------------
+    # Read and validate image
+    # --------------------------------------------------------
+
+    image = await read_uploaded_image(
+        file
+    )
+
+
+    # --------------------------------------------------------
+    # ONE Vision service call
+    #
+    # The important optimization is inside
+    # vision_service.py:
+    #
+    # analyze_plant_with_vision()
+    #
+    # should make ONE normal Gemini request,
+    # not:
+    #
+    # is_plant_image()
+    # +
+    # analyze_plant_with_vision()
+    # --------------------------------------------------------
 
     try:
-        image_bytes = await file.read()
-        image = Image.open(BytesIO(image_bytes)).convert("RGB")
-    except Exception:
-        raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
-    try:
-        diagnosis = analyze_plant_with_vision(image)
-        return {"mode": "vision", "status": "success", "diagnosis": diagnosis}
-    except Exception as e:
-        error_msg = str(e)
-        status_code = 429 if "429" in error_msg or "rate limit" in error_msg.lower() else 500
-        raise HTTPException(status_code=status_code, detail=f"AI વિઝન: {error_msg}")
+        diagnosis = (
+            analyze_plant_with_vision(
+                image
+            )
+        )
+
+
+        return {
+
+            "mode":
+                "vision",
+
+            "status":
+                "success",
+
+            "diagnosis":
+                diagnosis
+
+        }
+
+
+    except Exception as exc:
+
+        error_msg = str(
+            exc
+        )
+
+
+        print()
+        print("=" * 70)
+        print("AI VISION ERROR")
+        print("=" * 70)
+
+        print(
+            f"Error type: "
+            f"{type(exc).__name__}"
+        )
+
+        print(
+            f"Error message: "
+            f"{error_msg}"
+        )
+
+        traceback.print_exc()
+
+        print("=" * 70)
+        print()
+
+
+        # ----------------------------------------------------
+        # Rate limit
+        # ----------------------------------------------------
+
+        if (
+            "429" in error_msg
+            or "rate limit"
+            in error_msg.lower()
+        ):
+
+            status_code = 429
+
+
+        # ----------------------------------------------------
+        # API key / authentication
+        # ----------------------------------------------------
+
+        elif (
+            "401" in error_msg
+            or "403" in error_msg
+            or "api key"
+            in error_msg.lower()
+            or "gemini_api_key"
+            in error_msg.lower()
+        ):
+
+            status_code = 503
+
+
+        # ----------------------------------------------------
+        # Everything else
+        # ----------------------------------------------------
+
+        else:
+
+            status_code = 500
+
+
+        raise HTTPException(
+
+            status_code=status_code,
+
+            detail=(
+                "AI વિઝન: "
+                f"{error_msg}"
+            )
+
+        ) from exc
+
+
+# ============================================================
+# 20. SERVE FRONTEND
+# ============================================================
 
 @app.get("/")
 async def serve_index():
-    return FileResponse(INDEX_FILE)
+
+    if not INDEX_FILE.exists():
+
+        raise HTTPException(
+            status_code=404,
+            detail="Frontend index.html not found."
+        )
+
+
+    return FileResponse(
+        INDEX_FILE
+    )
+
+
+# ============================================================
+# 21. STATIC FILES
+# ============================================================
 
 if STATIC_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+    app.mount(
+        "/static",
+        StaticFiles(
+            directory=str(
+                STATIC_DIR
+            )
+        ),
+        name="static"
+    )
+
+
+# ============================================================
+# 22. LOCAL DEVELOPMENT
+# ============================================================
 
 if __name__ == "__main__":
-    uvicorn.run("API.main:app", host="127.0.0.1", port=8000, reload=True)
+
+    uvicorn.run(
+        "API.main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=True
+    )
