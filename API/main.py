@@ -1,97 +1,80 @@
-# ============================================================
-# PLANT DISEASE DETECTION API
-# Dual Mode:
-#   1. Project Mode  -> Local 37-class model
-#   2. Vision Mode   -> General Gemini Vision analysis
-# ============================================================
-
-from io import BytesIO
 import json
-import traceback
+import logging
+from io import BytesIO
 from pathlib import Path
 
-from PIL import Image, UnidentifiedImageError
-from dotenv import load_dotenv
 import numpy as np
+from PIL import Image
+from dotenv import load_dotenv
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 
 
-# ============================================================
-# 1. BASE CONFIGURATION
-# ============================================================
+# ================================================================
+# CONFIGURATION
+# ================================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load local .env when running locally.
-# On Vercel, environment variables must also be configured
-# in Vercel Project Settings.
-load_dotenv(
-    BASE_DIR / ".env",
-    override=True
-)
+# Load environment variables
+load_dotenv(BASE_DIR / ".env", override=True)
 
 
-# ============================================================
-# 2. AI VISION IMPORT
-# ============================================================
+# ================================================================
+# LOGGING
+# ================================================================
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+# ================================================================
+# VISION AI IMPORT
+# ================================================================
+#
+# IMPORTANT:
+#
+# Project Mode (/predict)
+#     -> DOES NOT use Gemini
+#
+# AI Vision Mode (/analyze-vision)
+#     -> Uses Gemini
+#
+# ================================================================
 
 try:
-    from API.vision_service import (
-        analyze_plant_with_vision,
-        is_plant_image
-    )
+    from API.vision_service import analyze_plant_with_vision
 except ImportError:
-    from vision_service import (
-        analyze_plant_with_vision,
-        is_plant_image
-    )
+    from vision_service import analyze_plant_with_vision
 
 
-# ============================================================
-# 3. PATHS & CONSTANTS
-# ============================================================
+# ================================================================
+# PATHS
+# ================================================================
 
-MODEL_PTH = BASE_DIR / "models" / "best_model.pth"
-MODEL_ONNX = BASE_DIR / "models" / "best_model.onnx"
+MODEL_DIR = BASE_DIR / "models"
 
-CLASS_INDICES_PATH = (
-    BASE_DIR / "models" / "class_indices.json"
-)
+MODEL_ONNX = MODEL_DIR / "best_model.onnx"
+MODEL_PTH = MODEL_DIR / "best_model.pth"
 
-DICT_PATH = (
-    BASE_DIR / "disease_dictionary.json"
-)
+CLASS_INDICES_PATH = MODEL_DIR / "class_indices.json"
+DICT_PATH = BASE_DIR / "disease_dictionary.json"
 
-STATIC_DIR = (
-    Path(__file__).resolve().parent / "static"
-)
-
-INDEX_FILE = STATIC_DIR / "index.html"
+INDEX_FILE = BASE_DIR / "index.html"
+STATIC_DIR = BASE_DIR / "static"
 
 
-EXPECTED_CLASS_COUNT = 37
-CONFIDENCE_THRESHOLD = 0.60
-IMAGE_SIZE = (224, 224)
-
-
-# ============================================================
-# 4. FASTAPI APPLICATION
-# ============================================================
+# ================================================================
+# FASTAPI
+# ================================================================
 
 app = FastAPI(
-    title="Plant Disease Dual-Mode API",
-    version="3.1.0"
+    title="Plant Disease Detection API"
 )
 
-
-# ============================================================
-# 5. CORS
-# ============================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -102,14 +85,24 @@ app.add_middleware(
 )
 
 
-# ============================================================
-# 6. LOAD CLASS INDICES
-# ============================================================
+# ================================================================
+# CONSTANTS
+# ================================================================
+
+IMAGE_SIZE = (224, 224)
+
+CONFIDENCE_THRESHOLD = 0.60
+
+EXPECTED_CLASSES = 37
+
+
+# ================================================================
+# LOAD CLASS INDICES
+# ================================================================
 
 if not CLASS_INDICES_PATH.exists():
     raise FileNotFoundError(
-        f"class_indices.json not found: "
-        f"{CLASS_INDICES_PATH}"
+        f"class_indices.json not found: {CLASS_INDICES_PATH}"
     )
 
 
@@ -119,50 +112,71 @@ with open(
     encoding="utf-8"
 ) as f:
 
-    class_data = json.load(f)
+    CLASS_DATA = json.load(f)
 
 
-if not isinstance(class_data, dict):
-    raise ValueError(
-        "class_indices.json must contain a JSON object."
+# Support both:
+
+# {
+#     "class_to_idx": {...},
+#     "classes": [...]
+# }
+
+# and a direct class list if needed.
+
+if isinstance(CLASS_DATA, dict):
+
+    CLASSES = CLASS_DATA.get("classes")
+
+    if not CLASSES:
+
+        class_to_idx = CLASS_DATA.get(
+            "class_to_idx",
+            {}
+        )
+
+        CLASSES = [
+            class_name
+            for class_name, index
+            in sorted(
+                class_to_idx.items(),
+                key=lambda item: item[1]
+            )
+        ]
+
+else:
+
+    CLASSES = CLASS_DATA
+
+
+if not CLASSES:
+    raise RuntimeError(
+        "No classes found in class_indices.json."
     )
 
 
-if "classes" not in class_data:
-    raise ValueError(
-        "class_indices.json does not contain 'classes'."
+if len(CLASSES) != EXPECTED_CLASSES:
+
+    raise RuntimeError(
+        f"Expected {EXPECTED_CLASSES} classes, "
+        f"but found {len(CLASSES)} classes."
     )
 
 
-CLASSES = class_data["classes"]
-
-
-if not isinstance(CLASSES, list):
-    raise ValueError(
-        "'classes' in class_indices.json must be a list."
-    )
-
-
-if len(CLASSES) != EXPECTED_CLASS_COUNT:
-    raise ValueError(
-        f"Expected {EXPECTED_CLASS_COUNT} model classes, "
-        f"but found {len(CLASSES)}."
-    )
-
-
-print(
-    f"Loaded {len(CLASSES)} model classes."
+logger.info(
+    "Loaded %d model classes.",
+    len(CLASSES)
 )
 
 
-# ============================================================
-# 7. LOAD DISEASE DICTIONARY
-# ============================================================
+# ================================================================
+# LOAD DISEASE DICTIONARY
+# ================================================================
 
 if not DICT_PATH.exists():
+
     raise FileNotFoundError(
-        f"disease_dictionary.json not found: "
-        f"{DICT_PATH}"
+        f"disease_dictionary.json not found: {DICT_PATH}"
     )
 
 
@@ -172,166 +186,33 @@ with open(
     encoding="utf-8"
 ) as f:
 
-    try:
-        raw_dict = json.load(f)
-
-    except json.JSONDecodeError as exc:
-
-        raise ValueError(
-            "Could not parse disease dictionary JSON: "
-            f"{DICT_PATH}"
-        ) from exc
+    DISEASE_DICT = json.load(f)
 
 
-if not isinstance(raw_dict, dict):
-    raise ValueError(
-        "Disease dictionary must be a JSON object."
-    )
+# ================================================================
+# DICTIONARY HELPERS
+# ================================================================
 
-
-if "classes" not in raw_dict:
-    raise ValueError(
-        "Disease dictionary must contain "
-        "a 'classes' list or dictionary."
-    )
-
-
-classes_data = raw_dict["classes"]
-
-DISEASE_DICT = {}
-
-seen_class_ids = set()
-
-
-# ============================================================
-# 8. PARSE DISEASE DICTIONARY
-# ============================================================
-
-if isinstance(classes_data, list):
-
-    for item in classes_data:
-
-        if not isinstance(item, dict):
-            raise ValueError(
-                "Disease dictionary contains "
-                "an invalid class entry."
-            )
-
-        if "class_id" not in item:
-            raise ValueError(
-                "Disease dictionary contains "
-                "a class without class_id."
-            )
-
-        class_id = item["class_id"]
-
-        if (
-            not isinstance(class_id, str)
-            or not class_id.strip()
-        ):
-            raise ValueError(
-                "Disease dictionary contains "
-                "an empty or invalid class_id."
-            )
-
-        lookup_key = class_id.strip().lower()
-
-        if lookup_key in seen_class_ids:
-            raise ValueError(
-                "Disease dictionary contains "
-                f"duplicate class_id: {class_id}"
-            )
-
-        seen_class_ids.add(lookup_key)
-
-        DISEASE_DICT[lookup_key] = item
-
-
-elif isinstance(classes_data, dict):
-
-    for class_id, item in classes_data.items():
-
-        if (
-            not isinstance(class_id, str)
-            or not class_id.strip()
-        ):
-            raise ValueError(
-                "Disease dictionary contains "
-                "an empty or invalid class_id."
-            )
-
-        if not isinstance(item, dict):
-            raise ValueError(
-                "Disease dictionary entry for "
-                f"{class_id} must be an object."
-            )
-
-        lookup_key = class_id.strip().lower()
-
-        if lookup_key in seen_class_ids:
-            raise ValueError(
-                "Disease dictionary contains "
-                f"duplicate class_id: {class_id}"
-            )
-
-        seen_class_ids.add(lookup_key)
-
-        DISEASE_DICT[lookup_key] = item
-
-
-else:
-
-    raise ValueError(
-        "Disease dictionary 'classes' must be "
-        "a list or dictionary."
-    )
-
-
-# ============================================================
-# 9. VERIFY DICTIONARY CLASS COUNT
-# ============================================================
-
-if len(DISEASE_DICT) != EXPECTED_CLASS_COUNT:
-
-    raise ValueError(
-        "Disease dictionary must contain exactly "
-        f"{EXPECTED_CLASS_COUNT} classes; "
-        f"found {len(DISEASE_DICT)}."
-    )
-
-
-print(
-    f"Loaded {len(DISEASE_DICT)} disease dictionary classes."
-)
-
-
-# ============================================================
-# 10. CLASS NAME NORMALIZATION
-# ============================================================
-
-def normalize_class_name(
-    class_name: str
-) -> str:
+def normalize_class_name(name: str) -> str:
 
     return (
-        " "
-        .join(
-            class_name
-            .replace("_", " ")
-            .replace("-", " ")
-            .split()
-        )
+        name
+        .strip()
         .lower()
+        .replace(" ", "_")
+        .replace("-", "_")
     )
 
 
-LEGACY_CLASS_LOOKUP = {
-    normalize_class_name(
-        item.get("class_id", key)
-    ): key
-    for key, item in DISEASE_DICT.items()
+# Build normalized lookup table
+
+NORMALIZED_DICT = {
+    normalize_class_name(key): value
+    for key, value in DISEASE_DICT.items()
 }
 
+
+# Legacy aliases
 
 CLASS_NAME_ALIASES = {
 
@@ -351,10 +232,6 @@ CLASS_NAME_ALIASES = {
 }
 
 
-# ============================================================
-# 11. TEXT LIST HELPER
-# ============================================================
-
 def _as_text_list(value) -> list[str]:
 
     if isinstance(value, str):
@@ -370,18 +247,12 @@ def _as_text_list(value) -> list[str]:
         return [
             item
             for item in value
-            if (
-                isinstance(item, str)
-                and item.strip()
-            )
+            if isinstance(item, str)
+            and item.strip()
         ]
 
     return []
 
-
-# ============================================================
-# 12. DISEASE DETAILS
-# ============================================================
 
 def get_disease_details(
     class_name: str
@@ -389,41 +260,51 @@ def get_disease_details(
 
     class_id = class_name.strip()
 
-    details = DISEASE_DICT.get(
-        class_id.lower()
-    )
+    # ------------------------------------------------------------
+    # Direct lookup
+    # ------------------------------------------------------------
 
-    # --------------------------------------------------------
-    # Legacy / alias lookup
-    # --------------------------------------------------------
+    details = DISEASE_DICT.get(
+        class_id
+    )
 
     if details is None:
 
-        legacy_key = normalize_class_name(
+        details = NORMALIZED_DICT.get(
+            normalize_class_name(class_id)
+        )
+
+
+    # ------------------------------------------------------------
+    # Legacy alias lookup
+    # ------------------------------------------------------------
+
+    if details is None:
+
+        normalized = normalize_class_name(
             class_id
         )
 
-        legacy_key = CLASS_NAME_ALIASES.get(
-            legacy_key,
-            legacy_key
+        alias = CLASS_NAME_ALIASES.get(
+            normalized
         )
 
-        lookup_key = LEGACY_CLASS_LOOKUP.get(
-            legacy_key
-        )
+        if alias:
 
-        details = DISEASE_DICT.get(
-            lookup_key,
-            {}
-        )
+            details = NORMALIZED_DICT.get(
+                alias
+            )
 
-    if not details:
+
+    if details is None:
+
         return {}
 
 
-    # --------------------------------------------------------
-    # Farmer result sections
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # If dictionary already has the frontend fields,
+    # preserve them.
+    # ------------------------------------------------------------
 
     sections = (
         details
@@ -431,9 +312,15 @@ def get_disease_details(
         .get("sections", {})
     )
 
+
     if not sections:
+
         return details
 
+
+    # ------------------------------------------------------------
+    # Extract farmer-friendly information
+    # ------------------------------------------------------------
 
     chemical = sections.get(
         "chemical_control",
@@ -491,7 +378,6 @@ def get_disease_details(
 
 
     return {
-
         **details,
 
         "plant_gu":
@@ -536,9 +422,9 @@ def get_disease_details(
     }
 
 
-# ============================================================
-# 13. INFERENCE ENGINE
-# ============================================================
+# ================================================================
+# INFERENCE ENGINE
+# ================================================================
 
 USE_ONNX = MODEL_ONNX.exists()
 
@@ -548,70 +434,46 @@ model = None
 
 if USE_ONNX:
 
-    try:
+    import onnxruntime as ort
 
-        import onnxruntime as ort
+    ort_session = ort.InferenceSession(
+        str(MODEL_ONNX),
+        providers=[
+            "CPUExecutionProvider"
+        ]
+    )
 
-        ort_session = ort.InferenceSession(
-            str(MODEL_ONNX),
-            providers=[
-                "CPUExecutionProvider"
-            ]
-        )
-
-        print(
-            "Inference Engine: "
-            "ONNX Runtime (Production)"
-        )
-
-    except Exception as exc:
-
-        print(
-            "WARNING: ONNX model exists but "
-            "could not be loaded."
-        )
-
-        print(
-            f"ONNX error: {exc}"
-        )
-
-        traceback.print_exc()
-
-        raise
-
+    logger.info(
+        "Inference Engine: ONNX Runtime"
+    )
 
 else:
+
+    if not MODEL_PTH.exists():
+
+        raise FileNotFoundError(
+            "Neither ONNX nor PyTorch model was found.\n"
+            f"ONNX: {MODEL_ONNX}\n"
+            f"PyTorch: {MODEL_PTH}"
+        )
 
     import torch
     import torch.nn as nn
     from torchvision import models
 
-
-    if not MODEL_PTH.exists():
-
-        raise FileNotFoundError(
-            "Neither usable ONNX model nor "
-            f"PyTorch model was found.\n"
-            f"ONNX: {MODEL_ONNX}\n"
-            f"PyTorch: {MODEL_PTH}"
-        )
-
-
     model = models.mobilenet_v3_large(
         weights=None
     )
 
-
     in_features = (
-        model.classifier[3].in_features
+        model.classifier[3]
+        .in_features
     )
-
 
     model.classifier[3] = nn.Linear(
         in_features,
         len(CLASSES)
     )
-
 
     checkpoint = torch.load(
         MODEL_PTH,
@@ -619,76 +481,60 @@ else:
         weights_only=False
     )
 
-
-    if (
-        not isinstance(checkpoint, dict)
-        or "model_state_dict" not in checkpoint
-    ):
-
-        raise ValueError(
-            "Invalid PyTorch checkpoint. "
-            "Expected 'model_state_dict'."
-        )
-
-
     model.load_state_dict(
         checkpoint["model_state_dict"]
     )
 
     model.eval()
 
-
-    print(
+    logger.info(
         "Inference Engine: PyTorch CPU"
     )
 
 
-# ============================================================
-# 14. IMAGE PREPROCESSING
-# ============================================================
+# ================================================================
+# IMAGE PREPROCESSING
+# ================================================================
 
 def preprocess_image(
     image: Image.Image
 ) -> np.ndarray:
 
-    image = image.convert(
-        "RGB"
-    ).resize(
-        IMAGE_SIZE
+    image = (
+        image
+        .convert("RGB")
+        .resize(IMAGE_SIZE)
     )
-
 
     img_arr = (
         np.array(
             image,
             dtype=np.float32
-        )
-        / 255.0
+        ) / 255.0
     )
-
 
     mean = np.array(
         [0.485, 0.456, 0.406],
         dtype=np.float32
     )
 
-
     std = np.array(
         [0.229, 0.224, 0.225],
         dtype=np.float32
     )
 
-
     img_arr = (
         img_arr - mean
     ) / std
 
+    # HWC -> CHW
 
     img_arr = np.transpose(
         img_arr,
         (2, 0, 1)
     )
 
+    # CHW -> NCHW
 
     return np.expand_dims(
         img_arr,
@@ -696,39 +542,33 @@ def preprocess_image(
     )
 
 
-# ============================================================
-# 15. SOFTMAX
-# ============================================================
+# ================================================================
+# SOFTMAX
+# ================================================================
 
-def softmax(
-    x: np.ndarray
-) -> np.ndarray:
+def softmax(x):
 
-    x = np.asarray(
-        x,
-        dtype=np.float32
+    e_x = np.exp(
+        x - np.max(
+            x,
+            axis=1,
+            keepdims=True
+        )
     )
 
-    x = x - np.max(
-        x,
-        axis=1,
-        keepdims=True
+    return (
+        e_x
+        /
+        e_x.sum(
+            axis=1,
+            keepdims=True
+        )
     )
 
-    exp_x = np.exp(x)
 
-    denominator = np.sum(
-        exp_x,
-        axis=1,
-        keepdims=True
-    )
-
-    return exp_x / denominator
-
-
-# ============================================================
-# 16. COMMON IMAGE VALIDATION
-# ============================================================
+# ================================================================
+# READ UPLOADED IMAGE
+# ================================================================
 
 async def read_uploaded_image(
     file: UploadFile
@@ -756,60 +596,44 @@ async def read_uploaded_image(
 
         if not image_bytes:
 
-            raise HTTPException(
-                status_code=400,
-                detail=(
-                    "અપલોડ કરેલી ફોટો ફાઇલ "
-                    "ખાલી છે."
-                )
+            raise ValueError(
+                "Empty image file."
             )
-
 
         image = Image.open(
             BytesIO(image_bytes)
         )
 
-        # Force image decoding now.
+        # Force actual image decoding
+
         image.load()
 
-        return image.convert(
-            "RGB"
-        )
+        return image.convert("RGB")
 
+    except Exception as exc:
 
-    except HTTPException:
-        raise
-
-
-    except (
-        UnidentifiedImageError,
-        OSError,
-        ValueError
-    ) as exc:
-
-        print(
-            f"Image validation error: {exc}"
+        logger.warning(
+            "Image decoding failed: %s",
+            exc
         )
 
         raise HTTPException(
             status_code=400,
             detail=(
-                "ફોટો ફાઇલ વાંચવામાં અસમર્થ. "
-                "કૃપા કરીને JPG, JPEG, PNG અથવા "
-                "માન્ય image ફાઇલ અપલોડ કરો."
+                "ફોટો ફાઇલ વાંચવામાં "
+                "અસમર્થ."
             )
         ) from exc
 
 
-# ============================================================
-# 17. HEALTH CHECK
-# ============================================================
+# ================================================================
+# PING
+# ================================================================
 
 @app.get("/ping")
 async def ping():
 
     return {
-
         "status": "live",
 
         "engine":
@@ -820,109 +644,92 @@ async def ping():
         "total_classes":
             len(CLASSES),
 
-        "vision_mode":
-            "Gemini",
+        "project_mode":
+            "local",
 
+        "vision_mode":
+            "gemini"
     }
 
 
-# ============================================================
-# 18. PROJECT MODEL
-# ============================================================
+# ================================================================
+# PROJECT MODE
+# ================================================================
+#
+# IMPORTANT:
+#
+# THERE IS NO GEMINI CALL HERE.
+#
+# Project Mode uses ONLY:
+#
+#     image
+#       ↓
+#     local preprocessing
+#       ↓
+#     ONNX / PyTorch
+#       ↓
+#     37-class prediction
+#       ↓
+#     disease_dictionary.json
+#
+# ================================================================
 
 @app.post("/predict")
 async def predict_project_model(
     file: UploadFile = File(...)
 ):
 
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
     # Read image
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
 
     image = await read_uploaded_image(
         file
     )
 
 
-    # --------------------------------------------------------
-    # Existing plant validation
-    #
-    # NOTE:
-    # This is intentionally kept because it is part
-    # of your existing Project Mode behavior.
-    #
-    # Your optimized Vision Mode does NOT use this.
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # Local preprocessing
+    # ------------------------------------------------------------
 
     try:
 
-        if not is_plant_image(image):
-
-            return {
-
-                "mode": "project",
-
-                "status": "success",
-
-                "is_plant": False,
-
-                "error_gu":
-                    "⚠️ આ તસવીરમાં છોડ કે પાન "
-                    "સ્પષ્ટ દેખાતું નથી. કૃપા કરીને "
-                    "છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
-
-            }
-
+        input_data = preprocess_image(
+            image
+        )
 
     except Exception as exc:
 
-        print(
-            "PROJECT MODE plant validation error:"
+        logger.exception(
+            "Image preprocessing failed."
         )
-
-        print(
-            str(exc)
-        )
-
-        traceback.print_exc()
-
 
         raise HTTPException(
-
-            status_code=503,
-
+            status_code=500,
             detail=(
-                "છોડની તસવીર ચકાસી શકાઈ નથી. "
-                "કૃપા કરીને GEMINI_API_KEY તપાસી "
-                "ફરી પ્રયાસ કરો."
+                "તસવીર તૈયાર કરવામાં "
+                "સમસ્યા આવી."
             )
-
         ) from exc
 
 
-    # --------------------------------------------------------
-    # Preprocess
-    # --------------------------------------------------------
-
-    input_data = preprocess_image(
-        image
-    )
-
-
-    # --------------------------------------------------------
-    # Inference
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # LOCAL MODEL INFERENCE
+    # ------------------------------------------------------------
 
     try:
 
         if USE_ONNX:
 
-            outputs = ort_session.run(
-                None,
-                {
-                    "input": input_data
-                }
-            )[0]
+            outputs = (
+                ort_session.run(
+                    None,
+                    {
+                        "input":
+                            input_data
+                    }
+                )[0]
+            )
 
         else:
 
@@ -936,48 +743,33 @@ async def predict_project_model(
                             input_data
                         )
                     )
-                    .cpu()
                     .numpy()
                 )
 
 
+        probabilities = softmax(
+            outputs
+        )[0]
+
+
     except Exception as exc:
 
-        print(
-            "PROJECT MODEL INFERENCE ERROR:"
+        logger.exception(
+            "Local model inference failed."
         )
-
-        print(
-            str(exc)
-        )
-
-        traceback.print_exc()
-
 
         raise HTTPException(
-
             status_code=500,
-
             detail=(
-                "મોડેલ દ્વારા તસવીરનું "
-                "વિશ્લેષણ કરવામાં નિષ્ફળતા."
+                "સ્થાનિક AI મોડેલથી "
+                "તસવીરનું વિશ્લેષણ થઈ શક્યું નથી."
             )
-
         ) from exc
 
 
-    # --------------------------------------------------------
-    # Probabilities
-    # --------------------------------------------------------
-
-    probabilities = softmax(
-        outputs
-    )[0]
-
-
-    # --------------------------------------------------------
-    # Top prediction
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # FIND TOP PREDICTION
+    # ------------------------------------------------------------
 
     top_idx = int(
         np.argmax(
@@ -985,41 +777,52 @@ async def predict_project_model(
         )
     )
 
-
     confidence = float(
         probabilities[top_idx]
     )
-
 
     predicted_class = CLASSES[
         top_idx
     ]
 
 
+    # ------------------------------------------------------------
+    # CONFIDENCE
+    # ------------------------------------------------------------
+
     is_confident = (
         confidence
         >= CONFIDENCE_THRESHOLD
     )
 
+    is_uncertain = (
+        not is_confident
+    )
+
+
+    # ------------------------------------------------------------
+    # DISEASE DETAILS
+    # ------------------------------------------------------------
 
     details = get_disease_details(
         predicted_class
     )
 
 
-    # --------------------------------------------------------
-    # Top 3 predictions
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # TOP 3 PREDICTIONS
+    # ------------------------------------------------------------
 
-    top3_indices = np.argsort(
-        probabilities
-    )[::-1][:3]
+    top3_indices = (
+        np.argsort(
+            probabilities
+        )[::-1][:3]
+    )
 
 
     top_3 = [
 
         {
-
             "class":
                 CLASSES[idx],
 
@@ -1027,12 +830,12 @@ async def predict_project_model(
                 CLASSES[idx],
 
             "name_gu":
-                (
-                    get_disease_details(
-                        CLASSES[idx]
-                    ).get("name_gu")
-                    or CLASSES[idx]
-                ),
+                get_disease_details(
+                    CLASSES[idx]
+                ).get(
+                    "name_gu"
+                )
+                or CLASSES[idx],
 
             "confidence":
                 round(
@@ -1041,16 +844,15 @@ async def predict_project_model(
                     ) * 100,
                     2
                 )
-
         }
 
         for idx in top3_indices
     ]
 
 
-    # --------------------------------------------------------
-    # Existing response contract
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # RESPONSE
+    # ------------------------------------------------------------
 
     return {
 
@@ -1064,7 +866,7 @@ async def predict_project_model(
             is_confident,
 
         "is_uncertain":
-            not is_confident,
+            is_uncertain,
 
         "prediction":
             predicted_class,
@@ -1086,43 +888,34 @@ async def predict_project_model(
 
         "top_predictions":
             top_3
-
     }
 
 
-# ============================================================
-# 19. GENERAL AI VISION
-# ============================================================
+# ================================================================
+# AI VISION MODE
+# ================================================================
+#
+# THIS is the ONLY endpoint that uses Gemini.
+#
+# ================================================================
 
 @app.post("/analyze-vision")
 async def predict_vision_ai(
     file: UploadFile = File(...)
 ):
 
-    # --------------------------------------------------------
-    # Read and validate image
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # Read image
+    # ------------------------------------------------------------
 
     image = await read_uploaded_image(
         file
     )
 
 
-    # --------------------------------------------------------
-    # ONE Vision service call
-    #
-    # The important optimization is inside
-    # vision_service.py:
-    #
-    # analyze_plant_with_vision()
-    #
-    # should make ONE normal Gemini request,
-    # not:
-    #
-    # is_plant_image()
-    # +
-    # analyze_plant_with_vision()
-    # --------------------------------------------------------
+    # ------------------------------------------------------------
+    # Gemini Vision
+    # ------------------------------------------------------------
 
     try:
 
@@ -1131,7 +924,6 @@ async def predict_vision_ai(
                 image
             )
         )
-
 
         return {
 
@@ -1143,91 +935,84 @@ async def predict_vision_ai(
 
             "diagnosis":
                 diagnosis
-
         }
 
 
     except Exception as exc:
 
-        error_msg = str(
-            exc
+        error_msg = str(exc)
+
+        logger.error(
+            "AI Vision failed: %s",
+            error_msg
         )
 
 
-        print()
-        print("=" * 70)
-        print("AI VISION ERROR")
-        print("=" * 70)
-
-        print(
-            f"Error type: "
-            f"{type(exc).__name__}"
-        )
-
-        print(
-            f"Error message: "
-            f"{error_msg}"
-        )
-
-        traceback.print_exc()
-
-        print("=" * 70)
-        print()
-
-
-        # ----------------------------------------------------
+        # --------------------------------------------------------
         # Rate limit
-        # ----------------------------------------------------
+        # --------------------------------------------------------
 
         if (
             "429" in error_msg
-            or "rate limit"
+            or
+            "rate limit"
             in error_msg.lower()
         ):
 
-            status_code = 429
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    "AI વિઝન હાલમાં વ્યસ્ત છે. "
+                    "Gemini ની મફત ઉપયોગ મર્યાદા "
+                    "પૂર્ણ થઈ ગઈ છે. "
+                    "કૃપા કરીને થોડા સમય પછી "
+                    "ફરી પ્રયાસ કરો."
+                )
+            ) from exc
 
 
-        # ----------------------------------------------------
+        # --------------------------------------------------------
         # API key / authentication
-        # ----------------------------------------------------
+        # --------------------------------------------------------
 
-        elif (
-            "401" in error_msg
-            or "403" in error_msg
-            or "api key"
-            in error_msg.lower()
-            or "gemini_api_key"
+        if (
+            "GEMINI_API_KEY"
+            in error_msg
+            or
+            "API key"
+            in error_msg
+            or
+            "authentication"
             in error_msg.lower()
         ):
 
-            status_code = 503
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    "AI વિઝન સેવા ઉપલબ્ધ નથી. "
+                    "કૃપા કરીને Gemini API "
+                    "સેટિંગ તપાસો."
+                )
+            ) from exc
 
 
-        # ----------------------------------------------------
-        # Everything else
-        # ----------------------------------------------------
-
-        else:
-
-            status_code = 500
-
+        # --------------------------------------------------------
+        # Other Gemini error
+        # --------------------------------------------------------
 
         raise HTTPException(
-
-            status_code=status_code,
-
+            status_code=500,
             detail=(
-                "AI વિઝન: "
-                f"{error_msg}"
+                "AI વિઝન વિશ્લેષણ દરમિયાન "
+                "સમસ્યા આવી. કૃપા કરીને ફરી "
+                "પ્રયાસ કરો."
             )
-
         ) from exc
 
 
-# ============================================================
-# 20. SERVE FRONTEND
-# ============================================================
+# ================================================================
+# FRONTEND
+# ================================================================
 
 @app.get("/")
 async def serve_index():
@@ -1236,18 +1021,17 @@ async def serve_index():
 
         raise HTTPException(
             status_code=404,
-            detail="Frontend index.html not found."
+            detail="index.html not found."
         )
-
 
     return FileResponse(
         INDEX_FILE
     )
 
 
-# ============================================================
-# 21. STATIC FILES
-# ============================================================
+# ================================================================
+# STATIC FILES
+# ================================================================
 
 if STATIC_DIR.exists():
 
@@ -1262,11 +1046,13 @@ if STATIC_DIR.exists():
     )
 
 
-# ============================================================
-# 22. LOCAL DEVELOPMENT
-# ============================================================
+# ================================================================
+# LOCAL DEVELOPMENT
+# ================================================================
 
 if __name__ == "__main__":
+
+    import uvicorn
 
     uvicorn.run(
         "API.main:app",
