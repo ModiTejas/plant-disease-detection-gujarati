@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import numpy as np
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -196,7 +197,7 @@ async def predict_project_model(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
     try:
-        if not is_plant_image(image):
+        if not await run_in_threadpool(is_plant_image, image):
             return {
                 "mode": "project",
                 "status": "success",
@@ -209,15 +210,16 @@ async def predict_project_model(file: UploadFile = File(...)):
             detail="છોડની તસવીર ચકાસી શકાઈ નથી. કૃપા કરીને GEMINI_API_KEY તપાસી ફરી પ્રયાસ કરો."
         ) from e
 
-    input_data = preprocess_image(image)
-
-    if USE_ONNX:
-        outputs = ort_session.run(None, {'input': input_data})[0]
-        probabilities = softmax(outputs)[0]
-    else:
+    def _run_inference() -> np.ndarray:
+        input_data = preprocess_image(image)
+        if USE_ONNX:
+            outputs = ort_session.run(None, {'input': input_data})[0]
+            return softmax(outputs)[0]
         with torch.no_grad():
             outputs = model(torch.from_numpy(input_data)).numpy()
-            probabilities = softmax(outputs)[0]
+            return softmax(outputs)[0]
+
+    probabilities = await run_in_threadpool(_run_inference)
 
     top_idx = int(np.argmax(probabilities))
     confidence = float(probabilities[top_idx])
@@ -262,7 +264,7 @@ async def predict_vision_ai(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
     try:
-        diagnosis = analyze_plant_with_vision(image)
+        diagnosis = await run_in_threadpool(analyze_plant_with_vision, image)
         return {"mode": "vision", "status": "success", "diagnosis": diagnosis}
     except Exception as e:
         error_msg = str(e)
