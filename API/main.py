@@ -1,14 +1,12 @@
 from io import BytesIO
 import json
-import time
 import traceback
 from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
 import numpy as np
 
-from fastapi import FastAPI, File, UploadFile, HTTPException, Response
-from fastapi.concurrency import run_in_threadpool
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,9 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
 try:
-    from API.vision_service import analyze_plant_with_vision, request_trace
+    from API.vision_service import analyze_plant_with_vision, is_plant_image
 except ImportError:
-    from vision_service import analyze_plant_with_vision, request_trace
+    from vision_service import analyze_plant_with_vision, is_plant_image
 
 # ---------------- PATHS & CONSTANTS ----------------
 MODEL_PTH = BASE_DIR / "models" / "best_model.pth"
@@ -95,21 +93,17 @@ if len(DISEASE_DICT) != EXPECTED_CLASS_COUNT:
         f"found {len(DISEASE_DICT)}."
     )
 
-
 def normalize_class_name(class_name: str) -> str:
     return " ".join(class_name.replace("_", " ").replace("-", " ").split()).lower()
-
 
 LEGACY_CLASS_LOOKUP = {
     normalize_class_name(item.get("class_id", key)): key
     for key, item in DISEASE_DICT.items()
 }
-
 CLASS_NAME_ALIASES = {
     normalize_class_name("Cotton___Healthy Leaf"): normalize_class_name("Cotton___Healthy"),
     normalize_class_name("Cotton___Leaf Redding"): normalize_class_name("Cotton___Leaf Reddening"),
 }
-
 
 def _as_text_list(value) -> list[str]:
     if isinstance(value, str):
@@ -117,7 +111,6 @@ def _as_text_list(value) -> list[str]:
     if isinstance(value, list):
         return [item for item in value if isinstance(item, str) and item.strip()]
     return []
-
 
 def get_disease_details(class_name: str) -> dict:
     class_id = class_name.strip()
@@ -127,7 +120,6 @@ def get_disease_details(class_name: str) -> dict:
         legacy_key = CLASS_NAME_ALIASES.get(legacy_key, legacy_key)
         lookup_key = LEGACY_CLASS_LOOKUP.get(legacy_key)
         details = DISEASE_DICT.get(lookup_key, {})
-
     sections = details.get("farmer_result", {}).get("sections", {})
     if not sections:
         return details
@@ -136,7 +128,6 @@ def get_disease_details(class_name: str) -> dict:
     biological = sections.get("natural_biological_control", {})
     current_steps = sections.get("what_to_do_now", {})
     prevention = sections.get("prevention", {})
-
     management = (
         _as_text_list(chemical.get("recommended_active_ingredients"))
         + _as_text_list(chemical.get("description"))
@@ -155,164 +146,96 @@ def get_disease_details(class_name: str) -> dict:
         "prevention_gu": _as_text_list(prevention.get("steps")),
     }
 
-
 # 2. Setup Inference Engine (ONNX for Vercel/Production, fallback to PyTorch)
 USE_ONNX = MODEL_ONNX.exists()
 ort_session = None
 
 if USE_ONNX:
     import onnxruntime as ort
-    ort_session = ort.InferenceSession(
-        str(MODEL_ONNX),
-        providers=['CPUExecutionProvider']
-    )
+    ort_session = ort.InferenceSession(str(MODEL_ONNX), providers=['CPUExecutionProvider'])
     print("Inference Engine: ONNX Runtime (Vercel-Optimized)")
 else:
     import torch
     import torch.nn as nn
     from torchvision import models
-
     model = models.mobilenet_v3_large(weights=None)
     in_features = model.classifier[3].in_features
     model.classifier[3] = nn.Linear(in_features, len(CLASSES))
-
-    ckpt = torch.load(
-        MODEL_PTH,
-        map_location='cpu',
-        weights_only=False
-    )
-
+    ckpt = torch.load(MODEL_PTH, map_location='cpu', weights_only=False)
     model.load_state_dict(ckpt["model_state_dict"])
     model.eval()
-
     print("Inference Engine: PyTorch CPU")
-
 
 def preprocess_image(image: Image.Image) -> np.ndarray:
     image = image.convert("RGB").resize(IMAGE_SIZE)
     img_arr = np.array(image, dtype=np.float32) / 255.0
-
     mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
     std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-
     img_arr = (img_arr - mean) / std
-    img_arr = np.transpose(img_arr, (2, 0, 1))
-
-    return np.expand_dims(img_arr, axis=0)
-
+    img_arr = np.transpose(img_arr, (2, 0, 1))  # (C, H, W)
+    return np.expand_dims(img_arr, axis=0)      # (1, C, H, W)
 
 def softmax(x):
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=1, keepdims=True)
 
-
-def _set_timing(response: Response, trace: dict, t0: float, route: str) -> None:
-    """Adds a Server-Timing header (visible in DevTools > Network > Timing) and logs one line."""
-    parts = [f"total;dur={(time.perf_counter() - t0) * 1000:.1f}"]
-
-    for key, value in trace.items():
-        if isinstance(value, (int, float)):
-            parts.append(f"{key};dur={value:.1f}")
-        else:
-            safe = str(value).replace('"', "").replace(",", " ")[:60]
-            parts.append(f'{key};desc="{safe}"')
-
-    header = ", ".join(parts)
-    response.headers["Server-Timing"] = header
-    print(f"[timing] {route} {header}", flush=True)
-
-
 # ---------------- ENDPOINTS ----------------
-
 @app.get("/ping")
 async def ping():
-    return {
-        "status": "live",
-        "engine": "ONNX" if USE_ONNX else "PyTorch",
-        "total_classes": len(CLASSES)
-    }
-
+    return {"status": "live", "engine": "ONNX" if USE_ONNX else "PyTorch", "total_classes": len(CLASSES)}
 
 @app.post("/predict")
-async def predict_project_model(
-    response: Response,
-    file: UploadFile = File(...)
-):
-    t0 = time.perf_counter()
-    trace: dict = {}
-    request_trace.set(trace)
-
+async def predict_project_model(file: UploadFile = File(...)):
     if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(
-            status_code=400,
-            detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો."
-        )
+        raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
 
     try:
         image_bytes = await file.read()
         image = Image.open(BytesIO(image_bytes))
     except Exception:
+        raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
+
+    try:
+        if not is_plant_image(image):
+            return {
+                "mode": "project",
+                "status": "success",
+                "is_plant": False,
+                "error_gu": "⚠️ આ તસવીરમાં છોડ કે પાન સ્પષ્ટ દેખાતું નથી. કૃપા કરીને છોડના પાનનો સ્પષ્ટ ફોટો અપલોડ કરો."
+            }
+    except Exception as e:
         raise HTTPException(
-            status_code=400,
-            detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ."
-        )
+            status_code=503,
+            detail="છોડની તસવીર ચકાસી શકાઈ નથી. કૃપા કરીને GEMINI_API_KEY તપાસી ફરી પ્રયાસ કરો."
+        ) from e
 
-    def _run_inference() -> np.ndarray:
-        input_data = preprocess_image(image)
+    input_data = preprocess_image(image)
 
-        if USE_ONNX:
-            outputs = ort_session.run(
-                None,
-                {'input': input_data}
-            )[0]
-
-            return softmax(outputs)[0]
-
+    if USE_ONNX:
+        outputs = ort_session.run(None, {'input': input_data})[0]
+        probabilities = softmax(outputs)[0]
+    else:
         with torch.no_grad():
-            outputs = model(
-                torch.from_numpy(input_data)
-            ).numpy()
-
-            return softmax(outputs)[0]
-
-    t_inf = time.perf_counter()
-
-    probabilities = await run_in_threadpool(_run_inference)
-
-    trace["onnx"] = (time.perf_counter() - t_inf) * 1000
+            outputs = model(torch.from_numpy(input_data)).numpy()
+            probabilities = softmax(outputs)[0]
 
     top_idx = int(np.argmax(probabilities))
     confidence = float(probabilities[top_idx])
     predicted_class = CLASSES[top_idx]
 
     is_confident = confidence >= CONFIDENCE_THRESHOLD
-
     details = get_disease_details(predicted_class)
 
     top3_indices = np.argsort(probabilities)[::-1][:3]
-
     top_3 = [
         {
             "class": CLASSES[idx],
             "predicted_class": CLASSES[idx],
-            "name_gu": (
-                get_disease_details(CLASSES[idx]).get("name_gu")
-                or CLASSES[idx]
-            ),
-            "confidence": round(
-                float(probabilities[idx]) * 100,
-                2
-            )
+            "name_gu": get_disease_details(CLASSES[idx]).get("name_gu") or CLASSES[idx],
+            "confidence": round(float(probabilities[idx]) * 100, 2)
         }
         for idx in top3_indices
     ]
-
-    _set_timing(
-        response,
-        trace,
-        t0,
-        "/predict"
-    )
 
     return {
         "mode": "project",
@@ -327,92 +250,31 @@ async def predict_project_model(
         "top_predictions": top_3
     }
 
-
 @app.post("/analyze-vision")
-async def predict_vision_ai(
-    response: Response,
-    file: UploadFile = File(...)
-):
-    t0 = time.perf_counter()
-    trace: dict = {}
-    request_trace.set(trace)
-
+async def predict_vision_ai(file: UploadFile = File(...)):
     if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(
-            status_code=400,
-            detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો."
-        )
+        raise HTTPException(status_code=400, detail="કૃપા કરીને માન્ય ફોટો ફાઇલ અપલોડ કરો.")
 
     try:
         image_bytes = await file.read()
-        image = Image.open(
-            BytesIO(image_bytes)
-        ).convert("RGB")
+        image = Image.open(BytesIO(image_bytes)).convert("RGB")
     except Exception:
-        raise HTTPException(
-            status_code=400,
-            detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ."
-        )
+        raise HTTPException(status_code=400, detail="ફોટો ફાઇલ વાંચવામાં અસમર્થ.")
 
     try:
-        diagnosis = await run_in_threadpool(
-            analyze_plant_with_vision,
-            image
-        )
-
-        _set_timing(
-            response,
-            trace,
-            t0,
-            "/analyze-vision"
-        )
-
-        return {
-            "mode": "vision",
-            "status": "success",
-            "diagnosis": diagnosis
-        }
-
+        diagnosis = analyze_plant_with_vision(image)
+        return {"mode": "vision", "status": "success", "diagnosis": diagnosis}
     except Exception as e:
         error_msg = str(e)
-
-        print(
-            f"[timing] /analyze-vision FAILED after "
-            f"{(time.perf_counter() - t0) * 1000:.0f}ms: "
-            f"{error_msg[:200]}",
-            flush=True
-        )
-
-        status_code = (
-            429
-            if "429" in error_msg
-            or "rate limit" in error_msg.lower()
-            else 500
-        )
-
-        raise HTTPException(
-            status_code=status_code,
-            detail=f"AI વિઝન: {error_msg}"
-        )
-
+        status_code = 429 if "429" in error_msg or "rate limit" in error_msg.lower() else 500
+        raise HTTPException(status_code=status_code, detail=f"AI વિઝન: {error_msg}")
 
 @app.get("/")
 async def serve_index():
     return FileResponse(INDEX_FILE)
 
-
 if STATIC_DIR.exists():
-    app.mount(
-        "/static",
-        StaticFiles(directory=str(STATIC_DIR)),
-        name="static"
-    )
-
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "API.main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload=True
-    )
+    uvicorn.run("API.main:app", host="127.0.0.1", port=8000, reload=True)
