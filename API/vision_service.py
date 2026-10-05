@@ -20,35 +20,39 @@ Analyze the uploaded leaf/plant image carefully and diagnose its health conditio
 Provide your diagnosis strictly in Gujarati (with English scientific terms where helpful) in the exact JSON format specified below.
 
 RULES:
-1. If the image is NOT a plant or leaf (e.g., human, animal, car, building), return "is_plant": false.
-2. If it IS a plant/leaf, identify the plant name, the exact disease / pest / nutrient deficiency / physiological issue, or confirm if it is Healthy.
-3. Categorize the issue accurately: 'રોગ' (Disease), 'જીવાત' (Pest), 'ખામી' (Deficiency), 'રાસાયણિક નુકસાન' (Damage), or 'સ્વસ્થ' (Healthy).
-4. Provide practical, farmer-friendly Gujarati advice for symptoms, management, and prevention.
-5. Return ONLY a valid, raw JSON object. Do not wrap in markdown code blocks.
+1. Identify: If the image is NOT a plant or leaf (e.g., human, animal, vehicle), return "is_plant": false and leave other fields empty.
+2. Diagnose: If it IS a plant/leaf, identify the plant name, the exact disease / pest / nutrient deficiency / physiological issue, or confirm if it is 'સ્વસ્થ' (Healthy).
+3. Categorize accurately in Gujarati: Use terms like 'રોગ' (Disease), 'જીવાત' (Pest), 'પોષક તત્વોની ઉણપ' (Nutrient Deficiency), 'રાસાયણિક નુકસાન' (Chemical Damage), or 'સ્વસ્થ' (Healthy).
+4. ભાષા અને વ્યાકરણ (Language & Grammar):
+   - હંમેશા સરળ, સ્પષ્ટ અને લોકભોગ્ય ગુજરાતીમાં જ જવાબ આપો.
+   - ગુજરાતી વ્યાકરણ અને સાચી જોડણીનું ખાસ ધ્યાન રાખો. 
+   - ટૂંકાક્ષરો (Short-forms) કે હિંગ્લિશ (Hinglish) નો ઉપયોગ ટાળો; બધા જ શબ્દો પૂરા અને શુદ્ધ ગુજરાતીમાં લખો.
+5. Practical Advice: Provide farmer-friendly Gujarati advice for symptoms, management, and prevention. Use proper agricultural terminology (e.g., પિયત વ્યવસ્થા, ફૂગનાશક).
+6. Output Format: Return ONLY a valid, raw JSON object. Do NOT wrap the JSON in markdown code blocks (e.g., do not use ```json ... ```). No introductory or concluding text.
 
 REQUIRED JSON SCHEMA:
 {
   "is_plant": true,
   "plant_en": "English Plant Name (e.g., Mango)",
-  "plant_gu": "ગુજરાતી છોડનું નામ (દા.ત. કેરી / આંબાનું ઝાડ)",
+  "plant_gu": "ગુજરાતી છોડનું નામ (દા.ત. આંબાનું ઝાડ / કેરી)",
   "name_en": "English Problem Name (e.g., Anthracnose / Healthy)",
-  "name_gu": "ગુજરાતી રોગ / સમસ્યાનું નામ (દા.ત. એન્થ્રેકનોઝ - કાળી મેશ રોગ)",
-  "type_gu": "રોગ / જીવાત / પોષક તત્વોની ખામી / સ્વસ્થ",
+  "name_gu": "ગુજરાતી રોગ / સમસ્યાનું નામ (દા.ત. એન્થ્રેકનોઝ - કાળો ડાઘ / કાળી મેશ રોગ)",
+  "type_gu": "રોગ / જીવાત / પોષક તત્વોની ઉણપ / રાસાયણિક નુકસાન / સ્વસ્થ",
   "confidence_assessment": "ઉચ્ચ (High) / મધ્યમ (Medium) / અનિશ્ચિત (Low)",
   "symptoms_gu": [
-    "દેખાતા લક્ષણ ૧",
+    "દેખાતા લક્ષણ ૧ (દા.ત. પાંદડા પર કથ્થઈ રંગના ડાઘ જોવા મળે છે)",
     "દેખાતા લક્ષણ ૨"
   ],
-  "cause_gu": "સમસ્યાનું સંભવિત કારણ અથવા ફૂગ/જીવાતનું નામ",
+  "cause_gu": "સમસ્યાનું સંભવિત કારણ અથવા ફૂગ/જીવાતનું વૈજ્ઞાનિક નામ",
   "management_gu": [
-    "સૂચિત નિયંત્રણ / દવાનો ઉપાય ૧",
-    "નિયંત્રણ ઉપાય ૨"
+    "રાસાયણિક અથવા જૈવિક નિયંત્રણ ઉપાય ૧",
+    "ઉપાય ૨ (દવાની માત્રા સાથે જો શક્ય હોય તો)"
   ],
   "prevention_gu": [
-    "ભવિષ્ય માટે બચાવના પગલાં ૧",
-    "બચાવ પગલાં ૨"
+    "ભવિષ્યમાં રોગ અટકાવવા માટેના આગોતરા પગલાં ૧",
+    "પગલાં ૨ (દા.ત. પાકની ફેરબદલી, યોગ્ય પિયત વ્યવસ્થા)"
   ],
-  "ai_note_gu": "આ પરિણામ જનરલ AI વિઝન મોડેલ દ્વારા આપેલ પ્રાથમિક વિશ્લેષણ છે."
+  "ai_note_gu": "આ પરિણામ જનરલ AI વિઝન મોડેલ દ્વારા આપવામાં આવેલ પ્રાથમિક વિશ્લેષણ છે. કોઈપણ દવાનો છંટકાવ કરતા પહેલા ખેડૂતમિત્રોએ સ્થાનિક કૃષિ નિષ્ણાત અથવા ગ્રામસેવકની સલાહ લેવી હિતાવહ છે."
 }
 """
 
